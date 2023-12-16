@@ -1,0 +1,85 @@
+{
+  "meetService": {
+    "participants": [
+      {
+        "participantName": "Someone 0",
+        "participantRole": "lead",
+        "assignedTo": [
+          "Daily meet up",
+          "Refinement call"
+        ]
+      },
+      {
+        "participantName": "Someone 1",
+        "participantRole": "participant",
+        "assignedTo": [
+          "Daily meet up",
+          "Refinement call"
+        ]
+      },
+      {
+        "participantName": "Someone 2",
+        "participantRole": "participant",
+        "assignedTo": [
+          "Daily meet up",
+          "Refinement call"
+        ]
+      },
+      {
+        "participantName": "Someone 3",
+        "participantRole": "participant",
+        "assignedTo": [
+          "Daily meet up",
+          "Refinement call"
+        ]
+      },
+      {
+        "participantName": "Someone 4",
+        "participantRole": "participant",
+        "assignedTo": [
+          "Daily meet up",
+          "Refinement call"
+        ]
+      }
+    ],
+    "googlemeetRules": {
+      "10:00": {
+        "title": "Refinement call",
+        "rules": {
+          "autoJoinParticipantsQuantity": 0,
+          "leaveTogetherWithMyGuys": {
+            "isTurnOn": false,
+            "guys": ["someone 1", "someone 2"],
+            "leaveWhen": "all"
+          },
+          "fullscreenOnJoin": false,
+          "percentageToLeave": 0,
+          "joinWithCameraOff": false,
+          "keepTabActive": false,
+          "showSubtitlesWhenZoomed": true
+        }
+      },
+      "12:15": {
+        "title": "Daily meet up",
+        "rules": {
+          "autoJoinParticipantsQuantity": 1,
+          "leaveTogetherWithMyGuys": {
+            "isTurnOn": true,
+            "guys": ["someone 1", "someone 2"],
+            "leaveWhen": "one"
+          },
+          "fullscreenOnJoin": false,
+          "percentageToLeave": 0.73,
+          "joinWithCameraOff": true,
+          "keepTabActive": false,
+          "showSubtitles": true
+        }
+      }
+    }
+  },
+  "disabledFeatures": {
+    "meetService": {
+      "disableRecordFeature": true
+    }
+  }
+}

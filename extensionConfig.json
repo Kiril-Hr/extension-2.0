@@ -1,0 +1,16 @@
+{
+  "name": "Extension test",
+  "version": "0.2.0",
+  "description": "Extension test",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "tabs",
+    "webNavigation"
+  ],
+  "host_permissions": ["<all_urls>"],
+  "action": {
+    "default_title": "Extension test"
+  },
+  "manifest_version": 3
+}
