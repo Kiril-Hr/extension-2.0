@@ -1,0 +1,20 @@
+{
+  "name": "extension",
+  "version": "1.0.0",
+  "description": "chrome extension",
+  "main": "src/runner.ts",
+  "scripts": {
+    "dev": "devex-scripts dev",
+    "build": "devex-scripts build"
+  },
+  "author": "Team of dream",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/chrome": "0.0.242",
+    "@types/node": "^20.11.17",
+    "typescript": "5.1.6"
+  },
+  "dependencies": {
+    "devxtension": "^1.0.2"
+  }
+}
