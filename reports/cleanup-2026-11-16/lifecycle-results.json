@@ -1,0 +1,47 @@
+[
+  {
+    "name": "complete author API and route reSetup",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "shared global and module widget has one owner initialization",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "module-only widget stops and restarts with its route",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "reconfiguring one factory tears down its prior cycle",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "global participants survive an unmatched route",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "automatic route events deduplicate and detach",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "setup errors clean previous globals and routes",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "teardown errors do not skip remaining resources",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "invalid participants report their role",
+    "status": "PASS",
+    "detail": ""
+  }
+]
