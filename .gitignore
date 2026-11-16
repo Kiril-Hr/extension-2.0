@@ -6,3 +6,23 @@
 .verification/browser-binaries/
 reports/factory-api-audit-2026-10-30/pre-change-*/
 DevEx2_work_build_09_Windows_fixed.zip
+
+# Local IDE state and generated extension output
+**/.idea/
+/example/dist/
+/test/dist/
+/.release/
+
+# Local credentials, browser state and sensitive environment files
+**/.env
+**/.env.*
+!**/.env.example
+**/.npmrc
+**/*.pem
+**/*.key
+**/cookies*.json
+
+# Generated verification scratch output
+tests/*_results.json
+tests/results.json
+tests/typecheck.log
