@@ -1,0 +1,17 @@
+[
+  {
+    "name": "vanilla and reactive combined rejected",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "name": "vanilla and reactive separate modules",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "name": "core teardown invoked on reSetup",
+    "passed": true,
+    "detail": ""
+  }
+]

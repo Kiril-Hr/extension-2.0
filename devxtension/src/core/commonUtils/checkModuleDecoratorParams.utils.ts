@@ -10,6 +10,7 @@ import {dependencyContainer} from "../dependencyContainer/dependencyContainer";
 
 export function checkModuleDecoratorParams(params: ModuleDecoratorOptionsOutput, moduleName: string): ModuleDecoratorOptionsInput {
     if (!params.url) throw new Error('You have not specified url')
+    if (params.reactiveScripts && params.vanilla) throw new Error('Specify either vanilla or reactiveScripts, not both')
 
     let newParams: ModuleDecoratorOptionsInput = { url: '' }
 
@@ -18,7 +19,9 @@ export function checkModuleDecoratorParams(params: ModuleDecoratorOptionsOutput,
     }
 
     if (params.vanilla) {
-        const mainService = dependencyContainer.getService<MainServiceType>(params.vanilla.mainService.name)
+        const mainService = typeof params.vanilla.mainService === 'function'
+            ? dependencyContainer.getService<MainServiceType>(params.vanilla.mainService.name)
+            : params.vanilla.mainService
 
         const setupFunction = mainService.run
 
@@ -45,19 +48,9 @@ export function checkModuleDecoratorParams(params: ModuleDecoratorOptionsOutput,
         newParams = {
             url: params.url,
             name,
+            widgets: newParams.widgets,
             reactiveScripts: params.reactiveScripts
         }
-    }
-
-    if (params.reactiveScripts && params.vanilla) {
-        newParams = {
-            ...newParams,
-            reactiveScripts: params.reactiveScripts
-        }
-    }
-
-    if (params.reactiveScripts && params.vanilla) {
-        throw new Error('You have not specified any module params')
     }
 
     return newParams
@@ -81,7 +74,7 @@ function executorService(service: Instance) {
 
     for (const methodName of methodNames) {
         const method = servicePrototype[methodName];
-        if (typeof method === "function") {
+        if (methodName !== 'constructor' && typeof method === "function") {
             const executorArray = [executorService, method] as SingleExecutorsProviderInput;
             executors.push(executorArray);
         }
@@ -102,7 +95,7 @@ function validWidgetsArray(widgets: WidgetModuleArrayOutput) {
                 return checkWidget(widget)
             }
         } catch (e) {
-            throw new Error('Error during validation widgets', e)
+            throw new Error('Error during validation widgets', { cause: e })
         }
     })
 }
@@ -115,5 +108,9 @@ function checkWidget(widget: WidgetValue) {
 
     const Widget = dependencyContainer.getService<WidgetValue>(widget.name)
 
-    return Widget.setup.bind(widget) // thinking about this
+    if (typeof Widget.setup !== 'function') throw new Error(`Widget "${widget.name}" must implement setup()`)
+    return () => {
+        dependencyContainer.acquireSharedModule(Widget)
+        return () => dependencyContainer.releaseSharedModule(Widget)
+    }
 }

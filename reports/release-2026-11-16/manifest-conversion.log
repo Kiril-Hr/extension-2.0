@@ -1,0 +1,7 @@
+PASS 12 Manifest conversion assertions; runtime semantics tested separately
+[DevEx URL conversion] Chrome cannot limit https://*.example.com/* to its default port. Content-script injection also covers other ports; DevEx runtime routing still rejects them.
+[DevEx URL conversion] Chrome cannot limit https://*.example.com/* to its default port. Content-script injection also covers other ports; DevEx runtime routing still rejects them.
+[DevEx URL conversion] Root-domain exclusion for *.example.com overlaps another module. Injection uses the union; ExtensionConfig must select modules.
+[DevEx URL conversion] Chrome cannot limit https://example.com/root to its default port. Content-script injection also covers other ports; DevEx runtime routing still rejects them.
+[DevEx URL conversion] Chrome cannot limit https://example.com/* to its default port. Content-script injection also covers other ports; DevEx runtime routing still rejects them.
+[DevEx URL conversion] Chrome cannot limit https://example.com/* to its default port. Content-script injection also covers other ports; DevEx runtime routing still rejects them.

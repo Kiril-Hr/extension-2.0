@@ -1,0 +1,37 @@
+name: Publish DevEx
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: npm-release
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+    uses: ./.github/workflows/verify.yml
+  publish:
+    needs: verify
+    runs-on: ubuntu-latest
+    environment: npm
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          registry-url: https://registry.npmjs.org
+      - run: npm install --global npm@11
+      - run: npm ci --no-audit --no-fund
+        working-directory: devxtension
+      - name: Publish a freshly built package through OIDC
+        run: npm publish --access public --provenance
+        working-directory: devxtension
+      - name: Verify public registry installation and factory contracts
+        run: node scripts/verify-published.cjs

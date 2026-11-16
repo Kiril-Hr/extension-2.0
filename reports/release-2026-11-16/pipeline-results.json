@@ -1,0 +1,74 @@
+[
+  {
+    "name": "clean-build",
+    "status": "PASS"
+  },
+  {
+    "name": "noemit",
+    "status": "PASS"
+  },
+  {
+    "name": "regression",
+    "status": "PASS"
+  },
+  {
+    "name": "lifecycle_cleanup",
+    "status": "PASS"
+  },
+  {
+    "name": "service_collisions",
+    "status": "PASS"
+  },
+  {
+    "name": "url_routing",
+    "status": "PASS"
+  },
+  {
+    "name": "react_mounting",
+    "status": "PASS"
+  },
+  {
+    "name": "react_cleanup",
+    "status": "PASS"
+  },
+  {
+    "name": "integration_contract",
+    "status": "PASS"
+  },
+  {
+    "name": "runtime-contract",
+    "status": "PASS"
+  },
+  {
+    "name": "manifest-conversion",
+    "status": "PASS"
+  },
+  {
+    "name": "factory-lifecycle",
+    "status": "PASS"
+  },
+  {
+    "name": "factory-manifest",
+    "status": "PASS"
+  },
+  {
+    "name": "npm-pack",
+    "status": "PASS"
+  },
+  {
+    "name": "consumer-install",
+    "status": "PASS"
+  },
+  {
+    "name": "consumer-types",
+    "status": "PASS"
+  },
+  {
+    "name": "consumer-api-types",
+    "status": "PASS"
+  },
+  {
+    "name": "consumer-build",
+    "status": "PASS"
+  }
+]

@@ -1,0 +1,16 @@
+Service is not stored
+configureModules is running ...
+Configuring extension with params: {
+  runExtension: [Function: runExtension],
+  manifest: {
+    name: 'Test',
+    version: '1.0.0',
+    description: 'Test',
+    action: { default_title: 'Test' },
+    host_permissions: []
+  },
+  widgets: [],
+  customManifestModules: []
+}
+Additional functionality has set up
+PASS compiled package: factory defaults, executor class, widget instance binding, reactive widgets, exclusive module contract, feature decorators

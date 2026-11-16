@@ -1,0 +1,40 @@
+name: DevEx verification
+
+on:
+  pull_request:
+  push:
+    branches: ['codex/**', master, main]
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: npm ci --no-audit --no-fund
+        working-directory: devxtension
+      - run: node tests/factory-product.cjs
+      - run: node tests/factory-watch.cjs
+      - run: npm install --prefix .verification/tools --no-audit --no-fund playwright@1.56.1
+      - run: node .verification/tools/node_modules/playwright/cli.js install chromium
+        env:
+          PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.verification/browser-binaries
+      - name: Release HTTP port on the disposable Windows runner
+        shell: pwsh
+        run: |
+          Stop-Service -Name W3SVC -Force -ErrorAction SilentlyContinue
+          Stop-Service -Name HTTP -Force -ErrorAction Stop
+      - run: node tests/factory-browser.cjs
+        env:
+          DEVEX_PLAYWRIGHT_PATH: ${{ github.workspace }}/.verification/tools/node_modules/playwright
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: devex-verification
+          path: reports/factory-api-audit-2026-10-30/

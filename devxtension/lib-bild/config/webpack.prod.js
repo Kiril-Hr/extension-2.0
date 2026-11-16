@@ -27,7 +27,7 @@ module.exports = {
         rules: [ babelParams ],
     },
     resolve: {
-        extensions: ['.ts', '.js'],
+        extensions: ['.tsx', '.ts', '.js'],
     },
     optimization: {
         minimize: true,

@@ -5,4 +5,4 @@ export { dependencyContainer } from './dependencyContainer/dependencyContainer';
 export { ModuleDecorator } from './decorators/ModuleDecorator';
 export { createExtensionFactory } from "./createExtensionFactory";
 
-export { GeneralServiceInterface, Target, Constructor, Module, ServiceModuleRecord, extensionConfigType, ModuleDecoratorOptions, ModuleDecoratorOptionsAdapt, DisableFeaturesDecoratorType, changeTurnEventsType } from './coreInterfaces';
+export * from './coreInterfaces';

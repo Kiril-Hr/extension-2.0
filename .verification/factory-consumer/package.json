@@ -1,0 +1,12 @@
+{
+  "name": "devex-author-factory-consumer",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "devex-scripts build",
+    "dev": "devex-scripts dev"
+  },
+  "dependencies": {
+    "devxtension": "file:../../reports/factory-api-audit-2026-10-30/devxtension-1.1.0.tgz"
+  }
+}

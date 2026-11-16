@@ -1,0 +1,20 @@
+
+> devex-author-factory-consumer@1.0.0 build
+> devex-scripts build
+
+asset runner.js 1.07 MiB [emitted] [minimized] [big] (name: main)
+orphan modules 10 KiB [orphan] 3 modules
+modules by path ./node_modules/devxtension/dist/ 36.8 KiB 16 modules
+modules by path ./node_modules/react-dom/ 131 KiB
+  ./node_modules/react-dom/client.js 619 bytes [built] [code generated]
+  ./node_modules/react-dom/index.js 1.33 KiB [built] [code generated]
+  ./node_modules/react-dom/cjs/react-dom.production.min.js 129 KiB [built] [code generated]
+modules by path ./node_modules/react/ 6.95 KiB
+  ./node_modules/react/index.js 190 bytes [built] [code generated]
+  ./node_modules/react/cjs/react.production.min.js 6.77 KiB [built] [code generated]
+modules by path ./node_modules/scheduler/ 4.33 KiB
+  ./node_modules/scheduler/index.js 198 bytes [built] [code generated]
+  ./node_modules/scheduler/cjs/scheduler.production.min.js 4.14 KiB [built] [code generated]
+./src/runner.ts + 3 modules 11.3 KiB [built] [code generated]
+webpack 5.88.2 compiled successfully in 25401 ms
+[DevEx URL conversion] Chrome cannot limit http://127.0.0.2/active/* to its default port. Content-script injection also covers other ports; DevEx runtime routing still rejects them.

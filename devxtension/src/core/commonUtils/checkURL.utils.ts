@@ -10,14 +10,31 @@ export function matchModuleToUrl(config: extensionConfigType, currentUrl: string
 }
 
 export function checkUrl(url: string, currentUrl: string) {
-    const kindModuleUrl = new URL(url)
-    const { protocol, path, hostname } = {
-        protocol: currentUrl.includes(kindModuleUrl.protocol),
-        hostname: currentUrl.includes(replacer(kindModuleUrl.hostname)),
-        path: kindModuleUrl.pathname.startsWith('/*') ? true : currentUrl.includes(replacer(kindModuleUrl.pathname)),
+    let pattern: URL;
+    let current: URL;
+    try {
+        pattern = new URL(url);
+        current = new URL(currentUrl);
+    } catch {
+        return false;
     }
 
-    return protocol && hostname && path
+    // Match URL components rather than searching their text inside the full URL.
+    if (pattern.protocol !== current.protocol) return false;
+    if (pattern.port !== current.port) return false;
+
+    const hostPattern = pattern.hostname.toLowerCase();
+    const host = current.hostname.toLowerCase();
+    const hostnameMatches = hostPattern.startsWith('*.')
+        ? host.endsWith(hostPattern.slice(1)) && host.length > hostPattern.length - 1
+        : host === hostPattern;
+    if (!hostnameMatches) return false;
+
+    let pathname: string;
+    try { pathname = decodeURIComponent(pattern.pathname); } catch { return false; }
+    if (pathname === '/*' || pathname === '/') return true;
+    if (pathname.endsWith('*')) return current.pathname.startsWith(pathname.slice(0, -1));
+    return current.pathname === pathname;
 }
 
 export function getCurrentUrl() {
@@ -25,6 +42,6 @@ export function getCurrentUrl() {
 }
 
 export function replacer (pathname: string) {
-    // This function returns url without star or dot (after converting url via url Object starts converting to %2A)
+    // Retained for compatibility with existing imports.
     return pathname.replace(/(\.(\*|%2A)|(\*|%2A)\.|(\*|%2A))/g, '')
 }

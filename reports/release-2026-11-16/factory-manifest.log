@@ -1,0 +1,63 @@
+[
+  {
+    "name": "inline author manifest without legacy JSON",
+    "status": "PASS"
+  },
+  {
+    "name": "global participant presence is captured without executing classes",
+    "status": "PASS"
+  },
+  {
+    "name": "omitted participants do not imply a global scope",
+    "status": "PASS"
+  },
+  {
+    "name": "configuration spreads do not execute widget constructors",
+    "status": "PASS"
+  },
+  {
+    "name": "local constants and aliased factory",
+    "status": "PASS"
+  },
+  {
+    "name": "imported JSON and properties",
+    "status": "PASS"
+  },
+  {
+    "name": "imported TypeScript constant",
+    "status": "PASS"
+  },
+  {
+    "name": "legacy Core entrypoint remains supported",
+    "status": "PASS"
+  },
+  {
+    "name": "conflicting legacy value fails explicitly",
+    "status": "PASS"
+  },
+  {
+    "name": "legacy-only fields are preserved with diagnostics",
+    "status": "PASS"
+  },
+  {
+    "name": "executable manifest never runs",
+    "status": "PASS"
+  },
+  {
+    "name": "different factory manifests fail",
+    "status": "PASS"
+  },
+  {
+    "name": "missing source and legacy manifest fails",
+    "status": "PASS"
+  },
+  {
+    "name": "invalid source cannot be hidden by legacy JSON",
+    "status": "PASS"
+  },
+  {
+    "name": "MV2 cannot silently become MV3",
+    "status": "PASS"
+  }
+]
+[DevEx manifest] Legacy-only field short_name; migrate it to params.manifest

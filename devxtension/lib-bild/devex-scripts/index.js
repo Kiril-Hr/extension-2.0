@@ -9,25 +9,27 @@ let result;
 switch (task) {
     case "dev": {
         result = spawn.sync(
-            "webpack",
-            ["--config", devConfig, "--progress", "--watch"],
+            process.execPath,
+            [require.resolve('webpack-cli/bin/cli.js'), "--config", devConfig, "--watch"],
             { stdio: "inherit" }
         );
         break;
     }
     case "build": {
         result = spawn.sync(
-            "webpack",
-            ["--config", prodConfig, "--progress"],
+            process.execPath,
+            [require.resolve('webpack-cli/bin/cli.js'), "--config", prodConfig],
             { stdio: "inherit" }
         );
         break;
     }
     default:
-        console.log(`Unknown script "${task}".`);
+        console.error(`Unknown script "${task}". Use dev or build.`);
+        process.exit(1);
 }
 
-if (result.signal) {
+if (result.error || result.signal) {
+    if (result.error) console.error(result.error);
     process.exit(1);
 }
 

@@ -1,0 +1,2 @@
+{"manifest":"pass","url_injection":"pass","background_worker":"pass","navigation_fallback":"pass","unmatched_no_reload":"pass","frame_ignored":"pass","live_factory_message":"pass"}
+[DevEx URL conversion] Chrome cannot limit https://meet.google.com/* to its default port. Content-script injection also covers other ports; DevEx runtime routing still rejects them.

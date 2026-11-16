@@ -1,0 +1,164 @@
+
+> devxtension@1.1.0 prepack
+> npm run build
+
+
+> devxtension@1.1.0 build
+> npm run clean && npx tsc -p tsconfig.json && npm run copy-files
+
+
+> devxtension@1.1.0 clean
+> node ./lib-bild/compile-scripts/clean.js
+
+
+> devxtension@1.1.0 copy-files
+> node ./lib-bild/compile-scripts/copy-lib-modules.js
+
+devex-scripts скопійовано успішно!
+config скопійовано успішно!
+devxtension-1.1.0.tgz
+npm notice
+npm notice 📦  devxtension@1.1.0
+npm notice Tarball Contents
+npm notice 9.7kB README.md
+npm notice 2.8kB dist/config/webpack.configuration.js
+npm notice 881B dist/config/webpack.dev.js
+npm notice 1.2kB dist/config/webpack.prod.js
+npm notice 8.1kB dist/config/webpackCompileUtils/additionalUpdater.js
+npm notice 1.0kB dist/config/webpackCompileUtils/backgroundURLUpdater.js
+npm notice 12.0kB dist/config/webpackCompileUtils/factoryManifest.js
+npm notice 1.9kB dist/config/webpackCompileUtils/integration-test.cjs
+npm notice 3.1kB dist/config/webpackCompileUtils/runtimeToChromePatterns.js
+npm notice 234B dist/core/commonUtils/checkModuleDecoratorParams.utils.d.ts
+npm notice 4.0kB dist/core/commonUtils/checkModuleDecoratorParams.utils.js
+npm notice 3.5kB dist/core/commonUtils/checkModuleDecoratorParams.utils.js.map
+npm notice 438B dist/core/commonUtils/checkURL.utils.d.ts
+npm notice 2.0kB dist/core/commonUtils/checkURL.utils.js
+npm notice 1.7kB dist/core/commonUtils/checkURL.utils.js.map
+npm notice 6.0kB dist/core/coreInterfaces.d.ts
+npm notice 119B dist/core/coreInterfaces.js
+npm notice 128B dist/core/coreInterfaces.js.map
+npm notice 405B dist/core/coreModule/ExtensionConfigurator.d.ts
+npm notice 2.8kB dist/core/coreModule/ExtensionConfigurator.js
+npm notice 2.1kB dist/core/coreModule/ExtensionConfigurator.js.map
+npm notice 308B dist/core/coreModule/ExtensionCoreModule.d.ts
+npm notice 1.8kB dist/core/coreModule/ExtensionCoreModule.js
+npm notice 1.3kB dist/core/coreModule/ExtensionCoreModule.js.map
+npm notice 561B dist/core/coreModule/manifestModuleConfigure/MainModuleConfiguration.d.ts
+npm notice 2.2kB dist/core/coreModule/manifestModuleConfigure/MainModuleConfiguration.js
+npm notice 1.5kB dist/core/coreModule/manifestModuleConfigure/MainModuleConfiguration.js.map
+npm notice 393B dist/core/createExtensionFactory.d.ts
+npm notice 4.9kB dist/core/createExtensionFactory.js
+npm notice 2.9kB dist/core/createExtensionFactory.js.map
+npm notice 161B dist/core/decorators/ExtensionConfig.d.ts
+npm notice 621B dist/core/decorators/ExtensionConfig.js
+npm notice 407B dist/core/decorators/ExtensionConfig.js.map
+npm notice 669B dist/core/decorators/ModuleDecorator.d.ts
+npm notice 7.8kB dist/core/decorators/ModuleDecorator.js
+npm notice 3.4kB dist/core/decorators/ModuleDecorator.js.map
+npm notice 510B dist/core/decorators/ServiceDecorator.d.ts
+npm notice 2.2kB dist/core/decorators/ServiceDecorator.js
+npm notice 1.7kB dist/core/decorators/ServiceDecorator.js.map
+npm notice 627B dist/core/dependencyContainer/dependencyContainer.d.ts
+npm notice 3.4kB dist/core/dependencyContainer/dependencyContainer.js
+npm notice 2.4kB dist/core/dependencyContainer/dependencyContainer.js.map
+npm notice 474B dist/core/index.d.ts
+npm notice 2.6kB dist/core/index.js
+npm notice 398B dist/core/index.js.map
+npm notice 350B dist/core/providers/ModuleProvider.d.ts
+npm notice 932B dist/core/providers/ModuleProvider.js
+npm notice 879B dist/core/providers/ModuleProvider.js.map
+npm notice 130B dist/core/reactiveComponents/components/ReactComponent.d.ts
+npm notice 820B dist/core/reactiveComponents/components/ReactComponent.js
+npm notice 759B dist/core/reactiveComponents/components/ReactComponent.js.map
+npm notice 179B dist/core/reactiveComponents/ReactiveComponentFactory.d.ts
+npm notice 653B dist/core/reactiveComponents/ReactiveComponentFactory.js
+npm notice 435B dist/core/reactiveComponents/ReactiveComponentFactory.js.map
+npm notice 965B dist/devex-scripts/index.js
+npm notice 24B dist/index.d.ts
+npm notice 832B dist/index.js
+npm notice 129B dist/index.js.map
+npm notice 0B dist/test/modules/googleMeetModule/googleMeetConsts.d.ts
+npm notice 44B dist/test/modules/googleMeetModule/googleMeetConsts.js
+npm notice 163B dist/test/modules/googleMeetModule/googleMeetConsts.js.map
+npm notice 42B dist/test/modules/googleMeetModule/googleMeetModule.d.ts
+npm notice 1.4kB dist/test/modules/googleMeetModule/googleMeetModule.js
+npm notice 461B dist/test/modules/googleMeetModule/googleMeetModule.js.map
+npm notice 1.5kB dist/test/modules/googleMeetModule/services/controllers/inAnyCaseController.d.ts
+npm notice 4.2kB dist/test/modules/googleMeetModule/services/controllers/inAnyCaseController.js
+npm notice 1.8kB dist/test/modules/googleMeetModule/services/controllers/inAnyCaseController.js.map
+npm notice 2.5kB dist/test/modules/googleMeetModule/services/controllers/meetHappeningController.d.ts
+npm notice 16.1kB dist/test/modules/googleMeetModule/services/controllers/meetHappeningController.js
+npm notice 9.8kB dist/test/modules/googleMeetModule/services/controllers/meetHappeningController.js.map
+npm notice 453B dist/test/modules/googleMeetModule/services/controllers/meetNotStartedController.d.ts
+npm notice 2.8kB dist/test/modules/googleMeetModule/services/controllers/meetNotStartedController.js
+npm notice 1.5kB dist/test/modules/googleMeetModule/services/controllers/meetNotStartedController.js.map
+npm notice 1.3kB dist/test/modules/googleMeetModule/services/googleMeetService.d.ts
+npm notice 6.1kB dist/test/modules/googleMeetModule/services/googleMeetService.js
+npm notice 3.5kB dist/test/modules/googleMeetModule/services/googleMeetService.js.map
+npm notice 721B dist/test/modules/googleMeetModule/services/secondaryServices/googleMeetConditionService.d.ts
+npm notice 3.9kB dist/test/modules/googleMeetModule/services/secondaryServices/googleMeetConditionService.js
+npm notice 2.6kB dist/test/modules/googleMeetModule/services/secondaryServices/googleMeetConditionService.js.map
+npm notice 248B dist/test/modules/googleMeetModule/services/secondaryServices/googleMeetDateService.d.ts
+npm notice 2.1kB dist/test/modules/googleMeetModule/services/secondaryServices/googleMeetDateService.js
+npm notice 1.2kB dist/test/modules/googleMeetModule/services/secondaryServices/googleMeetDateService.js.map
+npm notice 968B dist/test/modules/googleMeetModule/services/secondaryServices/googleMeetDOMManipulationsService.d.ts
+npm notice 7.5kB dist/test/modules/googleMeetModule/services/secondaryServices/googleMeetDOMManipulationsService.js
+npm notice 4.3kB dist/test/modules/googleMeetModule/services/secondaryServices/googleMeetDOMManipulationsService.js.map
+npm notice 634B dist/test/modules/googleMeetModule/services/secondaryServices/googleMeetEventRuleService.d.ts
+npm notice 2.8kB dist/test/modules/googleMeetModule/services/secondaryServices/googleMeetEventRuleService.js
+npm notice 1.5kB dist/test/modules/googleMeetModule/services/secondaryServices/googleMeetEventRuleService.js.map
+npm notice 542B dist/test/modules/googleMeetModule/services/secondaryServices/googleMeetFullScreenService.d.ts
+npm notice 2.0kB dist/test/modules/googleMeetModule/services/secondaryServices/googleMeetFullScreenService.js
+npm notice 875B dist/test/modules/googleMeetModule/services/secondaryServices/googleMeetFullScreenService.js.map
+npm notice 717B dist/test/modules/googleMeetModule/services/secondaryServices/googleMeetMainFunctionsService.d.ts
+npm notice 4.4kB dist/test/modules/googleMeetModule/services/secondaryServices/googleMeetMainFunctionsService.js
+npm notice 2.9kB dist/test/modules/googleMeetModule/services/secondaryServices/googleMeetMainFunctionsService.js.map
+npm notice 1.2kB dist/test/modules/googleMeetModule/services/secondaryServices/googleMeetMediaService.d.ts
+npm notice 11.7kB dist/test/modules/googleMeetModule/services/secondaryServices/googleMeetMediaService.js
+npm notice 6.9kB dist/test/modules/googleMeetModule/services/secondaryServices/googleMeetMediaService.js.map
+npm notice 783B dist/test/modules/googleMeetModule/services/secondaryServices/googleMeetUtilsService.d.ts
+npm notice 5.1kB dist/test/modules/googleMeetModule/services/secondaryServices/googleMeetUtilsService.js
+npm notice 3.3kB dist/test/modules/googleMeetModule/services/secondaryServices/googleMeetUtilsService.js.map
+npm notice 4.4kB dist/test/modules/googleMeetModule/types/googleMeetInterfaces.d.ts
+npm notice 125B dist/test/modules/googleMeetModule/types/googleMeetInterfaces.js
+npm notice 180B dist/test/modules/googleMeetModule/types/googleMeetInterfaces.js.map
+npm notice 3.0kB dist/test/modules/googleMeetModule/types/googleMeetTypes.d.ts
+npm notice 120B dist/test/modules/googleMeetModule/types/googleMeetTypes.js
+npm notice 170B dist/test/modules/googleMeetModule/types/googleMeetTypes.js.map
+npm notice 131B dist/test/modules/index.d.ts
+npm notice 299B dist/test/modules/index.js
+npm notice 192B dist/test/modules/index.js.map
+npm notice 568B dist/test/modules/intermediaryServices/intermediaryService.d.ts
+npm notice 794B dist/test/modules/intermediaryServices/intermediaryService.js
+npm notice 536B dist/test/modules/intermediaryServices/intermediaryService.js.map
+npm notice 2.7kB dist/test/modules/intermediaryServices/services/config.json
+npm notice 289B dist/test/modules/intermediaryServices/services/fetchFilesService.d.ts
+npm notice 2.1kB dist/test/modules/intermediaryServices/services/fetchFilesService.js
+npm notice 1.0kB dist/test/modules/intermediaryServices/services/fetchFilesService.js.map
+npm notice 253B dist/test/modules/intermediaryServices/services/rulesIntermediaryService.d.ts
+npm notice 2.0kB dist/test/modules/intermediaryServices/services/rulesIntermediaryService.js
+npm notice 803B dist/test/modules/intermediaryServices/services/rulesIntermediaryService.js.map
+npm notice 244B dist/test/modules/intermediaryServices/types/generalIntermediaryInterface.d.ts
+npm notice 133B dist/test/modules/intermediaryServices/types/generalIntermediaryInterface.js
+npm notice 200B dist/test/modules/intermediaryServices/types/generalIntermediaryInterface.js.map
+npm notice 375B dist/test/modules/intermediaryServices/types/intermediaryInterfaces.d.ts
+npm notice 127B dist/test/modules/intermediaryServices/types/intermediaryInterfaces.js
+npm notice 188B dist/test/modules/intermediaryServices/types/intermediaryInterfaces.js.map
+npm notice 402B dist/test/modules/intermediaryServices/types/intermediaryTypes.d.ts
+npm notice 122B dist/test/modules/intermediaryServices/types/intermediaryTypes.js
+npm notice 178B dist/test/modules/intermediaryServices/types/intermediaryTypes.js.map
+npm notice 11B dist/test/runner.d.ts
+npm notice 2.6kB dist/test/runner.js
+npm notice 1.0kB dist/test/runner.js.map
+npm notice 1.6kB package.json
+npm notice Tarball Details
+npm notice name: devxtension
+npm notice version: 1.1.0
+npm notice filename: devxtension-1.1.0.tgz
+npm notice package size: 59.4 kB
+npm notice unpacked size: 264.4 kB
+npm notice shasum: 24546053bb621b70e358cc2849429d387efe9b0e
+npm notice integrity: sha512-IeLI8B1eojqNs[...]bb5hmO3wUOifw==
+npm notice total files: 132
+npm notice

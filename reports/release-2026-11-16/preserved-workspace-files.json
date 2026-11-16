@@ -1,0 +1,50 @@
+[
+  {
+    "file": ".verification/consumer/extensionConfig.json",
+    "sha256": "c303bfe55c3d6db9ea81f3f0cdd4b0c758b4e7d13b0c2bf33aa78703243f6679"
+  },
+  {
+    "file": ".verification/consumer/src/extensionOptions/backgrounds/probe.js",
+    "sha256": "c3f885276453d85e1453ed0a5b651f83908fab82542716e258b0cf44b44c7ed5"
+  },
+  {
+    "file": ".verification/consumer/src/modules/nested/probe.tsx",
+    "sha256": "4a893e41ce4b44163cfd1629cd800fdaad746f05f5c00962d5419e367ddab0d3"
+  },
+  {
+    "file": ".verification/consumer/src/runner.ts",
+    "sha256": "f07149860ac7d3fa804792bf25dfb990c92e023fcb4b35395c36fdd09e752cdb"
+  },
+  {
+    "file": ".verification/factory-consumer/src/modules/author.tsx",
+    "sha256": "e5ebb8dbfad99e66de32addfda345110bc7c1f0d208a1bbc98526f71019221c6"
+  },
+  {
+    "file": ".verification/factory-consumer/src/runner.ts",
+    "sha256": "fe8c80a016755a11d6f33522462baadf7892ccc45f11df08d7cd77458fabf489"
+  },
+  {
+    "file": ".verification/factory-consumer/src/state.ts",
+    "sha256": "9e31c6aa9ac43a0b3fcb8994375555ec2b41d1b7d62aec5255404b82cb3ed2cf"
+  },
+  {
+    "file": ".verification/factory-consumer/src/widgets.ts",
+    "sha256": "7ee559995bbc81eee85e498d57ea09c8814b013a355cbbb65f7903685a78662a"
+  },
+  {
+    "file": "extension-2.0-main/devxtension/src/test/modules/googleMeetModule/services/secondaryServices/googleMeetDateService.ts",
+    "sha256": "7aa47cce625f63d4dc2740c133e5ac8c58d0b0f057b005569bcbde3dc55e58f2"
+  },
+  {
+    "file": "extension-2.0-main/devxtension/src/test/runner.ts",
+    "sha256": "3c3df32998e915c8bb211f0e8209fa715a23e08fbf687242e5844be2f15348a4"
+  },
+  {
+    "file": "extension-2.0-main/devxtension/tsconfig.json",
+    "sha256": "3983df935f470bc634205b01f84d060a35b0ab38a4945e80f308b9c4285cb1fb"
+  },
+  {
+    "file": "extension-2.0-main/example/src/runner.ts",
+    "sha256": "f6dc567a68ff95ab90acb399ffa15a6cb844da5f535f1d6bf3e13ae75581ccde"
+  }
+]
