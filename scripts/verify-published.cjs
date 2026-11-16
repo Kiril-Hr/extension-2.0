@@ -7,7 +7,13 @@ const assert = require('assert/strict')
 const root = path.resolve(__dirname, '..')
 const pkg = require('../devxtension/package.json')
 const consumer = fs.mkdtempSync(path.join(os.tmpdir(), 'devex-published-'))
-const npm = path.join(path.dirname(process.execPath), 'node_modules/npm/bin/npm-cli.js')
+const nodeDirectory = path.dirname(process.execPath)
+const npm = [
+  path.join(nodeDirectory, 'node_modules/npm/bin/npm-cli.js'),
+  path.resolve(nodeDirectory, '../lib/node_modules/npm/bin/npm-cli.js')
+].find(file => fs.existsSync(file))
+
+assert(npm, 'Cannot locate npm CLI beside the active Node installation')
 
 function run(args) {
   const result = cp.spawnSync(process.execPath, args, {
