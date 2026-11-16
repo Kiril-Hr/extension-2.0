@@ -1,0 +1,16 @@
+
+> devxtension@1.1.0 prepack
+> npm run build
+
+
+> devxtension@1.1.0 build
+> npm run clean && npx tsc -p tsconfig.json && npm run copy-files
+
+
+> devxtension@1.1.0 clean
+> node ./lib-bild/compile-scripts/clean.js
+
+
+> devxtension@1.1.0 copy-files
+> node ./lib-bild/compile-scripts/copy-lib-modules.js
+

@@ -1,5 +1,7 @@
 # DevEx 2.0
 
+[![npm version](https://img.shields.io/npm/v/devxtension.svg)](https://www.npmjs.com/package/devxtension)
+
 DevEx (`devxtension`) is a TypeScript framework for building Chrome extensions with declarative modules, decorators, dependency injection and React. Its build tools turn module configuration into a Manifest V3 extension with content scripts and a background service worker.
 
 The current public release is **devxtension@1.1.0**. [npm package](https://www.npmjs.com/package/devxtension/v/1.1.0) · [Advanced documentation](devxtension/README.md) · [Working minimal extension](examples/minimal) · [Historical v1 notes](docs/history/v1.md)

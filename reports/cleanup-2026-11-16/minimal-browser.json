@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "browser": "151.0.7922.34",
+  "note": "Only the example.com document is served deterministically through Playwright routing; DevEx, DI, Chrome injection and navigation are real.",
+  "checks": [
+    "scoped MV3 permissions",
+    "public npm example injects real module",
+    "SPA navigation keeps one element and the same document",
+    "no page errors"
+  ]
+}

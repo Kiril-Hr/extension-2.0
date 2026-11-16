@@ -128,7 +128,7 @@ never automatically added. `webNavigation` is added only for generated URL
 navigation handling. Module URLs must be string literals or local constants;
 unsupported dynamic/imported URL expressions fail explicitly.
 
-`dev --watch` regenerates the manifest/background after factory manifest, config, module URL,
+`devex-scripts dev` regenerates the manifest/background after factory manifest, config, module URL,
 asset and background changes. Unknown CLI commands and build errors return a
 nonzero status. No Vue, Svelte or module platform is included.
 

@@ -20,6 +20,7 @@ jobs:
       - run: npm ci --no-audit --no-fund
         working-directory: devxtension
       - run: node tests/factory-product.cjs
+      - run: node tests/packaging-cleanup.cjs
       - run: node tests/factory-watch.cjs
       - run: npm install --prefix .verification/tools --no-audit --no-fund playwright@1.56.1
       - run: node .verification/tools/node_modules/playwright/cli.js install chromium
@@ -50,4 +51,6 @@ jobs:
         if: always()
         with:
           name: devex-verification
-          path: reports/factory-api-audit-2026-10-30/
+          path: |
+            reports/factory-api-audit-2026-10-30/
+            reports/cleanup-2026-11-16/
