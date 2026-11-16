@@ -1,0 +1,393 @@
+﻿2026-11-16T21:20:29.4647145Z Current runner version: '2.338.2'
+2026-11-16T21:20:29.4664304Z ##[group]Runner Image Provisioner
+2026-11-16T21:20:29.4664845Z Hosted Compute Agent
+2026-11-16T21:20:29.4665224Z Version: 20261103.629
+2026-11-16T21:20:29.4665647Z Commit: 15dbd9ccb5dbf34fae002b6ed1a2670f52df37bc
+2026-11-16T21:20:29.4666074Z Build Date: 2026-11-03T17:26:59Z
+2026-11-16T21:20:29.4666496Z Worker ID: {969c3e39-db80-4417-bbcb-cf27f9928cb2}
+2026-11-16T21:20:29.4666925Z Region: westus3
+2026-11-16T21:20:29.4667287Z Cloud: Azure
+2026-11-16T21:20:29.4667676Z ##[endgroup]
+2026-11-16T21:20:29.4668432Z ##[group]Operating System
+2026-11-16T21:20:29.4668824Z Ubuntu
+2026-11-16T21:20:29.4669149Z 26.04.1
+2026-11-16T21:20:29.4669491Z LTS
+2026-11-16T21:20:29.4670072Z ##[endgroup]
+2026-11-16T21:20:29.4670399Z ##[group]Runner Image
+2026-11-16T21:20:29.4670749Z Image: ubuntu-26.04
+2026-11-16T21:20:29.4671164Z Version: 20261111.196.1
+2026-11-16T21:20:29.4672083Z Included Software: https://github.com/actions/runner-images/blob/ubuntu26/20261111.196/images/ubuntu/Ubuntu2604-Readme.md
+2026-11-16T21:20:29.4673016Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu26%2F20261111.196
+2026-11-16T21:20:29.4673574Z ##[endgroup]
+2026-11-16T21:20:29.4674310Z ##[group]GITHUB_TOKEN Permissions
+2026-11-16T21:20:29.4675928Z Contents: read
+2026-11-16T21:20:29.4676350Z Metadata: read
+2026-11-16T21:20:29.4676683Z ##[endgroup]
+2026-11-16T21:20:29.4678049Z Secret source: Actions
+2026-11-16T21:20:29.4678606Z Cache mode: write
+2026-11-16T21:20:29.4679185Z Prepare workflow directory
+2026-11-16T21:20:29.4881362Z Prepare all required actions
+2026-11-16T21:20:29.4912764Z Getting action download info
+2026-11-16T21:20:29.8215077Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-11-16T21:20:29.9147875Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+2026-11-16T21:20:30.0587808Z Complete job name: publish
+2026-11-16T21:20:30.1802466Z ##[group]Run actions/checkout@v4
+2026-11-16T21:20:30.1802926Z with:
+2026-11-16T21:20:30.1803184Z   repository: Kiril-Hr/extension-2.0
+2026-11-16T21:20:30.1805196Z   token: ***
+2026-11-16T21:20:30.1805431Z   ssh-strict: true
+2026-11-16T21:20:30.1805676Z   ssh-user: git
+2026-11-16T21:20:30.1805923Z   persist-credentials: true
+2026-11-16T21:20:30.1806193Z   clean: true
+2026-11-16T21:20:30.1806490Z   sparse-checkout-cone-mode: true
+2026-11-16T21:20:30.1806776Z   fetch-depth: 1
+2026-11-16T21:20:30.1807016Z   fetch-tags: false
+2026-11-16T21:20:30.1807262Z   show-progress: true
+2026-11-16T21:20:30.1807511Z   lfs: false
+2026-11-16T21:20:30.1807742Z   submodules: false
+2026-11-16T21:20:30.1807992Z   set-safe-directory: true
+2026-11-16T21:20:30.1808273Z   allow-unsafe-pr-checkout: false
+2026-11-16T21:20:30.1808630Z ##[endgroup]
+2026-11-16T21:20:30.4028902Z Syncing repository: Kiril-Hr/extension-2.0
+2026-11-16T21:20:30.4030286Z ##[group]Getting Git version info
+2026-11-16T21:20:30.4030780Z Working directory is '/home/runner/work/extension-2.0/extension-2.0'
+2026-11-16T21:20:30.4031365Z [command]/usr/bin/git version
+2026-11-16T21:20:30.4031650Z git version 2.56.1
+2026-11-16T21:20:30.4035506Z ##[endgroup]
+2026-11-16T21:20:30.4039160Z Temporarily overriding HOME='/home/runner/work/_temp/7845ef83-69f8-4d1f-bef2-388da88c8b7e' before making global git config changes
+2026-11-16T21:20:30.4040414Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-16T21:20:30.4042524Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/extension-2.0/extension-2.0
+2026-11-16T21:20:30.4449937Z Deleting the contents of '/home/runner/work/extension-2.0/extension-2.0'
+2026-11-16T21:20:30.4456711Z ##[group]Initializing the repository
+2026-11-16T21:20:30.4457433Z [command]/usr/bin/git init /home/runner/work/extension-2.0/extension-2.0
+2026-11-16T21:20:30.4955461Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-11-16T21:20:30.4956165Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-11-16T21:20:30.4956964Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-11-16T21:20:30.4957375Z hint: call:
+2026-11-16T21:20:30.4957606Z hint:
+2026-11-16T21:20:30.4957936Z hint: 	git config --global init.defaultBranch <name>
+2026-11-16T21:20:30.4958285Z hint:
+2026-11-16T21:20:30.4958613Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-11-16T21:20:30.4959126Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-11-16T21:20:30.4959531Z hint:
+2026-11-16T21:20:30.4959999Z hint: 	git branch -m <name>
+2026-11-16T21:20:30.4960266Z hint:
+2026-11-16T21:20:30.4960620Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-11-16T21:20:30.4967479Z Initialized empty Git repository in /home/runner/work/extension-2.0/extension-2.0/.git/
+2026-11-16T21:20:30.4977792Z [command]/usr/bin/git remote add origin https://github.com/Kiril-Hr/extension-2.0
+2026-11-16T21:20:30.5431200Z ##[endgroup]
+2026-11-16T21:20:30.5431665Z ##[group]Disabling automatic garbage collection
+2026-11-16T21:20:30.5435254Z [command]/usr/bin/git config --local gc.auto 0
+2026-11-16T21:20:30.5467554Z ##[endgroup]
+2026-11-16T21:20:30.5468203Z ##[group]Setting up auth
+2026-11-16T21:20:30.5472767Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-16T21:20:30.5500616Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-16T21:20:30.5864530Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-16T21:20:30.5891219Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-16T21:20:30.6100900Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-16T21:20:30.6127785Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-16T21:20:30.6337045Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-11-16T21:20:30.6368640Z ##[endgroup]
+2026-11-16T21:20:30.6369237Z ##[group]Fetching the repository
+2026-11-16T21:20:30.6375034Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +a66c533cb467c236f69d1a2d876c7312a9ca041f:refs/remotes/origin/main
+2026-11-16T21:20:31.3259237Z From https://github.com/Kiril-Hr/extension-2.0
+2026-11-16T21:20:31.3261376Z  * [new ref]         a66c533cb467c236f69d1a2d876c7312a9ca041f -> origin/main
+2026-11-16T21:20:31.3265970Z ##[endgroup]
+2026-11-16T21:20:31.3267243Z ##[group]Determining the checkout info
+2026-11-16T21:20:31.3268683Z ##[endgroup]
+2026-11-16T21:20:31.3269925Z [command]/usr/bin/git sparse-checkout disable
+2026-11-16T21:20:31.3317266Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-11-16T21:20:31.3341974Z ##[group]Checking out the ref
+2026-11-16T21:20:31.3343545Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2026-11-16T21:20:31.3548898Z Switched to a new branch 'main'
+2026-11-16T21:20:31.3553127Z branch 'main' set up to track 'origin/main'.
+2026-11-16T21:20:31.3559894Z ##[endgroup]
+2026-11-16T21:20:31.3598366Z [command]/usr/bin/git log -1 --format=%H
+2026-11-16T21:20:31.3618805Z a66c533cb467c236f69d1a2d876c7312a9ca041f
+2026-11-16T21:20:31.3882973Z ##[group]Run actions/setup-node@v4
+2026-11-16T21:20:31.3883676Z with:
+2026-11-16T21:20:31.3884177Z   node-version: 24
+2026-11-16T21:20:31.3884797Z   registry-url: https://registry.npmjs.org
+2026-11-16T21:20:31.3885531Z   always-auth: false
+2026-11-16T21:20:31.3886098Z   check-latest: false
+2026-11-16T21:20:31.3891669Z   token: ***
+2026-11-16T21:20:31.3892336Z ##[endgroup]
+2026-11-16T21:20:31.4845282Z (node:2181) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-16T21:20:31.4850450Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-16T21:20:31.4852527Z Found in cache @ /opt/hostedtoolcache/node/24.22.2/x64
+2026-11-16T21:20:31.4854153Z ##[group]Environment details
+2026-11-16T21:20:31.7916629Z node: v24.22.2
+2026-11-16T21:20:31.7917074Z npm: 11.19.1
+2026-11-16T21:20:31.7917292Z yarn: 1.22.22
+2026-11-16T21:20:31.7918341Z ##[endgroup]
+2026-11-16T21:20:31.8113122Z ##[group]Run npm install --global npm@11
+2026-11-16T21:20:31.8113416Z [36;1mnpm install --global npm@11[0m
+2026-11-16T21:20:31.8167256Z shell: /usr/bin/bash -e {0}
+2026-11-16T21:20:31.8167457Z env:
+2026-11-16T21:20:31.8167646Z   NPM_CONFIG_USERCONFIG: /home/runner/work/_temp/.npmrc
+2026-11-16T21:20:31.8167895Z   NODE_AUTH_TOKEN: XXXXX-XXXXX-XXXXX-XXXXX
+2026-11-16T21:20:31.8168087Z ##[endgroup]
+2026-11-16T21:20:32.2453778Z npm warn Unknown user config "always-auth". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+2026-11-16T21:20:35.2230775Z 
+2026-11-16T21:20:35.2231874Z changed 23 packages in 3s
+2026-11-16T21:20:35.2232456Z 
+2026-11-16T21:20:35.2233090Z 15 packages are looking for funding
+2026-11-16T21:20:35.2233634Z   run `npm fund` for details
+2026-11-16T21:20:35.2685891Z ##[group]Run npm ci --no-audit --no-fund
+2026-11-16T21:20:35.2686132Z [36;1mnpm ci --no-audit --no-fund[0m
+2026-11-16T21:20:35.2729445Z shell: /usr/bin/bash -e {0}
+2026-11-16T21:20:35.2729594Z env:
+2026-11-16T21:20:35.2729933Z   NPM_CONFIG_USERCONFIG: /home/runner/work/_temp/.npmrc
+2026-11-16T21:20:35.2730207Z   NODE_AUTH_TOKEN: XXXXX-XXXXX-XXXXX-XXXXX
+2026-11-16T21:20:35.2730377Z ##[endgroup]
+2026-11-16T21:20:35.4281560Z npm warn Unknown user config "always-auth". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+2026-11-16T21:20:36.8280091Z npm warn deprecated @babel/plugin-proposal-class-properties@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-class-properties instead.
+2026-11-16T21:20:36.8313159Z npm warn deprecated @babel/plugin-proposal-unicode-property-regex@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-unicode-property-regex instead.
+2026-11-16T21:20:37.6988166Z 
+2026-11-16T21:20:37.6988881Z added 416 packages in 2s
+2026-11-16T21:20:37.6993629Z npm warn install-scripts 1 package has install scripts not yet covered by allowScripts:
+2026-11-16T21:20:37.6994807Z npm warn install-scripts   javascript-obfuscator@4.0.2 (postinstall: opencollective-postinstall)
+2026-11-16T21:20:37.7018126Z npm warn install-scripts
+2026-11-16T21:20:37.7028665Z npm warn install-scripts Run `npm install-scripts ls` to review, or `npm install-scripts approve <pkg>` to allow.
+2026-11-16T21:20:37.7315348Z ##[group]Run npm publish --access public --provenance
+2026-11-16T21:20:37.7315597Z [36;1mnpm publish --access public --provenance[0m
+2026-11-16T21:20:37.7357366Z shell: /usr/bin/bash -e {0}
+2026-11-16T21:20:37.7357516Z env:
+2026-11-16T21:20:37.7357720Z   NPM_CONFIG_USERCONFIG: /home/runner/work/_temp/.npmrc
+2026-11-16T21:20:37.7357918Z   NODE_AUTH_TOKEN: XXXXX-XXXXX-XXXXX-XXXXX
+2026-11-16T21:20:37.7358082Z ##[endgroup]
+2026-11-16T21:20:37.8898078Z npm warn Unknown user config "always-auth". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+2026-11-16T21:20:37.8929949Z npm warn package-json devxtension@1.1.0 No bin file found at dist/devex-scripts/index.js
+2026-11-16T21:20:37.8995375Z npm warn package-json devxtension@1.1.0 No bin file found at dist/devex-scripts/index.js
+2026-11-16T21:20:37.9023239Z 
+2026-11-16T21:20:37.9023456Z > devxtension@1.1.0 prepack
+2026-11-16T21:20:37.9023825Z > npm run build
+2026-11-16T21:20:37.9024554Z 
+2026-11-16T21:20:37.9608031Z npm warn Unknown user config "always-auth". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+2026-11-16T21:20:37.9695353Z 
+2026-11-16T21:20:37.9695824Z > devxtension@1.1.0 build
+2026-11-16T21:20:37.9696717Z > npm run clean && npx tsc -p tsconfig.json && npm run copy-files
+2026-11-16T21:20:37.9697010Z 
+2026-11-16T21:20:38.0312518Z npm warn Unknown user config "always-auth". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+2026-11-16T21:20:38.0399957Z 
+2026-11-16T21:20:38.0400461Z > devxtension@1.1.0 clean
+2026-11-16T21:20:38.0400977Z > node ./lib-bild/compile-scripts/clean.js
+2026-11-16T21:20:38.0401387Z 
+2026-11-16T21:20:38.2133263Z npm warn Unknown user config "always-auth". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+2026-11-16T21:20:40.3567041Z npm warn Unknown user config "always-auth". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+2026-11-16T21:20:40.3650707Z 
+2026-11-16T21:20:40.3651116Z > devxtension@1.1.0 copy-files
+2026-11-16T21:20:40.3651457Z > node ./lib-bild/compile-scripts/copy-lib-modules.js
+2026-11-16T21:20:40.3651605Z 
+2026-11-16T21:20:40.3975973Z devex-scripts скопійовано успішно!
+2026-11-16T21:20:40.4001088Z config скопійовано успішно!
+2026-11-16T21:20:40.6114231Z npm warn publish npm auto-corrected some errors in your package.json when publishing.  Please run "npm pkg fix" to address these errors.
+2026-11-16T21:20:40.6118061Z npm warn publish errors corrected:
+2026-11-16T21:20:40.6118618Z npm warn publish "bin[devex-scripts]" script name dist/devex-scripts/index.js was invalid and removed
+2026-11-16T21:20:40.6140474Z npm notice
+2026-11-16T21:20:40.6142264Z npm notice 📦  devxtension@1.1.0
+2026-11-16T21:20:40.6143779Z npm notice Tarball Contents
+2026-11-16T21:20:40.6153042Z npm notice 9.5kB README.md
+2026-11-16T21:20:40.6153491Z npm notice 2.7kB dist/config/webpack.configuration.js
+2026-11-16T21:20:40.6153842Z npm notice 851B dist/config/webpack.dev.js
+2026-11-16T21:20:40.6154190Z npm notice 1.2kB dist/config/webpack.prod.js
+2026-11-16T21:20:40.6154627Z npm notice 7.9kB dist/config/webpackCompileUtils/additionalUpdater.js
+2026-11-16T21:20:40.6156826Z npm notice 1.0kB dist/config/webpackCompileUtils/backgroundURLUpdater.js
+2026-11-16T21:20:40.6157303Z npm notice 11.8kB dist/config/webpackCompileUtils/factoryManifest.js
+2026-11-16T21:20:40.6157748Z npm notice 1.9kB dist/config/webpackCompileUtils/integration-test.cjs
+2026-11-16T21:20:40.6158229Z npm notice 3.0kB dist/config/webpackCompileUtils/runtimeToChromePatterns.js
+2026-11-16T21:20:40.6158736Z npm notice 234B dist/core/commonUtils/checkModuleDecoratorParams.utils.d.ts
+2026-11-16T21:20:40.6159235Z npm notice 4.0kB dist/core/commonUtils/checkModuleDecoratorParams.utils.js
+2026-11-16T21:20:40.6160567Z npm notice 3.5kB dist/core/commonUtils/checkModuleDecoratorParams.utils.js.map
+2026-11-16T21:20:40.6160970Z npm notice 438B dist/core/commonUtils/checkURL.utils.d.ts
+2026-11-16T21:20:40.6161208Z npm notice 2.0kB dist/core/commonUtils/checkURL.utils.js
+2026-11-16T21:20:40.6161455Z npm notice 1.7kB dist/core/commonUtils/checkURL.utils.js.map
+2026-11-16T21:20:40.6161676Z npm notice 6.0kB dist/core/coreInterfaces.d.ts
+2026-11-16T21:20:40.6161872Z npm notice 119B dist/core/coreInterfaces.js
+2026-11-16T21:20:40.6162069Z npm notice 128B dist/core/coreInterfaces.js.map
+2026-11-16T21:20:40.6162305Z npm notice 405B dist/core/coreModule/ExtensionConfigurator.d.ts
+2026-11-16T21:20:40.6162586Z npm notice 2.8kB dist/core/coreModule/ExtensionConfigurator.js
+2026-11-16T21:20:40.6162852Z npm notice 2.1kB dist/core/coreModule/ExtensionConfigurator.js.map
+2026-11-16T21:20:40.6163137Z npm notice 308B dist/core/coreModule/ExtensionCoreModule.d.ts
+2026-11-16T21:20:40.6163383Z npm notice 1.8kB dist/core/coreModule/ExtensionCoreModule.js
+2026-11-16T21:20:40.6163639Z npm notice 1.3kB dist/core/coreModule/ExtensionCoreModule.js.map
+2026-11-16T21:20:40.6164076Z npm notice 561B dist/core/coreModule/manifestModuleConfigure/MainModuleConfiguration.d.ts
+2026-11-16T21:20:40.6164441Z npm notice 2.2kB dist/core/coreModule/manifestModuleConfigure/MainModuleConfiguration.js
+2026-11-16T21:20:40.6165086Z npm notice 1.5kB dist/core/coreModule/manifestModuleConfigure/MainModuleConfiguration.js.map
+2026-11-16T21:20:40.6165463Z npm notice 393B dist/core/createExtensionFactory.d.ts
+2026-11-16T21:20:40.6165748Z npm notice 4.9kB dist/core/createExtensionFactory.js
+2026-11-16T21:20:40.6165982Z npm notice 2.9kB dist/core/createExtensionFactory.js.map
+2026-11-16T21:20:40.6166217Z npm notice 161B dist/core/decorators/ExtensionConfig.d.ts
+2026-11-16T21:20:40.6166445Z npm notice 621B dist/core/decorators/ExtensionConfig.js
+2026-11-16T21:20:40.6166681Z npm notice 407B dist/core/decorators/ExtensionConfig.js.map
+2026-11-16T21:20:40.6166918Z npm notice 669B dist/core/decorators/ModuleDecorator.d.ts
+2026-11-16T21:20:40.6167153Z npm notice 7.8kB dist/core/decorators/ModuleDecorator.js
+2026-11-16T21:20:40.6167396Z npm notice 3.4kB dist/core/decorators/ModuleDecorator.js.map
+2026-11-16T21:20:40.6167637Z npm notice 510B dist/core/decorators/ServiceDecorator.d.ts
+2026-11-16T21:20:40.6167872Z npm notice 2.2kB dist/core/decorators/ServiceDecorator.js
+2026-11-16T21:20:40.6168111Z npm notice 1.7kB dist/core/decorators/ServiceDecorator.js.map
+2026-11-16T21:20:40.6168380Z npm notice 627B dist/core/dependencyContainer/dependencyContainer.d.ts
+2026-11-16T21:20:40.6168685Z npm notice 3.4kB dist/core/dependencyContainer/dependencyContainer.js
+2026-11-16T21:20:40.6168972Z npm notice 2.4kB dist/core/dependencyContainer/dependencyContainer.js.map
+2026-11-16T21:20:40.6169208Z npm notice 474B dist/core/index.d.ts
+2026-11-16T21:20:40.6169384Z npm notice 2.6kB dist/core/index.js
+2026-11-16T21:20:40.6169553Z npm notice 398B dist/core/index.js.map
+2026-11-16T21:20:40.6169984Z npm notice 350B dist/core/providers/ModuleProvider.d.ts
+2026-11-16T21:20:40.6170343Z npm notice 932B dist/core/providers/ModuleProvider.js
+2026-11-16T21:20:40.6170660Z npm notice 879B dist/core/providers/ModuleProvider.js.map
+2026-11-16T21:20:40.6170932Z npm notice 130B dist/core/reactiveComponents/components/ReactComponent.d.ts
+2026-11-16T21:20:40.6171235Z npm notice 820B dist/core/reactiveComponents/components/ReactComponent.js
+2026-11-16T21:20:40.6171542Z npm notice 759B dist/core/reactiveComponents/components/ReactComponent.js.map
+2026-11-16T21:20:40.6171851Z npm notice 179B dist/core/reactiveComponents/ReactiveComponentFactory.d.ts
+2026-11-16T21:20:40.6172149Z npm notice 653B dist/core/reactiveComponents/ReactiveComponentFactory.js
+2026-11-16T21:20:40.6172454Z npm notice 435B dist/core/reactiveComponents/ReactiveComponentFactory.js.map
+2026-11-16T21:20:40.6172709Z npm notice 965B dist/devex-scripts/index.js
+2026-11-16T21:20:40.6172888Z npm notice 24B dist/index.d.ts
+2026-11-16T21:20:40.6173040Z npm notice 832B dist/index.js
+2026-11-16T21:20:40.6173198Z npm notice 129B dist/index.js.map
+2026-11-16T21:20:40.6173553Z npm notice 0B dist/test/modules/googleMeetModule/googleMeetConsts.d.ts
+2026-11-16T21:20:40.6173834Z npm notice 44B dist/test/modules/googleMeetModule/googleMeetConsts.js
+2026-11-16T21:20:40.6174126Z npm notice 163B dist/test/modules/googleMeetModule/googleMeetConsts.js.map
+2026-11-16T21:20:40.6174419Z npm notice 42B dist/test/modules/googleMeetModule/googleMeetModule.d.ts
+2026-11-16T21:20:40.6174698Z npm notice 1.4kB dist/test/modules/googleMeetModule/googleMeetModule.js
+2026-11-16T21:20:40.6174986Z npm notice 461B dist/test/modules/googleMeetModule/googleMeetModule.js.map
+2026-11-16T21:20:40.6175336Z npm notice 1.5kB dist/test/modules/googleMeetModule/services/controllers/inAnyCaseController.d.ts
+2026-11-16T21:20:40.6175733Z npm notice 4.2kB dist/test/modules/googleMeetModule/services/controllers/inAnyCaseController.js
+2026-11-16T21:20:40.6176125Z npm notice 1.8kB dist/test/modules/googleMeetModule/services/controllers/inAnyCaseController.js.map
+2026-11-16T21:20:40.6176620Z npm notice 2.5kB dist/test/modules/googleMeetModule/services/controllers/meetHappeningController.d.ts
+2026-11-16T21:20:40.6177029Z npm notice 16.0kB dist/test/modules/googleMeetModule/services/controllers/meetHappeningController.js
+2026-11-16T21:20:40.6177436Z npm notice 9.8kB dist/test/modules/googleMeetModule/services/controllers/meetHappeningController.js.map
+2026-11-16T21:20:40.6177852Z npm notice 453B dist/test/modules/googleMeetModule/services/controllers/meetNotStartedController.d.ts
+2026-11-16T21:20:40.6178258Z npm notice 2.8kB dist/test/modules/googleMeetModule/services/controllers/meetNotStartedController.js
+2026-11-16T21:20:40.6178671Z npm notice 1.5kB dist/test/modules/googleMeetModule/services/controllers/meetNotStartedController.js.map
+2026-11-16T21:20:40.6179047Z npm notice 1.3kB dist/test/modules/googleMeetModule/services/googleMeetService.d.ts
+2026-11-16T21:20:40.6179378Z npm notice 6.1kB dist/test/modules/googleMeetModule/services/googleMeetService.js
+2026-11-16T21:20:40.6180291Z npm notice 3.5kB dist/test/modules/googleMeetModule/services/googleMeetService.js.map
+2026-11-16T21:20:40.6180697Z npm notice 721B dist/test/modules/googleMeetModule/services/secondaryServices/googleMeetConditionService.d.ts
+2026-11-16T21:20:40.6181146Z npm notice 3.9kB dist/test/modules/googleMeetModule/services/secondaryServices/googleMeetConditionService.js
+2026-11-16T21:20:40.6181596Z npm notice 2.6kB dist/test/modules/googleMeetModule/services/secondaryServices/googleMeetConditionService.js.map
+2026-11-16T21:20:40.6182036Z npm notice 248B dist/test/modules/googleMeetModule/services/secondaryServices/googleMeetDateService.d.ts
+2026-11-16T21:20:40.6182460Z npm notice 2.1kB dist/test/modules/googleMeetModule/services/secondaryServices/googleMeetDateService.js
+2026-11-16T21:20:40.6182884Z npm notice 1.2kB dist/test/modules/googleMeetModule/services/secondaryServices/googleMeetDateService.js.map
+2026-11-16T21:20:40.6183349Z npm notice 968B dist/test/modules/googleMeetModule/services/secondaryServices/googleMeetDOMManipulationsService.d.ts
+2026-11-16T21:20:40.6183833Z npm notice 7.5kB dist/test/modules/googleMeetModule/services/secondaryServices/googleMeetDOMManipulationsService.js
+2026-11-16T21:20:40.6184329Z npm notice 4.3kB dist/test/modules/googleMeetModule/services/secondaryServices/googleMeetDOMManipulationsService.js.map
+2026-11-16T21:20:40.6184802Z npm notice 634B dist/test/modules/googleMeetModule/services/secondaryServices/googleMeetEventRuleService.d.ts
+2026-11-16T21:20:40.6185247Z npm notice 2.8kB dist/test/modules/googleMeetModule/services/secondaryServices/googleMeetEventRuleService.js
+2026-11-16T21:20:40.6185697Z npm notice 1.5kB dist/test/modules/googleMeetModule/services/secondaryServices/googleMeetEventRuleService.js.map
+2026-11-16T21:20:40.6186154Z npm notice 542B dist/test/modules/googleMeetModule/services/secondaryServices/googleMeetFullScreenService.d.ts
+2026-11-16T21:20:40.6186604Z npm notice 2.0kB dist/test/modules/googleMeetModule/services/secondaryServices/googleMeetFullScreenService.js
+2026-11-16T21:20:40.6187161Z npm notice 875B dist/test/modules/googleMeetModule/services/secondaryServices/googleMeetFullScreenService.js.map
+2026-11-16T21:20:40.6187641Z npm notice 717B dist/test/modules/googleMeetModule/services/secondaryServices/googleMeetMainFunctionsService.d.ts
+2026-11-16T21:20:40.6188111Z npm notice 4.4kB dist/test/modules/googleMeetModule/services/secondaryServices/googleMeetMainFunctionsService.js
+2026-11-16T21:20:40.6188581Z npm notice 2.9kB dist/test/modules/googleMeetModule/services/secondaryServices/googleMeetMainFunctionsService.js.map
+2026-11-16T21:20:40.6189035Z npm notice 1.2kB dist/test/modules/googleMeetModule/services/secondaryServices/googleMeetMediaService.d.ts
+2026-11-16T21:20:40.6189541Z npm notice 11.7kB dist/test/modules/googleMeetModule/services/secondaryServices/googleMeetMediaService.js
+2026-11-16T21:20:40.6190141Z npm notice 6.9kB dist/test/modules/googleMeetModule/services/secondaryServices/googleMeetMediaService.js.map
+2026-11-16T21:20:40.6190585Z npm notice 783B dist/test/modules/googleMeetModule/services/secondaryServices/googleMeetUtilsService.d.ts
+2026-11-16T21:20:40.6191234Z npm notice 5.1kB dist/test/modules/googleMeetModule/services/secondaryServices/googleMeetUtilsService.js
+2026-11-16T21:20:40.6191669Z npm notice 3.3kB dist/test/modules/googleMeetModule/services/secondaryServices/googleMeetUtilsService.js.map
+2026-11-16T21:20:40.6192053Z npm notice 4.4kB dist/test/modules/googleMeetModule/types/googleMeetInterfaces.d.ts
+2026-11-16T21:20:40.6192483Z npm notice 125B dist/test/modules/googleMeetModule/types/googleMeetInterfaces.js
+2026-11-16T21:20:40.6192821Z npm notice 180B dist/test/modules/googleMeetModule/types/googleMeetInterfaces.js.map
+2026-11-16T21:20:40.6193242Z npm notice 3.0kB dist/test/modules/googleMeetModule/types/googleMeetTypes.d.ts
+2026-11-16T21:20:40.6193552Z npm notice 120B dist/test/modules/googleMeetModule/types/googleMeetTypes.js
+2026-11-16T21:20:40.6193866Z npm notice 170B dist/test/modules/googleMeetModule/types/googleMeetTypes.js.map
+2026-11-16T21:20:40.6194130Z npm notice 131B dist/test/modules/index.d.ts
+2026-11-16T21:20:40.6194322Z npm notice 299B dist/test/modules/index.js
+2026-11-16T21:20:40.6194513Z npm notice 192B dist/test/modules/index.js.map
+2026-11-16T21:20:40.6194778Z npm notice 568B dist/test/modules/intermediaryServices/intermediaryService.d.ts
+2026-11-16T21:20:40.6195096Z npm notice 794B dist/test/modules/intermediaryServices/intermediaryService.js
+2026-11-16T21:20:40.6195508Z npm notice 536B dist/test/modules/intermediaryServices/intermediaryService.js.map
+2026-11-16T21:20:40.6195826Z npm notice 2.7kB dist/test/modules/intermediaryServices/services/config.json
+2026-11-16T21:20:40.6196157Z npm notice 289B dist/test/modules/intermediaryServices/services/fetchFilesService.d.ts
+2026-11-16T21:20:40.6196568Z npm notice 2.1kB dist/test/modules/intermediaryServices/services/fetchFilesService.js
+2026-11-16T21:20:40.6196937Z npm notice 1.0kB dist/test/modules/intermediaryServices/services/fetchFilesService.js.map
+2026-11-16T21:20:40.6197372Z npm notice 253B dist/test/modules/intermediaryServices/services/rulesIntermediaryService.d.ts
+2026-11-16T21:20:40.6197772Z npm notice 2.0kB dist/test/modules/intermediaryServices/services/rulesIntermediaryService.js
+2026-11-16T21:20:40.6198256Z npm notice 803B dist/test/modules/intermediaryServices/services/rulesIntermediaryService.js.map
+2026-11-16T21:20:40.6198647Z npm notice 244B dist/test/modules/intermediaryServices/types/generalIntermediaryInterface.d.ts
+2026-11-16T21:20:40.6199119Z npm notice 133B dist/test/modules/intermediaryServices/types/generalIntermediaryInterface.js
+2026-11-16T21:20:40.6199510Z npm notice 200B dist/test/modules/intermediaryServices/types/generalIntermediaryInterface.js.map
+2026-11-16T21:20:40.6200068Z npm notice 375B dist/test/modules/intermediaryServices/types/intermediaryInterfaces.d.ts
+2026-11-16T21:20:40.6200506Z npm notice 127B dist/test/modules/intermediaryServices/types/intermediaryInterfaces.js
+2026-11-16T21:20:40.6201052Z npm notice 188B dist/test/modules/intermediaryServices/types/intermediaryInterfaces.js.map
+2026-11-16T21:20:40.6201454Z npm notice 402B dist/test/modules/intermediaryServices/types/intermediaryTypes.d.ts
+2026-11-16T21:20:40.6201784Z npm notice 122B dist/test/modules/intermediaryServices/types/intermediaryTypes.js
+2026-11-16T21:20:40.6202124Z npm notice 178B dist/test/modules/intermediaryServices/types/intermediaryTypes.js.map
+2026-11-16T21:20:40.6202377Z npm notice 11B dist/test/runner.d.ts
+2026-11-16T21:20:40.6202547Z npm notice 2.6kB dist/test/runner.js
+2026-11-16T21:20:40.6202724Z npm notice 1.0kB dist/test/runner.js.map
+2026-11-16T21:20:40.6202890Z npm notice 1.6kB package.json
+2026-11-16T21:20:40.6203045Z npm notice Tarball Details
+2026-11-16T21:20:40.6203197Z npm notice name: devxtension
+2026-11-16T21:20:40.6203344Z npm notice version: 1.1.0
+2026-11-16T21:20:40.6203516Z npm notice filename: devxtension-1.1.0.tgz
+2026-11-16T21:20:40.6203699Z npm notice package size: 59.2 kB
+2026-11-16T21:20:40.6203867Z npm notice unpacked size: 263.6 kB
+2026-11-16T21:20:40.6204161Z npm notice shasum: 95a76eadf1593e89417c1bcbf226e91972743dfa
+2026-11-16T21:20:40.6204414Z npm notice integrity: sha512-WyG7n3lQgejnq[...]Qm9W5vc4NONrQ==
+2026-11-16T21:20:40.6204619Z npm notice total files: 132
+2026-11-16T21:20:40.6204751Z npm notice
+2026-11-16T21:20:41.7848586Z npm notice npm tokens that bypass 2FA are being restricted for account changes and direct publishing. Learn how to prepare: https://gh.io/npm-gat-bypass2fa-deprecation
+2026-11-16T21:20:41.9133558Z npm notice Publishing to https://registry.npmjs.org/ with tag latest and public access
+2026-11-16T21:20:42.5045982Z npm notice publish Signed provenance statement with source and build information from GitHub Actions
+2026-11-16T21:20:42.5046833Z npm notice publish Provenance statement published to transparency log: https://search.sigstore.dev/?logIndex=3935093248
+2026-11-16T21:20:44.5638659Z npm notice Your package is being processed and may take a few minutes to become available.
+2026-11-16T21:20:44.5639744Z + devxtension@1.1.0
+2026-11-16T21:20:44.5794065Z ##[group]Run node scripts/verify-published.cjs
+2026-11-16T21:20:44.5794294Z [36;1mnode scripts/verify-published.cjs[0m
+2026-11-16T21:20:44.5837560Z shell: /usr/bin/bash -e {0}
+2026-11-16T21:20:44.5837730Z env:
+2026-11-16T21:20:44.5837896Z   NPM_CONFIG_USERCONFIG: /home/runner/work/_temp/.npmrc
+2026-11-16T21:20:44.5838096Z   NODE_AUTH_TOKEN: XXXXX-XXXXX-XXXXX-XXXXX
+2026-11-16T21:20:44.5838284Z ##[endgroup]
+2026-11-16T21:20:44.7511271Z npm warn Unknown user config "always-auth". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+2026-11-16T21:20:44.9474612Z npm error code ETARGET
+2026-11-16T21:20:44.9474929Z npm error notarget No matching version found for devxtension@1.1.0.
+2026-11-16T21:20:44.9476412Z npm error notarget In most cases you or one of your dependencies are requesting a package version that doesn't exist.
+2026-11-16T21:20:44.9483740Z npm error A complete log of this run can be found in: /home/runner/.npm/_logs/2026-11-16T21_20_44_643Z-debug-0.log
+2026-11-16T21:20:44.9554422Z node:assert:152
+2026-11-16T21:20:44.9554656Z   throw new AssertionError(obj);
+2026-11-16T21:20:44.9554801Z   ^
+2026-11-16T21:20:44.9554864Z 
+2026-11-16T21:20:44.9555417Z AssertionError [ERR_ASSERTION]: Command failed: /opt/hostedtoolcache/node/24.22.2/x64/lib/node_modules/npm/bin/npm-cli.js install --registry=https://registry.npmjs.org/ --no-audit --no-fund devxtension@1.1.0
+2026-11-16T21:20:44.9555860Z 
+2026-11-16T21:20:44.9555914Z 1 !== 0
+2026-11-16T21:20:44.9555973Z 
+2026-11-16T21:20:44.9556414Z     at run (/home/runner/work/extension-2.0/extension-2.0/scripts/verify-published.cjs:25:10)
+2026-11-16T21:20:44.9557057Z     at Object.<anonymous> (/home/runner/work/extension-2.0/extension-2.0/scripts/verify-published.cjs:37:1)
+2026-11-16T21:20:44.9557606Z     at Module._compile (node:internal/modules/cjs/loader:1929:14)
+2026-11-16T21:20:44.9557908Z     at Object..js (node:internal/modules/cjs/loader:2060:10)
+2026-11-16T21:20:44.9558157Z     at Module.load (node:internal/modules/cjs/loader:1651:32)
+2026-11-16T21:20:44.9558380Z     at Module._load (node:internal/modules/cjs/loader:1443:12)
+2026-11-16T21:20:44.9558606Z     at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)
+2026-11-16T21:20:44.9558895Z     at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)
+2026-11-16T21:20:44.9559154Z     at node:internal/main/run_main_module:33:47 {
+2026-11-16T21:20:44.9559329Z   generatedMessage: false,
+2026-11-16T21:20:44.9559465Z   code: 'ERR_ASSERTION',
+2026-11-16T21:20:44.9559591Z   actual: 1,
+2026-11-16T21:20:44.9559875Z   expected: 0,
+2026-11-16T21:20:44.9560047Z   operator: 'strictEqual',
+2026-11-16T21:20:44.9560238Z   diff: 'simple'
+2026-11-16T21:20:44.9560350Z }
+2026-11-16T21:20:44.9560411Z 
+2026-11-16T21:20:44.9560456Z Node.js v24.22.2
+2026-11-16T21:20:44.9597835Z ##[error]Process completed with exit code 1.
+2026-11-16T21:20:44.9700008Z Post job cleanup.
+2026-11-16T21:20:45.0228499Z [command]/usr/bin/git version
+2026-11-16T21:20:45.0261032Z git version 2.56.1
+2026-11-16T21:20:45.0285009Z Temporarily overriding HOME='/home/runner/work/_temp/14d36f87-14b8-40f5-bd6c-41a2a0e283fa' before making global git config changes
+2026-11-16T21:20:45.0285955Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-16T21:20:45.0287957Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/extension-2.0/extension-2.0
+2026-11-16T21:20:45.0322528Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-16T21:20:45.0362751Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-16T21:20:45.0610708Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-16T21:20:45.0640776Z http.https://github.com/.extraheader
+2026-11-16T21:20:45.0659161Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-11-16T21:20:45.0711831Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-16T21:20:45.0928180Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-16T21:20:45.0957448Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-16T21:20:45.1289591Z Cleaning up orphan processes
+2026-11-16T21:20:45.1537916Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+

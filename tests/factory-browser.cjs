@@ -1,5 +1,8 @@
 const fs=require('fs'),path=require('path'),http=require('http'),assert=require('assert/strict'),crypto=require('crypto');
-const root=path.resolve(__dirname,'..'),out=path.join(root,'reports/factory-api-audit-2026-10-30'),consumer=path.join(root,'.verification/factory-consumer');
+
+const root = path.resolve(__dirname, '..')
+const out = path.join(root, 'reports/factory-api-audit-2026-10-30')
+const consumer = process.env.DEVEX_CONSUMER_PATH || path.join(root, '.verification/factory-consumer')
 process.env.PLAYWRIGHT_BROWSERS_PATH ||= path.join(root,'.verification/browser-binaries')
 const {chromium}=require(process.env.DEVEX_PLAYWRIGHT_PATH || 'C:/Users/kiril/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
 async function main(){
@@ -67,7 +70,8 @@ async function main(){
   assert.equal(await fresh.evaluate(()=>window.__factoryDocument),'global-first');
   checks.push('Global participants run on declared hosts before any route; first SPA route entry preserves their context without reload');
   assert.deepEqual(errors,[]);
-  const packageSha256=crypto.createHash('sha256').update(fs.readFileSync(path.join(out,'devxtension-1.1.0.tgz'))).digest('hex');
+  const packageFile = process.env.DEVEX_PACKAGE_PATH || path.join(out, 'devxtension-1.1.0.tgz')
+  const packageSha256 = crypto.createHash('sha256').update(fs.readFileSync(packageFile)).digest('hex')
   fs.writeFileSync(path.join(out,'browser-results.json'),JSON.stringify({status:'PASS',version:context.browser().version(),packageSha256,checks,errors},null,2));
   console.log('FACTORY BROWSER PASS',JSON.stringify(checks,null,2));
  }finally{await context?.close();await new Promise(resolve=>server.close(resolve))}
