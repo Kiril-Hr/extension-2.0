@@ -33,6 +33,19 @@ jobs:
       - run: node tests/factory-browser.cjs
         env:
           DEVEX_PLAYWRIGHT_PATH: ${{ github.workspace }}/.verification/tools/node_modules/playwright
+      - name: Build the documented minimal example from public npm
+        shell: pwsh
+        run: |
+          Copy-Item examples/minimal/.env.example examples/minimal/.env
+          npm ci --prefix examples/minimal --no-audit --no-fund
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          npm --prefix examples/minimal run typecheck
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          npm --prefix examples/minimal run build
+          exit $LASTEXITCODE
+      - run: node tests/minimal-example-browser.cjs
+        env:
+          DEVEX_PLAYWRIGHT_PATH: ${{ github.workspace }}/.verification/tools/node_modules/playwright
       - uses: actions/upload-artifact@v4
         if: always()
         with:
