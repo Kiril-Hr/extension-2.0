@@ -1,0 +1,8 @@
+**/node_modules/
+**/dist/
+**/*.tgz
+.verification/browser-profile/
+.verification/tools/
+.verification/browser-binaries/
+reports/factory-api-audit-2026-10-30/pre-change-*/
+DevEx2_work_build_09_Windows_fixed.zip

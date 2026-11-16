@@ -10,7 +10,7 @@ export class ModuleProvider {
     private readonly _params: ModuleDecoratorOptionsAdapt
 
     constructor(params: ModuleDecoratorOptionsInput) {
-        this._params = this.adaptParams({...params.vanilla!, name: params.name, url: params.url})
+        this._params = this.adaptParams(params)
     }
 
     get params() {

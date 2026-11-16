@@ -1,0 +1,1 @@
+chrome.runtime.onMessage.addListener((message,sender,respond)=>{if(message.kind==='factory-probe'){chrome.storage.local.set({factoryProbe:true});respond({name:chrome.runtime.getManifest().name})}});

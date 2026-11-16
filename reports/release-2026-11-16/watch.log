@@ -1,0 +1,28 @@
+[DevEx URL conversion] Chrome cannot limit http://127.0.0.2/active/* to its default port. Content-script injection also covers other ports; DevEx runtime routing still rejects them.
+asset runner.js 2.92 MiB [emitted] [big] (name: main)
+runtime modules 1.04 KiB 5 modules
+modules by path ./node_modules/ 1.12 MiB
+  modules by path ./node_modules/devxtension/dist/ 36.8 KiB 16 modules
+  modules by path ./node_modules/react-dom/ 1010 KiB 3 modules
+  modules by path ./node_modules/react/ 85.7 KiB
+    ./node_modules/react/index.js 190 bytes [built] [code generated]
+    ./node_modules/react/cjs/react.development.js 85.5 KiB [built] [code generated]
+  modules by path ./node_modules/scheduler/ 17.3 KiB
+    ./node_modules/scheduler/index.js 198 bytes [built] [code generated]
+    ./node_modules/scheduler/cjs/scheduler.development.js 17.1 KiB [built] [code generated]
+modules by path ./src/ 11.3 KiB
+  ./src/runner.ts 1.28 KiB [built] [code generated]
+  ./src/modules/author.tsx 2.62 KiB [built] [code generated]
+  ./src/state.ts 3.09 KiB [built] [code generated]
+  ./src/widgets.ts 4.31 KiB [built] [code generated]
+webpack 5.88.2 compiled successfully in 2678 ms
+[DevEx URL conversion] Chrome cannot limit http://127.0.0.2/active/* to its default port. Content-script injection also covers other ports; DevEx runtime routing still rejects them.
+assets by status 2.92 MiB [cached] 1 asset
+cached modules 1.13 MiB (javascript) 1.04 KiB (runtime) [cached] 32 modules
+webpack 5.88.2 compiled successfully in 102 ms
+[DevEx URL conversion] Chrome cannot limit http://127.0.0.2/active/* to its default port. Content-script injection also covers other ports; DevEx runtime routing still rejects them.
+asset runner.js 2.92 MiB [emitted] [big] (name: main)
+cached modules 1.13 MiB [cached] 26 modules
+runtime modules 1.04 KiB 5 modules
+./src/runner.ts 1.28 KiB [built] [code generated]
+webpack 5.88.2 compiled successfully in 152 ms

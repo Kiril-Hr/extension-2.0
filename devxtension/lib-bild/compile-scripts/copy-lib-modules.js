@@ -9,6 +9,7 @@ async function copyFiles() {
         console.log('config скопійовано успішно!');
     } catch (err) {
         console.error('Сталася помилка під час копіювання файлів:', err);
+        process.exitCode = 1;
     }
 }
 

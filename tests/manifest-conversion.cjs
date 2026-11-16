@@ -1,0 +1,17 @@
+const assert=require('assert/strict');
+const {convertRuntimePattern:convert,contentScriptForPatterns:content}=require('../devxtension/lib-bild/config/webpackCompileUtils/runtimeToChromePatterns');
+assert.deepEqual(convert('https://example.com/').matches,['https://example.com/*']);
+assert.deepEqual(convert('https://example.com/app/*').matches,['https://example.com/app/*']);
+assert.deepEqual(convert('https://example.com/app').matches,['https://example.com/app','https://example.com/app?*']);
+const sub=convert('https://*.example.com/path/*');
+assert.deepEqual(sub.matches,['https://*.example.com/path/*']);
+assert.deepEqual(sub.excludeMatches,['https://example.com/path/*']);
+assert.equal(convert('https://example.com/*').warnings.length,1);
+assert.throws(()=>convert('https://example.com:8443/*'),/cannot restrict port/);
+assert.throws(()=>convert('https://example.com/a*b'),/literal path/);
+assert.throws(()=>convert('invalid'),/Invalid DevEx URL/);
+assert.deepEqual(content(['https://*.example.com/*']).exclude_matches,['https://example.com/*']);
+assert.equal(content(['https://*.example.com/*','https://example.com/root']).exclude_matches,undefined);
+assert.deepEqual(content(['https://example.com/*','https://example.com/*']).matches,['https://example.com/*']);
+assert.equal(content([]),undefined);
+console.log('PASS 12 Manifest conversion assertions; runtime semantics tested separately');

@@ -1,21 +1,19 @@
+// URL patterns are inserted by additionalUpdater at build time.
 const observedURLs = {}
-let previousUrl = window.location.href;
+const observeGlobalRoutes = false
 
-// Function for observing changes URL and checking needed module (script)
-function checkUrlChange() {
-    const currentUrl = window.location.href;
+// Uses the compiled DevEx matcher, preserving its separate runtime semantics.
+const matchesPattern = __DEVEX_RUNTIME_URL_MATCHER__
 
-    // Check out whether current URL has changed
-    if (currentUrl !== previousUrl) {
-        // Check out whether URL according new URL
-        if (observedURLs[currentUrl]) {
-            // Reload extension and use new module
-            chrome.runtime.reload();
+// MV3 background is a service worker: use event details, not window.location.
+if (observeGlobalRoutes || Object.keys(observedURLs).length) chrome.webNavigation.onHistoryStateUpdated.addListener(({ tabId, frameId, url }) => {
+    if (frameId !== 0 || tabId < 0) return
+    // A live factory handles route changes without destroying its DI context.
+    // If the initial page had no matching content script, reload only on entry
+    // into a matched route so Chrome can perform the first injection.
+    chrome.tabs.sendMessage(tabId, { type: '__DEVEX_ROUTE_CHANGED__', url }, response => {
+        if (chrome.runtime.lastError && Object.keys(observedURLs).some(pattern => matchesPattern(pattern, url))) {
+            chrome.tabs.reload(tabId)
         }
-        // Update old URL
-        previousUrl = currentUrl;
-    }
-}
-
-// Adding event processor for observing changing URL
-chrome.webNavigation.onHistoryStateUpdated.addListener(checkUrlChange);
+    })
+})

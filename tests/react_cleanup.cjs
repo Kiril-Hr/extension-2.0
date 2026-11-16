@@ -1,0 +1,17 @@
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const vm = require('node:vm');
+const ts = require(require.resolve('../devxtension/node_modules/typescript'));
+const path = require('node:path');
+const file = path.join(__dirname, '../devxtension/src/core/reactiveComponents/components/ReactComponent.ts');
+const code = ts.transpileModule(fs.readFileSync(file,'utf8'), {compilerOptions:{module:ts.ModuleKind.CommonJS}}).outputText;
+const events=[]; const nodes=[];
+const document={body:{appendChild(node){nodes.push(node); events.push('append')}},createElement(){return {remove(){events.push('remove')}}}};
+const output={};
+vm.runInNewContext(code,{exports:output,document,require(name){if(name==='react')return {createElement:x=>x};if(name==='react-dom/client')return {createRoot(){return {render(){events.push('render')},unmount(){events.push('unmount')}}}};throw Error(name)}});
+const cleanup=output.implementReactComponents([()=>{},()=>{}]);
+assert.equal(typeof cleanup,'function');
+assert.deepEqual(events,['append','render','append','render']);
+cleanup();
+assert.deepEqual(events,['append','render','append','render','unmount','remove','unmount','remove']);
+console.log('PASS DEVEX-009 two roots unmount and DOM cleanup');

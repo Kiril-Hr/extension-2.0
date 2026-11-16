@@ -1,0 +1,27 @@
+[
+  {
+    "name": "DI survives reSetup",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "name": "new module after reSetup",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "name": "two services isolated",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "name": "shared service",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "name": "reactive-only setup",
+    "passed": true,
+    "detail": ""
+  }
+]

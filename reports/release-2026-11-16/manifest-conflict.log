@@ -1,0 +1,15 @@
+
+> devex-author-factory-consumer@1.0.0 build
+> devex-scripts build
+
+[webpack-cli] Error: [DevEx manifest] Conflict for name: params.manifest disagrees with extensionConfig.json
+    at fail (D:\Devex\.release\github\.verification\factory-consumer\node_modules\devxtension\dist\config\webpackCompileUtils\factoryManifest.js:9:37)
+    at combine (D:\Devex\.release\github\.verification\factory-consumer\node_modules\devxtension\dist\config\webpackCompileUtils\factoryManifest.js:180:70)
+    at readProjectManifest (D:\Devex\.release\github\.verification\factory-consumer\node_modules\devxtension\dist\config\webpackCompileUtils\factoryManifest.js:184:39)
+    at getManifest (D:\Devex\.release\github\.verification\factory-consumer\node_modules\devxtension\dist\config\webpackCompileUtils\additionalUpdater.js:108:20)
+    at manifestConfigure (D:\Devex\.release\github\.verification\factory-consumer\node_modules\devxtension\dist\config\webpackCompileUtils\additionalUpdater.js:116:22)
+    at updaterExtensionAdditional (D:\Devex\.release\github\.verification\factory-consumer\node_modules\devxtension\dist\config\webpackCompileUtils\additionalUpdater.js:169:5)
+    at D:\Devex\.release\github\.verification\factory-consumer\node_modules\devxtension\dist\config\webpack.configuration.js:50:78
+    at Hook.eval [as callAsync] (eval at create (D:\Devex\.release\github\.verification\factory-consumer\node_modules\tapable\lib\HookCodeFactory.js:102:10), <anonymous>:9:1)
+    at Hook.CALL_ASYNC_DELEGATE [as _callAsync] (D:\Devex\.release\github\.verification\factory-consumer\node_modules\tapable\lib\Hook.js:155:14)
+    at Compiler.compile (D:\Devex\.release\github\.verification\factory-consumer\node_modules\webpack\lib\Compiler.js:1165:28)

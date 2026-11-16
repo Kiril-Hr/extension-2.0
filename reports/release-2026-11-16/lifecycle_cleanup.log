@@ -1,0 +1,27 @@
+[
+  {
+    "name": "teardown before next setup",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "name": "event subscription released",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "name": "no teardown remains compatible",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "name": "teardown on decorated module",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "name": "shared service not torn down",
+    "passed": true,
+    "detail": ""
+  }
+]

@@ -1,0 +1,22 @@
+[
+  {
+    "name": "same class registered twice",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "name": "different classes with same name rejected",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "name": "original instance preserved on conflict",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "name": "different service names remain isolated",
+    "passed": true,
+    "detail": ""
+  }
+]

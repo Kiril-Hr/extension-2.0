@@ -1,6 +1,12 @@
 export interface Module {
     setup?(): void // here we indicated the point of start the module
     reSetup?(config: extensionConfigType): void // change module according to new URL
+    teardown?(): void // optional cleanup of resources owned by this module
+}
+
+export interface ExtensionLifecycle {
+    reSetup(): void
+    teardown(): void
 }
 
 export type Instance<A = undefined> = new (...args: any[]) => {} & (A extends undefined ? {} : A)
@@ -35,7 +41,8 @@ export type SingleExecutorsProviderInput = [ServiceValue<SingleExecutorType>, ()
 export type ExecutorsProviderInput = SingleExecutorsProviderInput[]
 export type ExecutorsProviderOutput = (() => void)[]
 
-export interface MainServiceInterface { run: () => void, name?: string }
+export interface GeneralServiceInterface { name?: string }
+export interface MainServiceInterface extends GeneralServiceInterface { run: () => void }
 export type MainServiceType = Instance<MainServiceInterface>
 export type Vanilla<E> = {
     mainService: MainServiceType | MainServiceInterface
@@ -77,13 +84,15 @@ type SetupManifest = (manifest?: ManifestParams) => void;
 
 export interface IManifestModule {
     setup: SetupManifest
+    reSetup?(config: extensionConfigType): void
+    teardown?(): void
 }
 
 export type CustomManifestModulesType = Constructor<IManifestModule>[]
 
 export interface IExtensionParams {
     // This property "widgets" is array of common modules which are going to be run in all URLs. You can use early downloaded widgets in your modules to linked them to specific logic in only one URL. (src/modules/*)
-    widgets?: Constructor<Module>[] | []
+    widgets?: WidgetModuleArrayOutput
     // Manifest configuration for extension setup
     manifest: ManifestParams
 }
@@ -99,7 +108,7 @@ type BrowserAction = {
     default_popup?: string;
     default_title: string;
 };
-type URLSchema = "*://*/*" | "*://*.[a-zA-Z]+/*";
+type URLSchema = `${"*" | "http" | "https" | "file" | "ftp"}://${string}/${string}`;
 type HostPermissions = | "<all_urls>" | URLSchema;
 type ChromeVersion = `${number}.${number}.${number}${"" | `.${number}`}`;
 type Permissions =

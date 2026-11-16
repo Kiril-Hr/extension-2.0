@@ -38,27 +38,40 @@ const copyWebpackPlugin = {
     patterns: [
         {
             from: path.resolve(appRoot, './src/extensionOptions/assets'),
+            noErrorOnMissing: true,
             to: path.resolve(appRoot, './dist/assets')
         }
     ]
 }
 
-const manifestBackgroundUpdater = () => {
-    return updaterExtensionAdditional()
+const manifestBackgroundUpdater = (compiler) => {
+    // Run for every compilation, including watch rebuilds.
+    let dependencies = [];
+    compiler.hooks.beforeCompile.tap('DevExManifest', () => { dependencies = updaterExtensionAdditional().dependencies; });
+    compiler.hooks.afterCompile.tap('DevExManifest', compilation => {
+        dependencies.forEach(file => compilation.fileDependencies.add(file));
+        const legacy = path.resolve(appRoot, 'extensionConfig.json');
+        if (require('fs').existsSync(legacy)) compilation.fileDependencies.add(legacy);
+        else compilation.missingDependencies.add(legacy);
+        for (const folder of ['src/modules', 'src/extensionOptions/backgrounds', 'src/extensionOptions/assets']) {
+            compilation.contextDependencies.add(path.resolve(appRoot, folder));
+        }
+    });
 }
 
 const babelParams = {
-    test: /\.ts$/,
+    test: /\.tsx?$/,
     use: {
-        loader: path.resolve(babelPath, 'babel-loader'),
+        loader: require.resolve('babel-loader'),
         options: {
             presets: [
-                path.resolve(babelPath, '@babel/preset-env'),
-                path.resolve(babelPath, '@babel/preset-typescript'),
+                require.resolve('@babel/preset-env'),
+                require.resolve('@babel/preset-typescript'),
+                require.resolve('@babel/preset-react'),
             ],
             plugins: [
-                [path.resolve(babelPath, '@babel/plugin-proposal-decorators'), { legacy: true }],
-                path.resolve(babelPath, '@babel/plugin-proposal-class-properties')
+                [require.resolve('@babel/plugin-proposal-decorators'), { legacy: true }],
+                [require.resolve('@babel/plugin-proposal-class-properties'), { loose: false }]
             ]
         }
     },
