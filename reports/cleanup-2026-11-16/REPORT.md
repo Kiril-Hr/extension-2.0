@@ -46,6 +46,8 @@ Initial verification issues were corrected transparently: npm prepack stdout req
 
 The clean-checkout GitHub workflow now runs packaging checks and builds/tests the documented minimal example. This is also the definitive check that removed generated directories are not hidden build prerequisites. Local generated files remain on disk as requested.
 
+The first cleanup CI passed all product, packaging, watch, factory browser and minimal-build checks, then the new minimal browser harness looked in Playwright's default user cache instead of the workspace browser cache installed by CI. Its default is now aligned with the existing factory harness (.verification/browser-binaries), while preserving explicit environment overrides. This is test environment configuration; no checks were skipped and no extension runtime was changed.
+
 ## Remaining risks and exclusions
 
 - No confirmed exposed credentials; scanner and Git-history scope limitations above still apply.

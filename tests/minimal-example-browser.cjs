@@ -3,6 +3,8 @@ const fs = require('fs')
 const path = require('path')
 
 const root = path.resolve(__dirname, '..')
+process.env.PLAYWRIGHT_BROWSERS_PATH ||= path.join(root, '.verification/browser-binaries')
+
 const { chromium } = require(process.env.DEVEX_PLAYWRIGHT_PATH || path.join(root, '.verification/tools/node_modules/playwright'))
 const output = path.join(root, 'reports/cleanup-2026-11-16')
 const extension = path.join(root, 'examples/minimal/dist')
