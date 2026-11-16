@@ -4,7 +4,17 @@ const runner=path.join(consumer,'src/runner.ts'),original=fs.readFileSync(runner
 const cli=path.join(consumer,'node_modules/devxtension/dist/devex-scripts/index.js'),npm=path.join(path.dirname(process.execPath),'node_modules/npm/bin/npm-cli.js');
 const pause=ms=>new Promise(r=>setTimeout(r,ms));async function until(test){const end=Date.now()+60000;while(Date.now()<end){if(test())return;await pause(200)}throw Error('Factory watch timed out')}
 async function main(){
- let output='';const child=cp.spawn(process.execPath,[cli,'dev'],{cwd:consumer,stdio:['ignore','pipe','pipe']});child.stdout.on('data',s=>output+=s);child.stderr.on('data',s=>output+=s);
+  let output = ''
+  const child = cp.spawn(process.execPath, [cli, 'dev'], {
+    cwd: consumer,
+    stdio: ['ignore', 'pipe', 'pipe']
+  })
+  const appendOutput = chunk => {
+    output += chunk.toString().replace(/\u001b\[[0-9;]*m/g, '')
+  }
+
+  child.stdout.on('data', appendOutput)
+  child.stderr.on('data', appendOutput)
  try{await until(()=>output.includes('compiled successfully'));fs.writeFileSync(runner,original.replace("version:'1.0.0'","version:'1.0.1'"));await until(()=>JSON.parse(fs.readFileSync(manifest,'utf8')).version==='1.0.1');console.log('PASS watch regenerates inline params.manifest without extensionConfig.json')}
  finally{child.kill();await Promise.race([new Promise(r=>child.once('exit',r)),pause(5000)]);fs.writeFileSync(runner,original);fs.writeFileSync(path.join(out,'watch.log'),output)}
  const legacy=path.join(consumer,'extensionConfig.json');assert(!fs.existsSync(legacy));

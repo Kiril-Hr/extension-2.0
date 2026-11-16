@@ -1,0 +1,22 @@
+[DevEx URL conversion] Chrome cannot limit http://127.0.0.2/active/* to its default port. Content-script injection also covers other ports; DevEx runtime routing still rejects them.
+asset [1m[33mrunner.js[39m[22m [1m[33m2.92 MiB[39m[22m [1m[32m[emitted][39m[22m [1m[33m[big][39m[22m (name: main)
+runtime modules 1.04 KiB 5 modules
+modules by path [1m./node_modules/[39m[22m 1.12 MiB
+  modules by path [1m./node_modules/devxtension/dist/[39m[22m 36.8 KiB 16 modules
+  modules by path [1m./node_modules/react-dom/[39m[22m 1010 KiB 3 modules
+  modules by path [1m./node_modules/react/[39m[22m 85.7 KiB
+    [1m./node_modules/react/index.js[39m[22m 190 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+    [1m./node_modules/react/cjs/react.development.js[39m[22m 85.5 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+  modules by path [1m./node_modules/scheduler/[39m[22m 17.3 KiB
+    [1m./node_modules/scheduler/index.js[39m[22m 198 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+    [1m./node_modules/scheduler/cjs/scheduler.development.js[39m[22m 17.1 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+modules by path [1m./src/[39m[22m 11.3 KiB
+  [1m./src/runner.ts[39m[22m 1.28 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+  [1m./src/modules/author.tsx[39m[22m 2.62 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+  [1m./src/state.ts[39m[22m 3.09 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+  [1m./src/widgets.ts[39m[22m 4.31 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+webpack 5.88.2 compiled [1m[32msuccessfully[39m[22m in 1002 ms
+[DevEx URL conversion] Chrome cannot limit http://127.0.0.2/active/* to its default port. Content-script injection also covers other ports; DevEx runtime routing still rejects them.
+assets by status 2.92 MiB [1m[32m[cached][39m[22m 1 asset
+cached modules 1.13 MiB (javascript) 1.04 KiB (runtime) [1m[32m[cached][39m[22m 32 modules
+webpack 5.88.2 compiled [1m[32msuccessfully[39m[22m in 31 ms
