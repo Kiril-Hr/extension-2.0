@@ -25,6 +25,11 @@ jobs:
       - run: node .verification/tools/node_modules/playwright/cli.js install chromium
         env:
           PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.verification/browser-binaries
+      - name: Release HTTP port on the disposable Windows runner
+        shell: pwsh
+        run: |
+          Stop-Service -Name W3SVC -Force -ErrorAction SilentlyContinue
+          Stop-Service -Name HTTP -Force -ErrorAction Stop
       - run: node tests/factory-browser.cjs
         env:
           DEVEX_PLAYWRIGHT_PATH: ${{ github.workspace }}/.verification/tools/node_modules/playwright

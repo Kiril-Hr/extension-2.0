@@ -27,4 +27,6 @@ Local npm whoami returned ENEEDAUTH. Local npm login is unnecessary for the pref
 
 Local production pipeline and all nine real Chromium MV3 scenarios passed. The first GitHub run passed the full product pipeline but timed out in the watch harness: ANSI color codes split its literal success marker. ci-first-watch.log preserves the evidence. The harness now strips ANSI formatting without relaxing assertions; the fix was exercised locally with FORCE_COLOR=1. This is a test-output parsing correction, not a runtime workaround.
 
+The second GitHub run passed product/watch but its Windows Server runner denied binding port 80 (EACCES). CI now stops the HTTP/IIS services only on the disposable hosted runner before the browser test. This preserves default-port runtime routing and the real Chrome test; no local user services are stopped and no tests are skipped.
+
 Until an actual registry publish and independent public install pass, 1.1.0 is a candidate and npm install devxtension@1.1.0 must not be presented as an available release. Existing npm 1.0.3 does not contain the new integration.
