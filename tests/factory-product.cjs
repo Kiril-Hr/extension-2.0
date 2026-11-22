@@ -2,6 +2,8 @@ const { sourceRoot } = require('./source-package.cjs')
 const fs=require('fs'),path=require('path'),cp=require('child_process'),assert=require('assert/strict'),crypto=require('crypto');
 const root=path.resolve(__dirname,'..'),lib=sourceRoot,consumer=path.join(root,'.verification/factory-consumer'),out=path.join(root,'reports/factory-api-audit-2026-10-30');
 fs.mkdirSync(out,{recursive:true});const results=[];
+const pkg = require(path.join(lib, 'package.json'))
+const archive = path.join(out, pkg.name + '-' + pkg.version + '.tgz')
 const npm=path.join(path.dirname(process.execPath),'node_modules/npm/bin/npm-cli.js');
 function run(name,args,cwd=lib){console.log('RUN',name);const r=cp.spawnSync(process.execPath,args,{cwd,encoding:'utf8',timeout:300000,maxBuffer:20000000});fs.writeFileSync(path.join(out,name+'.log'),(r.stdout||'')+(r.stderr||'')+(r.error?String(r.error):''));results.push({name,exitCode:r.status,status:r.status===0?'PASS':'FAIL'});fs.writeFileSync(path.join(out,'pipeline-results.json'),JSON.stringify(results,null,2));assert.equal(r.status,0,(r.stdout||'')+(r.stderr||''));console.log('PASS',name);}
 function write(file,content){const target=path.join(consumer,file);fs.mkdirSync(path.dirname(target),{recursive:true});fs.writeFileSync(target,content)}
@@ -10,7 +12,7 @@ run('noemit',[path.join(lib,'node_modules/typescript/bin/tsc'),'-p','tsconfig.js
 for(const name of ['regression','lifecycle_cleanup','service_collisions','url_routing','react_mounting','react_cleanup','integration_contract','runtime-contract','manifest-conversion','factory-lifecycle','factory-manifest'])run(name,[path.join(root,'tests',name+'.cjs')],root);
 run('npm-pack',[npm,'pack','--pack-destination',out]);
 if(!fs.existsSync(path.join(consumer,'package.json'))){
-write('package.json',JSON.stringify({name:'devex-author-factory-consumer',version:'1.0.0',private:true,scripts:{build:'devex-scripts build',dev:'devex-scripts dev'},dependencies:{devxtension:'file:'+path.join(out,'devxtension-1.1.0.tgz').replaceAll('\\','/')}},null,2));
+write('package.json',JSON.stringify({name:'devex-author-factory-consumer',version:'1.0.0',private:true,scripts:{build:'devex-scripts build',dev:'devex-scripts dev'},dependencies:{devxtension:'file:'+archive.replaceAll('\\','/')}},null,2));
 write('.env','');
 write('tsconfig.json',JSON.stringify({compilerOptions:{target:'ES2020',module:'commonjs',jsx:'react',esModuleInterop:true,experimentalDecorators:true,resolveJsonModule:true,types:['chrome','react'],strict:true},include:['src/**/*']},null,2));
 write('src/state.ts',`import {ServiceDecorator} from 'devxtension';
@@ -92,5 +94,5 @@ run('consumer-api-types',[path.join(root,'tests/factory-types.cjs')],consumer);
 run('consumer-build',[npm,'run','build'],consumer);
 const manifest=JSON.parse(fs.readFileSync(path.join(consumer,'dist/manifest.json'),'utf8'));
 assert.equal(manifest.name,'DevEx author factory');assert.equal(manifest.manifest_version,3);assert.deepEqual(manifest.host_permissions,['http://127.0.0.2/*']);assert(manifest.permissions.includes('storage'));assert(manifest.permissions.includes('webNavigation'));assert.equal(manifest.background.service_worker,'background.js');
-const packageSha256=crypto.createHash('sha256').update(fs.readFileSync(path.join(out,'devxtension-1.1.0.tgz'))).digest('hex');fs.writeFileSync(path.join(out,'package-hash.json'),JSON.stringify({packageSha256},null,2));
+const packageSha256=crypto.createHash('sha256').update(fs.readFileSync(archive)).digest('hex');fs.writeFileSync(path.join(out,'package-hash.json'),JSON.stringify({packageSha256},null,2));
 console.log('FACTORY PRODUCT PIPELINE PASS',packageSha256);

@@ -1,21 +1,57 @@
 name: Publish DevEx
 
 on:
+  pull_request:
+    paths:
+      - .github/workflows/release.yml
+      - .github/workflows/verify-runtime.yml
+      - packages/runtime/**
+      - scripts/prepare-runtime-release.cjs
+      - scripts/verify-published.cjs
+      - scripts/wait-for-registry.cjs
+      - tests/**
   workflow_dispatch:
+    inputs:
+      mode:
+        description: Release operation
+        type: choice
+        options: [dry-run, publish]
+        default: dry-run
+        required: true
 
 permissions:
   contents: read
 
 concurrency:
-  group: npm-release
+  group: ${{ github.event_name == 'workflow_dispatch' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch) && 'npm-release' || format('npm-dry-run-{0}', github.run_id) }}
   cancel-in-progress: false
 
 jobs:
   verify:
-    if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
-    uses: ./.github/workflows/verify.yml
-  publish:
+    if: github.event_name == 'pull_request' || github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+    uses: ./.github/workflows/verify-runtime.yml
+  package:
     needs: verify
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - uses: actions/download-artifact@v4
+        with:
+          name: devex-runtime-verification
+          path: candidate
+      - name: Verify the candidate archive and report registry availability
+        run: node scripts/prepare-runtime-release.cjs candidate release-package
+      - uses: actions/upload-artifact@v4
+        with:
+          name: devex-release-package
+          path: release-package/
+          if-no-files-found: error
+  publish:
+    if: github.event_name == 'workflow_dispatch' && inputs.mode == 'publish' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+    needs: package
     runs-on: ubuntu-latest
     environment: npm
     permissions:
@@ -28,10 +64,13 @@ jobs:
           node-version: '24'
           registry-url: https://registry.npmjs.org
       - run: npm install --global npm@11
-      - run: npm ci --no-audit --no-fund
-        working-directory: devxtension
-      - name: Publish a freshly built package through OIDC
-        run: npm publish --access public --provenance
-        working-directory: devxtension
+      - uses: actions/download-artifact@v4
+        with:
+          name: devex-release-package
+          path: release-package
+      - name: Refuse to publish an existing version
+        run: node scripts/prepare-runtime-release.cjs release-package --require-unpublished
+      - name: Publish the verified archive through OIDC
+        run: npm publish ./release-package/devxtension.tgz --ignore-scripts --access public --provenance
       - name: Verify public registry installation and factory contracts
-        run: node scripts/verify-published.cjs
+        run: node scripts/verify-published.cjs ./release-package/devxtension.tgz
