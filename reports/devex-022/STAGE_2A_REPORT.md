@@ -46,3 +46,9 @@ Candidate archive SHA-256, identical locally and in GitHub Actions: `9397241b85e
 - [Historical CI](https://github.com/Kiril-Hr/extension-2.0/actions/runs/45082244067), including the public npm minimal-example check.
 
 Both runs passed on infrastructure commit `be9f7daf9cae9efcd75efac1e94f04688e82c09b`. The subsequent report commit only records this evidence. The historical directories, candidate source and existing release/verification YAML have an empty diff from Stage 1. Stage 2A is ready for Stage 2B review.
+
+## Stage 2A.1 · CI hardening
+
+Candidate CI runs on pull requests and on pushes to main and the Stage 2A branch. Checkout fetches full history. The historical protection step compares the committed tree at HEAD with `88779392dde75602c2b37f6620df06145396a697` for devxtension/, example/, test/, release.yml and verify.yml. The same comparison applies to a checked-out PR merge ref or push commit.
+
+Local verification returned exit 0 for the current committed tree. A synthetic Git commit with a changed devxtension/README.md returned exit 1 using the same comparison. The test used a temporary index and left protected worktree files and branch refs intact.

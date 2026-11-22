@@ -3,7 +3,7 @@ name: DevEx runtime candidate
 on:
   pull_request:
   push:
-    branches: ['codex/devex-022-stage-2a-ci']
+    branches: [main, 'codex/devex-022-stage-2a-ci']
 
 permissions:
   contents: read
@@ -13,6 +13,8 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
@@ -49,7 +51,7 @@ jobs:
           PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.verification/browser-binaries
       - name: Verify historical sources and release workflows
         if: always()
-        run: git diff --exit-code HEAD -- devxtension example test .github/workflows/release.yml .github/workflows/verify.yml
+        run: git diff --exit-code 88779392dde75602c2b37f6620df06145396a697 HEAD -- devxtension example test .github/workflows/release.yml .github/workflows/verify.yml
       - uses: actions/upload-artifact@v4
         if: always()
         with:
