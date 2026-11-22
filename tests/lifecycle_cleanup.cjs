@@ -1,6 +1,7 @@
+const { sourceRoot } = require('./source-package.cjs')
 const fs=require('fs'),path=require('path'),cp=require('child_process');
-const root=path.resolve(__dirname,'../devxtension/src/core');
-const loader=`const fs=require('fs'),ts=require(${JSON.stringify(require.resolve('../devxtension/node_modules/typescript'))});require.extensions['.ts']=(m,f)=>m._compile(ts.transpileModule(fs.readFileSync(f,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020}}).outputText,f);const root=${JSON.stringify(root)};const {ExtensionCoreModule}=require(root+'/coreModule/ExtensionCoreModule.ts');`;
+const root=path.join(sourceRoot,'src/core');
+const loader=`const fs=require('fs'),ts=require(${JSON.stringify(require.resolve(require('path').join(sourceRoot, 'node_modules/typescript')))});require.extensions['.ts']=(m,f)=>m._compile(ts.transpileModule(fs.readFileSync(f,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020}}).outputText,f);const root=${JSON.stringify(root)};const {ExtensionCoreModule}=require(root+'/coreModule/ExtensionCoreModule.ts');`;
 const cases={
  'teardown before next setup':`const calls=[];class A{setup(){calls.push('A.setup')}teardown(){calls.push('A.teardown')}}class B{setup(){calls.push('B.setup')}}const core=new ExtensionCoreModule({functionalities:[A]});core.setup();core.reSetup({functionalities:[B]});if(calls.join(',')!=='A.setup,A.teardown,B.setup')throw Error(calls);`,
  'event subscription released':`const listeners=new Set();class A{setup(){this.fn=()=>{};listeners.add(this.fn)}teardown(){listeners.delete(this.fn)}}const core=new ExtensionCoreModule({functionalities:[A]});core.setup();core.reSetup({functionalities:[A]});if(listeners.size!==1)throw Error('leaked '+listeners.size);`,

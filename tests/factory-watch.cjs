@@ -21,7 +21,10 @@ async function main(){
  try{fs.writeFileSync(legacy,JSON.stringify({name:'Conflict'}));const r=cp.spawnSync(process.execPath,[npm,'run','build'],{cwd:consumer,encoding:'utf8',timeout:120000});fs.writeFileSync(path.join(out,'manifest-conflict.log'),r.stdout+r.stderr);assert.notEqual(r.status,0);assert.match(r.stdout+r.stderr,/Conflict for name/);console.log('PASS CLI fails explicitly on conflicting legacy Manifest')}
  finally{fs.rmSync(legacy,{force:true})}
  const r=cp.spawnSync(process.execPath,[npm,'run','build'],{cwd:consumer,encoding:'utf8',timeout:300000,maxBuffer:20000000});fs.writeFileSync(path.join(out,'consumer-final-build.log'),r.stdout+r.stderr);assert.equal(r.status,0,r.stdout+r.stderr);console.log('PASS restored source production build');
- const vm=cp.spawnSync(process.execPath,[path.join(root,'devxtension/lib-bild/config/webpackCompileUtils/integration-test.cjs')],{cwd:root,encoding:'utf8'});fs.writeFileSync(path.join(out,'background-vm.log'),vm.stdout+vm.stderr);assert.equal(vm.status,0,vm.stdout+vm.stderr);
+ const backgroundTest = process.env.DEVEX_SOURCE_ROOT === undefined
+   ? [path.join(root,'devxtension/lib-bild/config/webpackCompileUtils/integration-test.cjs')]
+   : [path.join(__dirname,'runtime-background.cjs'), path.join(root,'examples/minimal/dist')]
+ const vm=cp.spawnSync(process.execPath,backgroundTest,{cwd:root,encoding:'utf8'});fs.writeFileSync(path.join(out,'background-vm.log'),vm.stdout+vm.stderr);assert.equal(vm.status,0,vm.stdout+vm.stderr);
  fs.writeFileSync(path.join(out,'watch-results.json'),JSON.stringify({status:'PASS',inlineManifestWatch:true,conflictExitCodeNonzero:true,restoredProductionBuild:true,backgroundVM:true},null,2));console.log('PASS background VM regression');
 }
 main().catch(e=>{console.error(e);process.exitCode=1});

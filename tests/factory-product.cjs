@@ -1,8 +1,9 @@
+const { sourceRoot } = require('./source-package.cjs')
 const fs=require('fs'),path=require('path'),cp=require('child_process'),assert=require('assert/strict'),crypto=require('crypto');
-const root=path.resolve(__dirname,'..'),lib=path.join(root,'devxtension'),consumer=path.join(root,'.verification/factory-consumer'),out=path.join(root,'reports/factory-api-audit-2026-10-30');
+const root=path.resolve(__dirname,'..'),lib=sourceRoot,consumer=path.join(root,'.verification/factory-consumer'),out=path.join(root,'reports/factory-api-audit-2026-10-30');
 fs.mkdirSync(out,{recursive:true});const results=[];
 const npm=path.join(path.dirname(process.execPath),'node_modules/npm/bin/npm-cli.js');
-function run(name,args,cwd=lib){console.log('RUN',name);const r=cp.spawnSync(process.execPath,args,{cwd,encoding:'utf8',timeout:300000,maxBuffer:20000000});fs.writeFileSync(path.join(out,name+'.log'),(r.stdout||'')+(r.stderr||'')+(r.error?String(r.error):''));results.push({name,status:r.status===0?'PASS':'FAIL'});fs.writeFileSync(path.join(out,'pipeline-results.json'),JSON.stringify(results,null,2));assert.equal(r.status,0,(r.stdout||'')+(r.stderr||''));console.log('PASS',name);}
+function run(name,args,cwd=lib){console.log('RUN',name);const r=cp.spawnSync(process.execPath,args,{cwd,encoding:'utf8',timeout:300000,maxBuffer:20000000});fs.writeFileSync(path.join(out,name+'.log'),(r.stdout||'')+(r.stderr||'')+(r.error?String(r.error):''));results.push({name,exitCode:r.status,status:r.status===0?'PASS':'FAIL'});fs.writeFileSync(path.join(out,'pipeline-results.json'),JSON.stringify(results,null,2));assert.equal(r.status,0,(r.stdout||'')+(r.stderr||''));console.log('PASS',name);}
 function write(file,content){const target=path.join(consumer,file);fs.mkdirSync(path.dirname(target),{recursive:true});fs.writeFileSync(target,content)}
 run('clean-build',[npm,'run','build']);
 run('noemit',[path.join(lib,'node_modules/typescript/bin/tsc'),'-p','tsconfig.json','--noEmit','--pretty','false']);

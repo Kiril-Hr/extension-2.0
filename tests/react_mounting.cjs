@@ -1,9 +1,10 @@
+const { sourceRoot } = require('./source-package.cjs')
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const vm = require('node:vm');
-const ts = require(require.resolve('../devxtension/node_modules/typescript'));
+const ts = require(require.resolve(require('path').join(sourceRoot, 'node_modules/typescript')));
 const path = require('node:path');
-const source = fs.readFileSync(path.join(__dirname, '../devxtension/src/core/reactiveComponents/components/ReactComponent.ts'), 'utf8');
+const source = fs.readFileSync(path.join(sourceRoot, 'src/core/reactiveComponents/components/ReactComponent.ts'), 'utf8');
 const code = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.CommonJS } }).outputText;
 const events = [];
 const body = { appendChild(el) { events.push(['append', el]); } };

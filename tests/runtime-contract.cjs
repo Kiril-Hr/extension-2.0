@@ -1,5 +1,6 @@
+const { sourceRoot } = require('./source-package.cjs')
 const assert=require('assert/strict');
-const {ServiceDecorator,ModuleDecorator,ExtensionCoreModule,dependencyContainer,createExtensionFactory,Feature,DisableFeatures}=require('../devxtension/dist');
+const {ServiceDecorator,ModuleDecorator,ExtensionCoreModule,dependencyContainer,createExtensionFactory,Feature,DisableFeatures}=require(require('path').join(sourceRoot,'dist'));
 let calls=[];
 class Main {run(){calls.push('main')}}
 class Executor {executor(){calls.push('executor')}}
