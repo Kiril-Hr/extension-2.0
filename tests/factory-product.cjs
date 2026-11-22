@@ -63,7 +63,26 @@ write('src/extensionOptions/backgrounds/probe.js',`chrome.runtime.onMessage.addL
 // Refresh installation even though this development tarball retains its version.
 const modulesPath=path.resolve(consumer,'node_modules');assert(modulesPath.startsWith(consumer+path.sep));fs.rmSync(modulesPath,{recursive:true,force:true});fs.rmSync(path.join(consumer,'package-lock.json'),{force:true});
 run('consumer-install',[npm,'install','--no-audit','--no-fund'],consumer);
-function compare(dir,relative=''){for(const entry of fs.readdirSync(dir,{withFileTypes:true})){const name=path.join(relative,entry.name),file=path.join(dir,entry.name);if(entry.isDirectory())compare(file,name);else assert(fs.readFileSync(file).equals(fs.readFileSync(path.join(consumer,'node_modules/devxtension/dist',name))),'Stale installed output: '+name)}}
+function compare(dir, relative = '') {
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const name = path.join(relative, entry.name)
+    const file = path.join(dir, entry.name)
+    const installed = path.join(consumer, 'node_modules/devxtension/dist', name)
+    const excluded = name === 'test' || name.replaceAll('\\', '/') === 'config/webpackCompileUtils/integration-test.cjs'
+
+    if (excluded) {
+      assert(!fs.existsSync(installed), 'Internal test files must not be published: ' + name)
+      continue
+    }
+
+    if (entry.isDirectory()) {
+      compare(file, name)
+      continue
+    }
+
+    assert(fs.readFileSync(file).equals(fs.readFileSync(installed)), 'Stale installed output: ' + name)
+  }
+}
 compare(path.join(lib,'dist'));
 assert(!fs.existsSync(path.join(consumer,'extensionConfig.json')),'Factory consumer must prove params.manifest alone');
 assert(!fs.readFileSync(path.join(consumer,'src/runner.ts'),'utf8').includes('ExtensionCoreModule'),'Factory consumer cannot create a manual Core');

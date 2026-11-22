@@ -1,0 +1,7 @@
+{
+  "status": "PASS",
+  "inlineManifestWatch": true,
+  "conflictExitCodeNonzero": true,
+  "restoredProductionBuild": true,
+  "backgroundVM": true
+}

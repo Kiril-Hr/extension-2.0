@@ -4,7 +4,7 @@ const root = path.resolve(__dirname, '..')
 const out = path.join(root, 'reports/factory-api-audit-2026-10-30')
 const consumer = process.env.DEVEX_CONSUMER_PATH || path.join(root, '.verification/factory-consumer')
 process.env.PLAYWRIGHT_BROWSERS_PATH ||= path.join(root,'.verification/browser-binaries')
-const {chromium}=require(process.env.DEVEX_PLAYWRIGHT_PATH || 'C:/Users/kiril/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
+const { chromium } = require(process.env.DEVEX_PLAYWRIGHT_PATH || path.join(root, '.verification/tools/node_modules/playwright'))
 async function main(){
  const server=http.createServer((req,res)=>{res.setHeader('Content-Type','text/html; charset=utf-8');res.end('<!doctype html><title>DevEx author factory integration</title><style>body{font:20px system-ui;padding:40px;background:#142033;color:#e9fff5}#factory-react,#factory-widget,#factory-vanilla{padding:18px;margin:15px 0;border:1px solid #4fdbad;border-radius:10px}</style><h1>DevEx — повний авторський API фабрики</h1><p>Widgets, ManifestModule, vanilla, React та DI запускає createExtensionFactory.</p>')});
  await new Promise((resolve,reject)=>{server.once('error',reject);server.listen(80,'127.0.0.2',resolve)});

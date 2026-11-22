@@ -1,0 +1,313 @@
+devex-scripts скопійовано успішно!
+config скопійовано успішно!
+[
+  {
+    "id": "devxtension@1.1.0",
+    "name": "devxtension",
+    "version": "1.1.0",
+    "size": 30445,
+    "unpackedSize": 113015,
+    "shasum": "2a53c20d257e6d15928e904cf4a0064c1822ea6f",
+    "integrity": "sha512-JbF5pgj/G2raX0gNEWh3W6uDH/+E8NVTbbN/qqYXIhH6OKHhnH8HIZ5BfEJWLR5Qqex0mO1daW5v54OxEuKhyQ==",
+    "filename": "devxtension-1.1.0.tgz",
+    "files": [
+      {
+        "path": "LICENSE",
+        "size": 1065,
+        "mode": 420
+      },
+      {
+        "path": "README.md",
+        "size": 7068,
+        "mode": 420
+      },
+      {
+        "path": "dist/config/webpack.configuration.js",
+        "size": 2823,
+        "mode": 420
+      },
+      {
+        "path": "dist/config/webpack.dev.js",
+        "size": 881,
+        "mode": 420
+      },
+      {
+        "path": "dist/config/webpack.prod.js",
+        "size": 1205,
+        "mode": 420
+      },
+      {
+        "path": "dist/config/webpackCompileUtils/additionalUpdater.js",
+        "size": 8123,
+        "mode": 420
+      },
+      {
+        "path": "dist/config/webpackCompileUtils/backgroundURLUpdater.js",
+        "size": 1039,
+        "mode": 420
+      },
+      {
+        "path": "dist/config/webpackCompileUtils/factoryManifest.js",
+        "size": 12021,
+        "mode": 420
+      },
+      {
+        "path": "dist/config/webpackCompileUtils/runtimeToChromePatterns.js",
+        "size": 3087,
+        "mode": 420
+      },
+      {
+        "path": "dist/core/commonUtils/checkModuleDecoratorParams.utils.d.ts",
+        "size": 234,
+        "mode": 420
+      },
+      {
+        "path": "dist/core/commonUtils/checkModuleDecoratorParams.utils.js",
+        "size": 4011,
+        "mode": 420
+      },
+      {
+        "path": "dist/core/commonUtils/checkModuleDecoratorParams.utils.js.map",
+        "size": 3478,
+        "mode": 420
+      },
+      {
+        "path": "dist/core/commonUtils/checkURL.utils.d.ts",
+        "size": 438,
+        "mode": 420
+      },
+      {
+        "path": "dist/core/commonUtils/checkURL.utils.js",
+        "size": 1953,
+        "mode": 420
+      },
+      {
+        "path": "dist/core/commonUtils/checkURL.utils.js.map",
+        "size": 1746,
+        "mode": 420
+      },
+      {
+        "path": "dist/core/coreInterfaces.d.ts",
+        "size": 6014,
+        "mode": 420
+      },
+      {
+        "path": "dist/core/coreInterfaces.js",
+        "size": 119,
+        "mode": 420
+      },
+      {
+        "path": "dist/core/coreInterfaces.js.map",
+        "size": 128,
+        "mode": 420
+      },
+      {
+        "path": "dist/core/coreModule/ExtensionConfigurator.d.ts",
+        "size": 405,
+        "mode": 420
+      },
+      {
+        "path": "dist/core/coreModule/ExtensionConfigurator.js",
+        "size": 2792,
+        "mode": 420
+      },
+      {
+        "path": "dist/core/coreModule/ExtensionConfigurator.js.map",
+        "size": 2089,
+        "mode": 420
+      },
+      {
+        "path": "dist/core/coreModule/ExtensionCoreModule.d.ts",
+        "size": 308,
+        "mode": 420
+      },
+      {
+        "path": "dist/core/coreModule/ExtensionCoreModule.js",
+        "size": 1810,
+        "mode": 420
+      },
+      {
+        "path": "dist/core/coreModule/ExtensionCoreModule.js.map",
+        "size": 1321,
+        "mode": 420
+      },
+      {
+        "path": "dist/core/coreModule/manifestModuleConfigure/MainModuleConfiguration.d.ts",
+        "size": 561,
+        "mode": 420
+      },
+      {
+        "path": "dist/core/coreModule/manifestModuleConfigure/MainModuleConfiguration.js",
+        "size": 2191,
+        "mode": 420
+      },
+      {
+        "path": "dist/core/coreModule/manifestModuleConfigure/MainModuleConfiguration.js.map",
+        "size": 1537,
+        "mode": 420
+      },
+      {
+        "path": "dist/core/createExtensionFactory.d.ts",
+        "size": 393,
+        "mode": 420
+      },
+      {
+        "path": "dist/core/createExtensionFactory.js",
+        "size": 4948,
+        "mode": 420
+      },
+      {
+        "path": "dist/core/createExtensionFactory.js.map",
+        "size": 2902,
+        "mode": 420
+      },
+      {
+        "path": "dist/core/decorators/ExtensionConfig.d.ts",
+        "size": 161,
+        "mode": 420
+      },
+      {
+        "path": "dist/core/decorators/ExtensionConfig.js",
+        "size": 621,
+        "mode": 420
+      },
+      {
+        "path": "dist/core/decorators/ExtensionConfig.js.map",
+        "size": 407,
+        "mode": 420
+      },
+      {
+        "path": "dist/core/decorators/ModuleDecorator.d.ts",
+        "size": 669,
+        "mode": 420
+      },
+      {
+        "path": "dist/core/decorators/ModuleDecorator.js",
+        "size": 7763,
+        "mode": 420
+      },
+      {
+        "path": "dist/core/decorators/ModuleDecorator.js.map",
+        "size": 3425,
+        "mode": 420
+      },
+      {
+        "path": "dist/core/decorators/ServiceDecorator.d.ts",
+        "size": 510,
+        "mode": 420
+      },
+      {
+        "path": "dist/core/decorators/ServiceDecorator.js",
+        "size": 2201,
+        "mode": 420
+      },
+      {
+        "path": "dist/core/decorators/ServiceDecorator.js.map",
+        "size": 1748,
+        "mode": 420
+      },
+      {
+        "path": "dist/core/dependencyContainer/dependencyContainer.d.ts",
+        "size": 627,
+        "mode": 420
+      },
+      {
+        "path": "dist/core/dependencyContainer/dependencyContainer.js",
+        "size": 3390,
+        "mode": 420
+      },
+      {
+        "path": "dist/core/dependencyContainer/dependencyContainer.js.map",
+        "size": 2447,
+        "mode": 420
+      },
+      {
+        "path": "dist/core/index.d.ts",
+        "size": 474,
+        "mode": 420
+      },
+      {
+        "path": "dist/core/index.js",
+        "size": 2616,
+        "mode": 420
+      },
+      {
+        "path": "dist/core/index.js.map",
+        "size": 398,
+        "mode": 420
+      },
+      {
+        "path": "dist/core/providers/ModuleProvider.d.ts",
+        "size": 350,
+        "mode": 420
+      },
+      {
+        "path": "dist/core/providers/ModuleProvider.js",
+        "size": 932,
+        "mode": 420
+      },
+      {
+        "path": "dist/core/providers/ModuleProvider.js.map",
+        "size": 879,
+        "mode": 420
+      },
+      {
+        "path": "dist/core/reactiveComponents/components/ReactComponent.d.ts",
+        "size": 130,
+        "mode": 420
+      },
+      {
+        "path": "dist/core/reactiveComponents/components/ReactComponent.js",
+        "size": 820,
+        "mode": 420
+      },
+      {
+        "path": "dist/core/reactiveComponents/components/ReactComponent.js.map",
+        "size": 759,
+        "mode": 420
+      },
+      {
+        "path": "dist/core/reactiveComponents/ReactiveComponentFactory.d.ts",
+        "size": 179,
+        "mode": 420
+      },
+      {
+        "path": "dist/core/reactiveComponents/ReactiveComponentFactory.js",
+        "size": 653,
+        "mode": 420
+      },
+      {
+        "path": "dist/core/reactiveComponents/ReactiveComponentFactory.js.map",
+        "size": 435,
+        "mode": 420
+      },
+      {
+        "path": "dist/devex-scripts/index.js",
+        "size": 965,
+        "mode": 420
+      },
+      {
+        "path": "dist/index.d.ts",
+        "size": 24,
+        "mode": 420
+      },
+      {
+        "path": "dist/index.js",
+        "size": 832,
+        "mode": 420
+      },
+      {
+        "path": "dist/index.js.map",
+        "size": 129,
+        "mode": 420
+      },
+      {
+        "path": "package.json",
+        "size": 1781,
+        "mode": 420
+      }
+    ],
+    "entryCount": 59,
+    "bundled": []
+  }
+]

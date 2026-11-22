@@ -1,0 +1,13 @@
+{
+  "name": "devex-minimal-extension",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "devex-scripts build",
+    "dev": "devex-scripts dev"
+  },
+  "dependencies": {
+    "devxtension": "1.1.0"
+  }
+}

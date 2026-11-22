@@ -4,6 +4,8 @@ const path = require('path')
 const cp = require('child_process')
 const assert = require('assert/strict')
 
+const { waitForRegistry } = require('./wait-for-registry.cjs')
+
 const root = path.resolve(__dirname, '..')
 const pkg = require('../devxtension/package.json')
 const consumer = fs.mkdtempSync(path.join(os.tmpdir(), 'devex-published-'))
@@ -25,32 +27,8 @@ function run(args) {
   assert.equal(result.status, 0, `Command failed: ${args.join(' ')}`)
 }
 
-async function waitForRegistry() {
-  const deadline = Date.now() + 300000
-  const specification = `${pkg.name}@${pkg.version}`
-
-  while (true) {
-    const result = cp.spawnSync(process.execPath, [npm, 'view', specification, 'version', '--json', '--prefer-online', '--registry=https://registry.npmjs.org/'], {
-      cwd: consumer,
-      encoding: 'utf8',
-      timeout: 30000
-    })
-
-    if (result.status === 0) {
-      assert.equal(JSON.parse(result.stdout), pkg.version)
-      return
-    }
-
-    const unavailable = /E404|ETARGET/.test(result.stderr || '')
-    assert(unavailable && Date.now() < deadline, result.stderr || String(result.error))
-    console.log(`Waiting for public registry availability: ${specification}`)
-
-    await new Promise(resolve => setTimeout(resolve, 10000))
-  }
-}
-
 async function main() {
-  await waitForRegistry()
+  await waitForRegistry(npm, pkg, consumer)
 
   fs.cpSync(path.join(root, '.verification/factory-consumer/src'), path.join(consumer, 'src'), { recursive: true })
   fs.copyFileSync(path.join(root, '.verification/factory-consumer/tsconfig.json'), path.join(consumer, 'tsconfig.json'))

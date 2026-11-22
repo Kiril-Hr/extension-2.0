@@ -19,7 +19,9 @@ jobs:
           node-version: '24'
       - run: npm ci --no-audit --no-fund
         working-directory: devxtension
+      - run: node --test tests/registry-propagation.cjs
       - run: node tests/factory-product.cjs
+      - run: node tests/packaging-cleanup.cjs
       - run: node tests/factory-watch.cjs
       - run: npm install --prefix .verification/tools --no-audit --no-fund playwright@1.56.1
       - run: node .verification/tools/node_modules/playwright/cli.js install chromium
@@ -33,8 +35,23 @@ jobs:
       - run: node tests/factory-browser.cjs
         env:
           DEVEX_PLAYWRIGHT_PATH: ${{ github.workspace }}/.verification/tools/node_modules/playwright
+      - name: Build the documented minimal example from public npm
+        shell: pwsh
+        run: |
+          Copy-Item examples/minimal/.env.example examples/minimal/.env
+          npm ci --prefix examples/minimal --no-audit --no-fund
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          npm --prefix examples/minimal run typecheck
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          npm --prefix examples/minimal run build
+          exit $LASTEXITCODE
+      - run: node tests/minimal-example-browser.cjs
+        env:
+          DEVEX_PLAYWRIGHT_PATH: ${{ github.workspace }}/.verification/tools/node_modules/playwright
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: devex-verification
-          path: reports/factory-api-audit-2026-10-30/
+          path: |
+            reports/factory-api-audit-2026-10-30/
+            reports/cleanup-2026-11-16/
