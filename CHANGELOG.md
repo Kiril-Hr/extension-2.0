@@ -195,6 +195,12 @@
 - Stop tracking stale generated dist; clean build and prepack regenerate npm output.
 - Publication remains pending npm trusted publisher configuration, successful checks and approved PR merge.
 
+# 1.1.0 published — 2026-11-16
+
+- Published through GitHub Actions OIDC with provenance after approved PR #1 merge.
+- Verified the public npm package in a clean independent TypeScript/Webpack consumer and all nine real Chromium MV3 scenarios.
+- Follow-up: wait for npm registry propagation before the post-publish consumer check; retain the initial ETARGET evidence.
+
 # Unreleased repository cleanup — 2026-11-17
 
 - Add current public API documentation, a verified minimal extension and author-confirmed MIT license text.

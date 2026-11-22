@@ -19,6 +19,7 @@ jobs:
           node-version: '24'
       - run: npm ci --no-audit --no-fund
         working-directory: devxtension
+      - run: node --test tests/registry-propagation.cjs
       - run: node tests/factory-product.cjs
       - run: node tests/packaging-cleanup.cjs
       - run: node tests/factory-watch.cjs
