@@ -195,3 +195,11 @@
 - Stop tracking stale generated dist; clean build and prepack regenerate npm output.
 - Publication remains pending npm trusted publisher configuration, successful checks and approved PR merge.
 
+# Unreleased repository cleanup — 2026-11-17
+
+- Add current public API documentation, a verified minimal extension and author-confirmed MIT license text.
+- Archive v1 notes; untrack IDE state and generated example/test output while preserving local copies and source fixtures.
+- Exclude internal compiled tests from future npm tarballs, retaining runtime/declarations/build tools and metadata.
+- Add packaging/minimal-example checks and document secret/privacy scan results and historical artifact retention.
+- Keep runtime, public API, dependencies and npm version 1.1.0 unchanged; no npm publication.
+

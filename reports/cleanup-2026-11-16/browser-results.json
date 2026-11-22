@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "version": "151.0.7922.34",
+  "packageSha256": "de8b6c31c79368d24a66e59641f63d4e17a742d36b6cbf8d35714da69a747b7f",
+  "checks": [
+    "Author API starts real modules, global widget, custom ManifestModule, shared DI and React; no manual Core or legacy JSON",
+    "Generated MV3 service worker, permissions, Chrome messaging/storage and runtime manifest agree",
+    "Public controller reSetup reuses DI, invokes global hooks once and recreates route modules with one React root",
+    "Real Chrome webNavigation triggers factory reSetup on pushState without tab reload or DI loss",
+    "SPA exit deactivates route resources, keeps globals alive, and re-entry remounts matching modules",
+    "Back/forward popstate and Chrome notifications are deduplicated",
+    "Final teardown removes module DOM, React effects, singleton widget/manifest listeners and is idempotent",
+    "Restart uses factory again; late async React mounting cannot survive teardown",
+    "Global participants run on declared hosts before any route; first SPA route entry preserves their context without reload"
+  ],
+  "errors": []
+}

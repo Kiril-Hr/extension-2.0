@@ -1,0 +1,28 @@
+{
+  "scanner": "Gitleaks 8.30.1; official release checksum verified",
+  "history": "all refs and full history in the available local Git object database, including fetched GitHub main and release branches",
+  "exposedCredentialsFound": 0,
+  "categories": [
+    "access tokens",
+    "API keys",
+    "passwords",
+    "private keys",
+    "authentication cookies",
+    "configuration credentials",
+    "sensitive environment files",
+    "logs",
+    "build output",
+    "source maps"
+  ],
+  "additionalReview": "Bounded-pattern privacy/credential inventory over all historical blobs and current tracked contents; no matching values emitted",
+  "historicalPrivacy": "Workstation paths remain in prior Git history and the byte-preserved integration patch; commit author metadata contains maintainer email addresses. Values intentionally omitted.",
+  "activeCodePrivacy": "Removed hardcoded personal Playwright fallback; uses DEVEX_PLAYWRIGHT_PATH or workspace-local tools",
+  "reportPrivacy": "Normalized workstation paths in the Manifest-conflict log; original SHA256 retained",
+  "rotation": "No actual exposed credentials identified, so no specific credential rotation is indicated by this scan",
+  "limitations": "Pattern scanners cannot prove absence of secrets; unreachable/deleted remote objects, external services, browser/account storage and dependencies are outside this repository-content audit. No history rewrite performed.",
+  "permissions": {
+    "minimal": "Scoped https://example.com/*, no explicit API permissions; generated webNavigation validated in real Chromium",
+    "factoryFixture": "Loopback host + storage + generated webNavigation preserved for verified API/navigation tests",
+    "legacyExamples": "example/ and test/ still use all_urls and activeTab/storage/tabs/webNavigation. This is broader than their visible Meet route requires. Preserved because legacy application flows are not fully verified; narrow only with corresponding workflow tests. Not the recommended starter."
+  }
+}
