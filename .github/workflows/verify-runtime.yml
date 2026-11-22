@@ -1,0 +1,62 @@
+name: DevEx runtime candidate
+
+on:
+  pull_request:
+  push:
+    branches: [main, 'codex/devex-022-stage-2a-ci']
+
+permissions:
+  contents: read
+
+jobs:
+  candidate:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Reject missing, empty and invalid candidate paths
+        shell: pwsh
+        run: |
+          Remove-Item Env:DEVEX_SOURCE_ROOT -ErrorAction SilentlyContinue
+          node tests/verify-runtime.cjs
+          if ($LASTEXITCODE -eq 0) { throw 'Missing selection accepted' }
+          $env:DEVEX_SOURCE_ROOT = ' '
+          node tests/verify-runtime.cjs
+          if ($LASTEXITCODE -eq 0) { throw 'Empty selection accepted' }
+          $env:DEVEX_SOURCE_ROOT = 'packages/does-not-exist'
+          node tests/factory-product.cjs
+          if ($LASTEXITCODE -eq 0) { throw 'Invalid selection accepted' }
+          $env:DEVEX_SOURCE_ROOT = 'devxtension'
+          node tests/verify-runtime.cjs
+          if ($LASTEXITCODE -eq 0) { throw 'Historical package accepted as candidate' }
+          Write-Output 'PASS invalid selections rejected'
+          exit 0
+      - run: npm install --prefix .verification/tools --no-audit --no-fund playwright@1.56.1
+      - run: node .verification/tools/node_modules/playwright/cli.js install chromium
+        env:
+          PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.verification/browser-binaries
+      - name: Release HTTP port on the disposable Windows runner
+        shell: pwsh
+        run: |
+          Stop-Service -Name W3SVC -Force -ErrorAction SilentlyContinue
+          Stop-Service -Name HTTP -Force -ErrorAction Stop
+      - run: node tests/verify-runtime.cjs
+        env:
+          DEVEX_SOURCE_ROOT: packages/runtime
+          DEVEX_PLAYWRIGHT_PATH: ${{ github.workspace }}/.verification/tools/node_modules/playwright
+          PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.verification/browser-binaries
+      - name: Verify historical sources and release workflows
+        if: always()
+        run: git diff --exit-code 88779392dde75602c2b37f6620df06145396a697 HEAD -- devxtension example test .github/workflows/release.yml .github/workflows/verify.yml
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: devex-runtime-verification
+          path: |
+            .verification/tools/runtime-runs/run-*/reports/
+            .verification/tools/runtime-runs/run-*/tests/*_results.json
+            .verification/tools/runtime-runs/run-*/tests/results.json

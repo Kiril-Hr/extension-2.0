@@ -1,5 +1,6 @@
+const { sourceRoot } = require('./source-package.cjs')
 const fs=require('fs'),path=require('path'),assert=require('assert/strict');
-const root=path.resolve(__dirname,'..'),{readProjectManifest:read}=require('../devxtension/lib-bild/config/webpackCompileUtils/factoryManifest');
+const root=path.resolve(__dirname,'..'),{readProjectManifest:read}=require(path.join(sourceRoot,'lib-bild/config/webpackCompileUtils/factoryManifest'));
 const folder=fs.mkdtempSync(path.join(root,'.verification/factory-manifest-'));
 const results=[];
 function scenario(name,files,check){

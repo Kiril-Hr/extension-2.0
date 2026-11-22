@@ -1,10 +1,11 @@
+const { sourceRoot } = require('./source-package.cjs')
 const assert = require('assert/strict')
 const cp = require('child_process')
 const fs = require('fs')
 const path = require('path')
 
 const root = path.resolve(__dirname, '..')
-const library = path.join(root, 'devxtension')
+const library = sourceRoot
 const output = path.join(root, 'reports/cleanup-2026-11-16')
 const npm = path.join(path.dirname(process.execPath), 'node_modules/npm/bin/npm-cli.js')
 

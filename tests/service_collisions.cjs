@@ -1,6 +1,7 @@
+const { sourceRoot } = require('./source-package.cjs')
 const fs=require('fs'),path=require('path'),cp=require('child_process');
-const root=path.resolve(__dirname,'../devxtension/src/core');
-const loader=`const fs=require('fs'),ts=require(${JSON.stringify(require.resolve('../devxtension/node_modules/typescript'))});require.extensions['.ts']=(m,f)=>m._compile(ts.transpileModule(fs.readFileSync(f,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020}}).outputText,f);const {dependencyContainer:di}=require(${JSON.stringify(root)}+'/dependencyContainer/dependencyContainer.ts');const {ServiceDecorator}=require(${JSON.stringify(root)}+'/decorators/ServiceDecorator.ts');`;
+const root=path.join(sourceRoot,'src/core');
+const loader=`const fs=require('fs'),ts=require(${JSON.stringify(require.resolve(require('path').join(sourceRoot, 'node_modules/typescript')))});require.extensions['.ts']=(m,f)=>m._compile(ts.transpileModule(fs.readFileSync(f,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020}}).outputText,f);const {dependencyContainer:di}=require(${JSON.stringify(root)}+'/dependencyContainer/dependencyContainer.ts');const {ServiceDecorator}=require(${JSON.stringify(root)}+'/decorators/ServiceDecorator.ts');`;
 const cases={
  'same class registered twice':`class S{};ServiceDecorator(S);di.registerService('S',S);if(di.getService('S').constructor!==S)throw Error('instance mismatch')`,
  'different classes with same name rejected':`const A=class Same{};const B=class Same{};ServiceDecorator(A);let caught=false;try{ServiceDecorator(B)}catch(e){caught=e.message.includes('Service registration conflict')}if(!caught)throw Error('collision not detected')`,

@@ -1,5 +1,6 @@
+const { sourceRoot } = require('./source-package.cjs')
 const assert=require('assert/strict');
-const {convertRuntimePattern:convert,contentScriptForPatterns:content}=require('../devxtension/lib-bild/config/webpackCompileUtils/runtimeToChromePatterns');
+const {convertRuntimePattern:convert,contentScriptForPatterns:content}=require(require('path').join(sourceRoot,'lib-bild/config/webpackCompileUtils/runtimeToChromePatterns'));
 assert.deepEqual(convert('https://example.com/').matches,['https://example.com/*']);
 assert.deepEqual(convert('https://example.com/app/*').matches,['https://example.com/app/*']);
 assert.deepEqual(convert('https://example.com/app').matches,['https://example.com/app','https://example.com/app?*']);
