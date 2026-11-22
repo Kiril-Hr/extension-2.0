@@ -20,3 +20,7 @@ Propose ordinary consumer functions, e.g. `const shouldLeave = (meeting: Meeting
 ## Evidence boundary
 
 Re-ran `node tests/public-api.cjs` in AUTHOR-001 against registry-installed 1.1.0: PASS for package origin and shared-prototype characterization. Reviewed its ARCHITECTURE, AUTHOR_VISION_COMPARISON, API_GAPS and FINAL_REPORT. Recorded Chromium evidence there covers a detached button, one live widget, observer updates and DI state after SPA return. [DEVEX-019 coverage](../devex-019/COVERAGE.md) distinguishes framework tests from unverified Meet workflows. The [baseline Windows CI](https://github.com/Kiril-Hr/extension-2.0/actions/runs/45045549728) is historical evidence. DEVEX-018 controller guidance was read from the actual local reports/devex-018-product-readiness directory. The following RFCs are proposals; none of their examples ran against 1.1.0.
+
+## Author review disposition
+
+The factory controller owns feature policy. Core passes an activation capability to opted-in consumers. The shared service remains an ordinary DI singleton. The approved resource boundary is one activation, with separate first/last ownership for shared widgets. Post-start control registration and explicit executor selection are accepted directions. A Core rule engine is deferred. The remaining gate covers the concrete signatures, opt-in syntax and compatibility cases in [the combined consumer example](FINAL_REPORT.md#combined-consumer-example).

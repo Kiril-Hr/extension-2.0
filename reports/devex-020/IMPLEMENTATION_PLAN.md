@@ -1,6 +1,6 @@
 # Implementation gates
 
-The next action is author review of the four RFCs and the rule-composition disposition. No phase below has started. Each increment requires approval of its contract and its own evidence before the next dependency is introduced.
+The author accepted the architectural direction and deferred the Core rule engine. The next gate is review of the amended public example and compatibility boundaries. No phase below has started. Each increment requires approval of its contract and its own evidence before the next dependency is introduced.
 
 | Order | Change after approval | Exit evidence |
 | --- | --- | --- |
@@ -18,3 +18,11 @@ From the candidate worktree run npm ci inside devxtension, then node tests/facto
 In a clean copy of the independent consumer, install the freshly packed candidate tarball, verify resolved package bytes and hash, typecheck and build the original Review source. Run its real Chromium widget, route exit/re-entry and detached-handler tests. Run a *separate* opt-in source fixture against that same tarball for new decorators/scopes/control. Use the old prototype characterization only on the documented legacy lane; the candidate guard tests require enable to restore dispatch. Repeat browser tests from fresh profiles and with repeated navigation. Verify no residual observer, event listener, timer, subscription, delayed mount or control callback after final release. No npm publish, workflow edit or PR #2 operation is necessary.
 
 If an increment cannot preserve the promised compatibility, stop that increment and present the smallest versioned migration. Do not transfer application rules to Core to make an acceptance test pass.
+
+## Amended approval checklist
+
+1. Review the public imports and full example in [FINAL_REPORT.md](FINAL_REPORT.md#combined-consumer-example). Confirm the second @Feature argument, first-argument activation, declared ID/key shape and return contract. Preserve metadata-only decorators as well as the legacy wrapper for 1.x.
+2. Require a type-only candidate fixture for the example and negative fixtures for wrong keys, missing ctx, value/Promise-returning commands, accessors and bad executor selection. Explicitly record which errors require runtime validation.
+3. Run two independent factory invocations in the same JS realm against one DI receiver. Disable one factory's command, issue both callbacks, change route, call an expired handle, and dispose one controller. Assert the other policy and owner resources remain live. Test that pending async work continues until the owning activation cancels it.
+4. Build the integrated fixture with the real CLI from the *candidate tarball*. Invoke the typed selector in Chromium, verify the receiver, and ensure its sibling helper did not run. Repeat the unchanged published-package smoke in a separate consumer. Current production-bundle evidence is scoped in the executor RFC.
+5. Record the deferred Core Rule Engine decision. Keep release propagation in PR #2, outside this branch. Stop for signature and migration sign-off before any implementation.

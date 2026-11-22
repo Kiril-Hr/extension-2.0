@@ -1,6 +1,6 @@
 # RFC · Reversible feature controls
 
-**Decision requested.** Store policy per factory instance and declared module ID. Pass the activation explicitly at invocation when a service can be shared. Keep @Feature('recording') as metadata for legacy code. Opt in to a guard with a second decorator argument.
+**Ownership direction accepted; signature proposed.** Store policy per factory instance and declared module ID. Pass the activation explicitly at invocation when a service can be shared. Keep @Feature('recording') as metadata for legacy code. Opt in to a guard with a second decorator argument.
 
 ```ts
 // Proposed module option, configured beside vanilla in @ModuleDecorator
@@ -51,3 +51,16 @@ The original function object differs from the decorated wrapper. Method lookup a
 1.1.0 users keep existing observable behavior. In a compatible candidate retain deprecated DisableFeatures for existing unguarded classes; warn/document that it mutates shared prototypes. Reject mixing the legacy mutator with opted-in guarded targets **before** any mutation. No new feature-manager path uses that mutation. A full guarantee across *all* exports requires retiring or changing the legacy helper in a separately approved major release. Replacing its implementation silently would break callers relying on persistent suppression outside its wrapper. Migrate a service by replacing its wrapper call with an explicit scoped update and guarded command. Rebuild/reload to start with clean prototypes. For the Meet controller returning result data, guard its nested void recording command, not the result-producing orchestration method.
 
 Acceptance: two factories × two module IDs sharing a key, one DI receiver used by two owners, two receivers, repeated writes, inherited method, bound reference, original exceptions, invalid keys/contexts, pending operation and disposed handles. Compare a plain call and guarded call in a tight loop before considering optimization; no benchmark claim yet.
+
+## Explicit context at the call site
+
+| Candidate | Usability | Type and ownership consequences |
+| --- | --- | --- |
+| `service.complete(ctx)` with `Activation<'review'>` | One extra argument, can capture ctx in a callback, easy to trace in a debugger. Recommended. | A scoped handle can narrow local keys to a literal union. Core must authenticate the live handle at runtime; TypeScript cannot distinguish two factory instances with identical types. |
+| `service.forActivation(ctx).complete()` | Shorter for many commands on one service. Requires a new wrapper and rules for its identity, disposal and cached references. | Can retain the key union; accidentally retaining a wrapper would keep the old scope. Defer until a real consumer needs it. |
+| `if (ctx.features.isEnabled('review')) service.complete()` | No interception, useful for return values and async code. | Caller chooses the fallback; every entry point must guard. Supported as explicit composition. |
+| `service.complete()` with ambient ownership | Shortest syntax. | Concurrent modules, reentrancy and async callbacks make the current owner ambiguous. Reject. |
+
+Proposed `Activation<K extends string = string>` exposes `features: ScopedFeatures<K>` with all three operations accepting K. The module declaration is the runtime source of truth. A handwritten annotation can be wrong; literal declaration inference across class decorators and registry imports is a prototype/type-fixture gate. Dynamic controller lookups must also reject unknown IDs/keys at runtime. Expose clear diagnostics including module ID and requested key. The brand on Core-issued handles prevents structural forgery at runtime. A type union alone cannot authenticate an owner.
+
+Legacy metadata and irreversible behavior stay available on the legacy path. Configure-time decoration installs the opt-in wrapper once. Enable/disable, setup and teardown never write prototype methods on that path. An inherited guarded descriptor counts as a guarded target for mixed-mode validation; reject before scanning or replacing any legacy method. Separate classes may use separate paths in the same process. An override has ordinary JS dispatch and must explicitly opt in again. A retained wrapper/bound method rechecks its supplied ctx each call; a raw reference to the implementation captured before decoration is outside interception. Disabling never cancels work already in flight. The proposed deprecation is documentation-first with migration examples; removal requires separate major-version approval.
