@@ -1,4 +1,5 @@
 const assert = require('assert/strict')
+const { on } = require('node:events')
 const fs = require('fs')
 const path = require('path')
 
@@ -8,6 +9,25 @@ process.env.PLAYWRIGHT_BROWSERS_PATH ||= path.join(root, '.verification/browser-
 const { chromium } = require(process.env.DEVEX_PLAYWRIGHT_PATH || path.join(root, '.verification/tools/node_modules/playwright'))
 const output = path.join(root, 'reports/cleanup-2026-11-16')
 const extension = path.join(root, 'examples/minimal/dist')
+
+async function activatedWorkerUrl(page, script) {
+  const session = await page.context().newCDPSession(page)
+  const updates = on(session, 'ServiceWorker.workerVersionUpdated', { signal: AbortSignal.timeout(30000) })
+
+  try {
+    // Enabling CDP sends the current versions, followed by registration changes.
+    await session.send('ServiceWorker.enable')
+    for await (const [{ versions }] of updates) {
+      const active = versions.find(({ status, scriptURL }) =>
+        status === 'activated' && scriptURL.startsWith('chrome-extension://') && new URL(scriptURL).pathname === '/' + script
+      )
+      if (active) return active.scriptURL
+    }
+  } finally {
+    await updates.return()
+    await session.detach()
+  }
+}
 
 async function main() {
   const manifest = JSON.parse(fs.readFileSync(path.join(extension, 'manifest.json'), 'utf8'))
@@ -35,9 +55,7 @@ async function main() {
     await page.waitForSelector('#devex-hello')
     assert.equal(await page.locator('#devex-hello').textContent(), 'Hello from DevEx 2.0')
 
-    const worker = context.serviceWorkers()[0] || await context.waitForEvent('serviceworker')
-    assert.equal(await worker.evaluate(() => chrome.webNavigation.onHistoryStateUpdated.hasListeners()), true)
-
+    const workerUrl = await activatedWorkerUrl(page, manifest.background.service_worker)
     await page.evaluate(() => {
       window.__sameDocument = true
       window.__initialHello = document.getElementById('devex-hello')
@@ -47,6 +65,11 @@ async function main() {
     assert.equal(await page.locator('#devex-hello').count(), 1)
     assert.equal(await page.evaluate(() => window.__sameDocument), true)
     assert.deepEqual(errors, [])
+
+    // A dormant MV3 worker wakes on the history event above.
+    const isExampleWorker = worker => worker.url() === workerUrl
+    const worker = context.serviceWorkers().find(isExampleWorker) || await context.waitForEvent('serviceworker', isExampleWorker)
+    assert.equal(await worker.evaluate(() => chrome.webNavigation.onHistoryStateUpdated.hasListeners()), true)
 
     fs.mkdirSync(output, { recursive: true })
     fs.writeFileSync(path.join(output, 'minimal-browser.json'), JSON.stringify({

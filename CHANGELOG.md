@@ -203,3 +203,7 @@
 - Add packaging/minimal-example checks and document secret/privacy scan results and historical artifact retention.
 - Keep runtime, public API, dependencies and npm version 1.1.0 unchanged; no npm publication.
 
+
+## DEVEX-019 — синхронізація Chromium-тесту зі станом реєстрації MV3
+
+Тест мінімального прикладу очікує активації скрипта з Manifest, виконує реальну SPA-навігацію і перевіряє слухач після пробудження worker. На локальному Chromium 141 пройшли 15 холодних та 5 повторних стартів і окремий сценарій природного сну worker. [Діагностика, відтворення, регресії та оцінка PR #2](reports/devex-019/REPORT.md).
