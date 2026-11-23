@@ -123,6 +123,40 @@ async function exoticArray() {
   assert.equal(sends, outbound)
 }
 
+async function cleanup() {
+  const { getEventListeners } = require('node:events')
+  const timers = () => process.getActiveResourcesInfo().filter(type => type === 'Timeout').length
+  const initial = timers()
+  const original = chrome.runtime.sendMessage
+  const callbacks = []
+  chrome.runtime.sendMessage = (message, receive) => callbacks.push(receive)
+  const scoped = proto.client('content')
+  const abort = new AbortController()
+  const settlements = Array(8).fill(0)
+  const before = calls
+  try {
+    const operations = settlements.map((_, index) => scoped.request('echo', { body: index },
+      { role: 'background' }, { signal: abort.signal }).then(result => {
+      settlements[index]++
+      return result
+    }))
+    assert.equal(callbacks.length, 8)
+    assert.equal(timers() - initial, 8)
+    assert.equal(getEventListeners(abort.signal, 'abort').length, 8)
+    scoped.dispose()
+    for (const result of await Promise.all(operations)) assert.equal(result.code, 'aborted')
+    assert.equal(timers(), initial)
+    assert.equal(getEventListeners(abort.signal, 'abort').length, 0)
+    for (const receive of callbacks) receive(null)
+    assert(settlements.every(n => n === 1))
+    assert.equal(calls, before)
+    console.log('client disposal: timers and abort listeners 8 -> 0; handler delta 0; eight single settlements')
+  } finally {
+    scoped.dispose()
+    chrome.runtime.sendMessage = original
+  }
+}
+
 async function measure() {
   const { checkJson, defaults } = installed('devxtension/dist/messaging/wire.js')
   for (const payload of [1024, 16384, 65536, 'array'].map(n => ({
@@ -156,6 +190,7 @@ async function main() {
   compilation()
   await validation()
   await exoticArray()
+  await cleanup()
   await measure()
 }
 main().catch(e => { console.error(e); process.exitCode = 1 }).finally(() => {
