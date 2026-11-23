@@ -5,13 +5,54 @@ const out = path.join(root, 'reports/factory-api-audit-2026-10-30')
 const consumer = process.env.DEVEX_CONSUMER_PATH || path.join(root, '.verification/factory-consumer')
 process.env.PLAYWRIGHT_BROWSERS_PATH ||= path.join(root,'.verification/browser-binaries')
 const { chromium } = require(process.env.DEVEX_PLAYWRIGHT_PATH || path.join(root, '.verification/tools/node_modules/playwright'))
+const { on } = require('node:events')
+
+async function verifyBackgroundStorage(page, script, diagnostics) {
+  const context = page.context()
+  const session = await context.newCDPSession(page)
+  const versions = on(session, 'ServiceWorker.workerVersionUpdated', { signal: AbortSignal.timeout(30000) })
+  let workerUrl
+
+  try {
+    const { targetInfos } = await session.send('Target.getTargets')
+    diagnostics.targets = targetInfos.filter(target => target.type === 'service_worker').map(target => target.url)
+    diagnostics.playwrightWorkers = context.serviceWorkers().map(worker => worker.url())
+
+    await session.send('ServiceWorker.enable')
+    for await (const [event] of versions) {
+      for (const worker of event.versions) {
+        const url = new URL(worker.scriptURL)
+        if (url.protocol !== 'chrome-extension:' || url.pathname !== '/' + script) continue
+
+        diagnostics.versions.push({ url: worker.scriptURL, status: worker.status, running: worker.runningStatus })
+        if (worker.status === 'activated') workerUrl = url
+      }
+      if (workerUrl) break
+    }
+  } finally {
+    await versions.return()
+    await session.detach()
+  }
+
+  const extensionPage = await context.newPage()
+  try {
+    // The message reply is already verified. Read its durable storage write
+    // through the extension origin, even when the worker has gone dormant.
+    await extensionPage.goto(new URL('/manifest.json', workerUrl).href)
+    await extensionPage.waitForFunction(async () => (await chrome.storage.local.get('factoryProbe')).factoryProbe === true)
+  } finally {
+    await extensionPage.close()
+  }
+}
+
 async function main(){
  const server=http.createServer((req,res)=>{res.setHeader('Content-Type','text/html; charset=utf-8');res.end('<!doctype html><title>DevEx author factory integration</title><style>body{font:20px system-ui;padding:40px;background:#142033;color:#e9fff5}#factory-react,#factory-widget,#factory-vanilla{padding:18px;margin:15px 0;border:1px solid #4fdbad;border-radius:10px}</style><h1>DevEx — повний авторський API фабрики</h1><p>Widgets, ManifestModule, vanilla, React та DI запускає createExtensionFactory.</p>')});
  await new Promise((resolve,reject)=>{server.once('error',reject);server.listen(80,'127.0.0.2',resolve)});
  let context;const checks=[],errors=[];
+ const diagnostics = { versions: [] }
  try{
   const extension=path.join(consumer,'dist');
-  context=await chromium.launchPersistentContext(path.join(root,'.verification/browser-profile/factory'),{channel:'chromium',headless:true,ignoreDefaultArgs:['--disable-extensions'],args:['--no-proxy-server',`--disable-extensions-except=${extension}`,`--load-extension=${extension}`]});
+  context=await chromium.launchPersistentContext('',{channel:'chromium',headless:true,ignoreDefaultArgs:['--disable-extensions'],args:['--no-proxy-server',`--disable-extensions-except=${extension}`,`--load-extension=${extension}`]});
   context.on('page',p=>p.on('pageerror',e=>errors.push(e.message)));
   const page=await context.newPage();
   const state=()=>page.evaluate(()=>JSON.parse(document.documentElement.dataset.factoryState));
@@ -22,8 +63,11 @@ async function main(){
   let s=await state();assert.equal(s.routeSetups,1);assert.equal(s.widgetSetups,1);assert.equal(s.manifestSetups,1);assert.equal(s.manifestName,'DevEx author factory');assert.equal(s.localSetups,1);
   assert.equal(await page.locator('#factory-react').textContent(),'React through factory + DI 1');
   checks.push('Author API starts real modules, global widget, custom ManifestModule, shared DI and React; no manual Core or legacy JSON');
-  const worker=context.serviceWorkers()[0]||await context.waitForEvent('serviceworker');
-  assert.equal(await worker.evaluate(async()=>(await chrome.storage.local.get('factoryProbe')).factoryProbe),true);
+  const manifest = JSON.parse(fs.readFileSync(path.join(extension, 'manifest.json'), 'utf8'))
+  assert.equal(manifest.manifest_version, 3)
+  assert.equal(manifest.background.service_worker, 'background.js')
+  assert(manifest.permissions.includes('storage'))
+  await verifyBackgroundStorage(page, manifest.background.service_worker, diagnostics)
   checks.push('Generated MV3 service worker, permissions, Chrome messaging/storage and runtime manifest agree');
   await event('factory-reset');
   await wait(()=>{const s=JSON.parse(document.documentElement.dataset.factoryState);return s.reactMounts===2&&s.reactStops===1});
@@ -74,6 +118,12 @@ async function main(){
   const packageSha256 = crypto.createHash('sha256').update(fs.readFileSync(packageFile)).digest('hex')
   fs.writeFileSync(path.join(out,'browser-results.json'),JSON.stringify({status:'PASS',version:context.browser().version(),packageSha256,checks,errors},null,2));
   console.log('FACTORY BROWSER PASS',JSON.stringify(checks,null,2));
- }finally{await context?.close();await new Promise(resolve=>server.close(resolve))}
+ }finally{
+  try {
+   fs.writeFileSync(path.join(out, 'background-diagnostics.json'), JSON.stringify({ browser: context?.browser().version(), ...diagnostics, errors }, null, 2))
+  } finally {
+   await context?.close();await new Promise(resolve=>server.close(resolve))
+  }
+ }
 }
 main().catch(e=>{fs.writeFileSync(path.join(out,'browser-failure.log'),e.stack);console.error(e);process.exitCode=1});
