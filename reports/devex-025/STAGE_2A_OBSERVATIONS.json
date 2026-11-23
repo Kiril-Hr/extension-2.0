@@ -1,0 +1,170 @@
+[
+  {
+    "browser": "141.0.7390.37",
+    "transport": "native",
+    "navigation": {
+      "from": "/a",
+      "to": "/b",
+      "frameIdPreserved": true,
+      "documentIdChanged": true
+    },
+    "staleTarget": "Receiving end does not exist",
+    "contentSenderFields": [
+      "id",
+      "url",
+      "origin",
+      "frameId",
+      "documentId",
+      "documentLifecycle",
+      "tab"
+    ],
+    "popup": {
+      "fields": [
+        "id",
+        "url",
+        "origin"
+      ],
+      "path": "/popup.html",
+      "sameExtensionId": true,
+      "sameExtensionOrigin": true
+    },
+    "worker": {
+      "fields": [
+        "id",
+        "url",
+        "origin"
+      ],
+      "path": "/worker.js",
+      "sameExtensionId": true,
+      "sameExtensionOrigin": true
+    },
+    "workerBeforeWake": "activated/stopped",
+    "bootChanged": true
+  },
+  {
+    "browser": "141.0.7390.37",
+    "transport": "library",
+    "navigation": {
+      "from": "/a",
+      "to": "/b",
+      "frameIdPreserved": true,
+      "documentIdChanged": true
+    },
+    "staleTarget": "/b",
+    "contentSenderFields": [
+      "id",
+      "url",
+      "origin",
+      "frameId",
+      "documentId",
+      "documentLifecycle",
+      "tab"
+    ],
+    "popup": {
+      "fields": [
+        "id",
+        "url",
+        "origin"
+      ],
+      "path": "/popup.html",
+      "sameExtensionId": true,
+      "sameExtensionOrigin": true
+    },
+    "worker": {
+      "fields": [
+        "id",
+        "url",
+        "origin"
+      ],
+      "path": "/worker.js",
+      "sameExtensionId": true,
+      "sameExtensionOrigin": true
+    },
+    "workerBeforeWake": "activated/stopped",
+    "bootChanged": true
+  },
+  {
+    "browser": "158.0.8127.36",
+    "transport": "native",
+    "navigation": {
+      "from": "/a",
+      "to": "/b",
+      "frameIdPreserved": true,
+      "documentIdChanged": true
+    },
+    "staleTarget": "Receiving end does not exist",
+    "contentSenderFields": [
+      "id",
+      "url",
+      "origin",
+      "frameId",
+      "documentId",
+      "documentLifecycle",
+      "tab"
+    ],
+    "popup": {
+      "fields": [
+        "id",
+        "url",
+        "origin"
+      ],
+      "path": "/popup.html",
+      "sameExtensionId": true,
+      "sameExtensionOrigin": true
+    },
+    "worker": {
+      "fields": [
+        "id",
+        "url",
+        "origin"
+      ],
+      "path": "/worker.js",
+      "sameExtensionId": true,
+      "sameExtensionOrigin": true
+    },
+    "workerBeforeWake": "activated/stopped",
+    "bootChanged": true
+  },
+  {
+    "browser": "158.0.8127.36",
+    "transport": "library",
+    "navigation": {
+      "from": "/a",
+      "to": "/b",
+      "frameIdPreserved": true,
+      "documentIdChanged": true
+    },
+    "staleTarget": "/b",
+    "contentSenderFields": [
+      "id",
+      "url",
+      "origin",
+      "frameId",
+      "documentId",
+      "documentLifecycle",
+      "tab"
+    ],
+    "popup": {
+      "fields": [
+        "id",
+        "url",
+        "origin"
+      ],
+      "path": "/popup.html",
+      "sameExtensionId": true,
+      "sameExtensionOrigin": true
+    },
+    "worker": {
+      "fields": [
+        "id",
+        "url",
+        "origin"
+      ],
+      "path": "/worker.js",
+      "sameExtensionId": true,
+      "sameExtensionOrigin": true
+    },
+    "workerBeforeWake": "activated/stopped",
+    "bootChanged": true
+  }
+]

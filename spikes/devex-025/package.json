@@ -1,0 +1,16 @@
+{
+  "name": "devex-025-feasibility",
+  "private": true,
+  "scripts": {
+    "build": "node build.cjs",
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "node browser.cjs"
+  },
+  "devDependencies": {
+    "@webext-core/messaging": "4.0.2",
+    "@types/chrome": "0.0.242",
+    "typescript": "5.1.6",
+    "webpack": "5.88.2",
+    "playwright-core": "1.56.1"
+  }
+}
