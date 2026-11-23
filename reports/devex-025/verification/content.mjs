@@ -5,10 +5,12 @@ const nativeSend = chrome.runtime.sendMessage.bind(chrome.runtime)
 let sends = 0
 let callbacks = 0
 let hits = 0
+let callbackAt
 chrome.runtime.sendMessage = (message, callback) => {
   sends++
   return nativeSend(message, (...args) => {
     callbacks++
+    if (TRACE_COLD) callbackAt = new Date().toISOString()
     callback(...args)
   })
 }
@@ -24,6 +26,12 @@ protocol.endpoint('content').register({
 const operations = new Map()
 globalThis.testPort = {
   call: (name, payload = null) => client.request(name, payload, background),
+  async firstIdentify() {
+    const started = new Date().toISOString()
+    const previous = sends
+    const result = await client.request('identify', null, background)
+    return { started, callbackAt: callbackAt || null, settled: new Date().toISOString(), outbound: sends - previous, result }
+  },
   strict: () => strict.client('content').request('identify', null, background),
   version: () => mismatch.client('content').request('identify', null, background),
   // The local role selector changes eligible method names, never Chrome metadata.

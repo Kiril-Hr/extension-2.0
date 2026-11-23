@@ -1,6 +1,13 @@
 import { protocol, strict, success } from './contract.mjs'
 
 const boot = crypto.randomUUID()
+function trace(stage) {
+  if (!TRACE_COLD) return
+  void fetch(ALLOWED_ORIGIN + '/trace', {
+    method: 'POST', body: JSON.stringify({ at: new Date().toISOString(), stage }), keepalive: true
+  }).catch(() => {})
+}
+trace('worker evaluated')
 const counts = {}
 const pending = new Map()
 const client = protocol.client('background')
@@ -27,7 +34,12 @@ function wait({ payload }) {
 function open() {
   endpoint = protocol.endpoint('background', { contentOrigins: [ALLOWED_ORIGIN], allowSubframes: true })
   endpoint.register({
-    identify: counted('identify', ({ sender }) => success({ sender, boot })),
+    identify: counted('identify', ({ sender }) => {
+      trace('identify handler entered')
+      const reply = success({ sender, boot })
+      trace('identify handler returning')
+      return reply
+    }),
     restricted: counted('restricted', () => success('popup')),
     domain: counted('domain', () => ({ ok: false, kind: 'domain', error: 'missing' })),
     hold: counted('hold', wait),
@@ -35,6 +47,7 @@ function open() {
   })
 }
 open()
+trace('primary listener registered')
 strict.endpoint('background', { contentOrigins: [ALLOWED_ORIGIN], popupPath: '/other.html' }).register({
   identify: counted('strict', ({ sender }) => success(sender))
 })

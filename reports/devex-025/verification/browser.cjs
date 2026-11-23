@@ -9,6 +9,8 @@ const { chromium } = require(process.env.DEVEX_PLAYWRIGHT_PATH)
 
 const consumer = path.resolve(process.argv[2])
 const expected = process.argv[3]
+const coldOnly = process.argv.includes('--cold-only')
+const trace = process.argv.includes('--cold-trace')
 const installed = createRequire(path.join(consumer, 'package.json'))
 const scratch = fs.mkdtempSync(path.join(consumer, 'verification-'))
 const extension = path.join(scratch, 'extension')
@@ -36,7 +38,7 @@ async function build(origin) {
       content: './content.mjs', worker: './worker.mjs', popup: './popup.mjs'
     }, resolve: { modules: [path.join(consumer, 'node_modules')] },
     output: { path: extension, filename: '[name].js' },
-    plugins: [new webpack.DefinePlugin({ ALLOWED_ORIGIN: JSON.stringify(origin) })]
+    plugins: [new webpack.DefinePlugin({ ALLOWED_ORIGIN: JSON.stringify(origin), TRACE_COLD: JSON.stringify(trace) })]
   })
   try {
     const stats = await new Promise((res, rej) => compiler.run((e, stats) => e ? rej(e) : res(stats)))
@@ -108,6 +110,14 @@ async function stop(page, script) {
   }
 }
 
+async function checkFirst(tab) {
+  log('first identify dispatch', { at: new Date().toISOString() })
+  const observation = await tab.top('firstIdentify')
+  log('first identify outcome', observation)
+  assert.equal(observation.outbound, 1)
+  return ok(observation.result)
+}
+
 async function matrix(context, id, origin, outside) {
   const one = await tab(context, origin)
   const two = await tab(context, origin)
@@ -116,7 +126,7 @@ async function matrix(context, id, origin, outside) {
   const control = (action, data) => a('control', action, data)
   const snapshot = () => control('snapshot')
   const getIdentity = async call => ok(await call('call', 'identify'))
-  const first = await getIdentity(a)
+  const first = trace ? await checkFirst(one) : await getIdentity(a)
   const second = await getIdentity(two.top)
   assert.equal(first.sender.role, 'content')
   assert.equal(first.sender.frameId, 0)
@@ -272,6 +282,15 @@ async function main() {
     async function serve() {
       const server = http.createServer((req, res) => {
         res.setHeader('Content-Type', 'text/html')
+        if (req.url === '/trace') {
+          let body = ''
+          req.on('data', chunk => { body += chunk })
+          req.on('end', () => {
+            log('worker trace', { observed: new Date().toISOString(), ...JSON.parse(body) })
+            res.end()
+          })
+          return
+        }
         const count = req.url === '/many' ? 5 : req.url === '/' ? 1 : 0
         res.end('<!doctype html><title>fixture</title>' + '<iframe src="/a"></iframe>'.repeat(count))
       })
@@ -291,9 +310,23 @@ async function main() {
       assert.equal(browser.version(), expected)
       log('browser', browser.version())
       const session = await browser.newBrowserCDPSession()
+      if (trace) {
+        const observer = await context.newPage()
+        const service = await context.newCDPSession(observer)
+        service.on('ServiceWorker.workerVersionUpdated', ({ versions }) => {
+          for (const version of versions.filter(v => v.scriptURL.endsWith('/worker.js'))) {
+            log('CDP worker version', { at: new Date().toISOString(), status: version.status,
+              runningStatus: version.runningStatus })
+          }
+        })
+        await service.send('ServiceWorker.enable')
+        log('loading unpacked extension', { at: new Date().toISOString() })
+      }
       const { id } = await session.send('Extensions.loadUnpacked', { path: extension })
+      if (trace) log('extension loaded', { at: new Date().toISOString() })
       await session.detach()
-      await matrix(context, id, origin, outside)
+      if (coldOnly) await checkFirst(await tab(context, origin))
+      else await matrix(context, id, origin, outside)
       log('PASS', browser.version())
     } finally {
       await context.close()
