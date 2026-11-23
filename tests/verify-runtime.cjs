@@ -77,3 +77,7 @@ env.DEVEX_CONSUMER_PATH = consumer
 run('candidate-factory-chromium', ['tests/factory-browser.cjs'])
 run('candidate-minimal-chromium', ['tests/minimal-example-browser.cjs'])
 run('candidate-dev-reload', ['tests/dev-reload.cjs', minimal])
+
+const messagingChecks = path.join(root, 'reports/devex-025/verification')
+run('candidate-messaging-controls', ['--expose-gc', path.join(messagingChecks, 'installed.cjs'), minimal])
+run('candidate-messaging-mv3', [path.join(messagingChecks, 'browser.cjs'), minimal, '141.0.7390.37'])

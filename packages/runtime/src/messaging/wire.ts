@@ -32,6 +32,17 @@ export function limits(options: Partial<Budgets>): Budgets {
   return Object.freeze(budgets)
 }
 
+function plainArray(value: unknown[]) {
+  const proto = Object.getPrototypeOf(value)
+  if (proto === Array.prototype) return true
+  if (!Array.isArray(proto)) return false
+
+  // An ordinary array from another realm has that realm's intrinsic Array.prototype.
+  const constructor = Object.getOwnPropertyDescriptor(proto, 'constructor')?.value
+  return typeof constructor === 'function' && constructor.prototype === proto
+    && Function.prototype.toString.call(constructor) === Function.prototype.toString.call(Array)
+}
+
 // Account for JSON punctuation, escaping and UTF-8 bytes before calling user validators.
 // Traverse data descriptors only. Chrome would silently coerce several non-JSON JS values.
 export function checkJson(value: unknown, budgets: Budgets) {
@@ -60,7 +71,7 @@ export function checkJson(value: unknown, budgets: Budgets) {
     if (ancestors.has(item)) invalid()
 
     const array = Array.isArray(item)
-    if (!array && !record(item)) invalid()
+    if (array ? !plainArray(item) : !record(item)) invalid()
     ancestors.add(item)
     add(2)
 
