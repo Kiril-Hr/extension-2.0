@@ -3,11 +3,12 @@ const os = require('os')
 const path = require('path')
 const cp = require('child_process')
 const assert = require('assert/strict')
+const { createHash } = require('node:crypto')
 
 const { waitForRegistry } = require('./wait-for-registry.cjs')
 
 const root = path.resolve(__dirname, '..')
-const pkg = require('../devxtension/package.json')
+const pkg = require('../packages/runtime/package.json')
 const consumer = fs.mkdtempSync(path.join(os.tmpdir(), 'devex-published-'))
 const nodeDirectory = path.dirname(process.execPath)
 const npm = [
@@ -28,6 +29,9 @@ function run(args) {
 }
 
 async function main() {
+  const archive = fs.readFileSync(process.argv[2])
+  const expectedIntegrity = 'sha512-' + createHash('sha512').update(archive).digest('base64')
+
   await waitForRegistry(npm, pkg, consumer)
 
   fs.cpSync(path.join(root, '.verification/factory-consumer/src'), path.join(consumer, 'src'), { recursive: true })
@@ -43,6 +47,9 @@ async function main() {
 
   const installed = require(path.join(consumer, 'node_modules/devxtension/package.json'))
   assert.equal(installed.version, pkg.version)
+  assert.equal(installed.repository.directory, 'packages/runtime')
+  const lock = require(path.join(consumer, 'package-lock.json'))
+  assert.equal(lock.packages['node_modules/devxtension'].integrity, expectedIntegrity)
   run([path.join(consumer, 'node_modules/typescript/bin/tsc'), '--noEmit'])
   run([path.join(root, 'tests/factory-types.cjs')])
   run([path.join(consumer, 'node_modules/devxtension/dist/devex-scripts/index.js'), 'build'])

@@ -29,7 +29,7 @@ assert.equal(packages.length, 1)
 
 const packed = packages[0]
 const files = packed.files.map(file => file.path)
-assert.equal(packed.version, '1.1.0')
+assert.equal(packed.version, require(path.join(library, 'package.json')).version)
 
 for (const file of files) {
   assert(file.startsWith('dist/') || ['README.md', 'LICENSE', 'package.json'].includes(file), 'Unexpected package file: ' + file)
