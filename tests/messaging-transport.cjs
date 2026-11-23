@@ -54,7 +54,32 @@ const agent = protocol.client('background')
 const call = (value = 'hello', options) => client.request('lookup', value, bg, options)
 const code = async (promise, expected) => assert.deepEqual(await promise, { ok: false, kind: 'messaging', code: expected })
 
+async function checkWebpackEntry() {
+  // Strict ESM issuers require a fully specified package export in Webpack 5.
+  const entry = path.join(consumer, 'messaging-entry.mjs')
+  fs.writeFileSync(entry, "export { defineProtocol, event, request } from 'devxtension/messaging'\n")
+  const compiler = installed('webpack')({
+    context: consumer,
+    entry,
+    mode: 'production',
+    target: 'webworker',
+    output: { path: path.join(consumer, 'messaging-bundle'), library: { type: 'commonjs2' } }
+  })
+  try {
+    const stats = await new Promise((resolve, reject) => compiler.run((error, stats) => error ? reject(error) : resolve(stats)))
+    assert.equal(stats.hasErrors(), false, stats.toString({ all: false, errors: true }))
+    assert.equal(typeof require(path.join(consumer, 'messaging-bundle/main.js')).defineProtocol, 'function')
+  } finally {
+    await new Promise((resolve, reject) => compiler.close(error => error ? reject(error) : resolve()))
+  }
+
+  for (const entry of ['dist', 'dist/core', 'dist/devex-scripts', 'dist/devex-scripts/index', 'dist/devex-scripts/index.js']) {
+    assert(installed.resolve('devxtension/' + entry).endsWith('index.js'))
+  }
+}
+
 async function main() {
+  await checkWebpackEntry()
   const background = protocol.endpoint('background', policy)
   const content = protocol.endpoint('content')
   assert.equal(listeners.size, 1)
