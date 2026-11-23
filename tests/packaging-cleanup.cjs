@@ -31,8 +31,14 @@ const packed = packages[0]
 const files = packed.files.map(file => file.path)
 assert.equal(packed.version, require(path.join(library, 'package.json')).version)
 
+const metadata = ['README.md', 'LICENSE', 'package.json']
+if (require(path.join(library, 'package.json')).files.includes('/messaging/package.json')) {
+  metadata.push('messaging/package.json')
+  assert(files.includes('messaging/package.json'), 'Missing messaging entry metadata')
+}
+
 for (const file of files) {
-  assert(file.startsWith('dist/') || ['README.md', 'LICENSE', 'package.json'].includes(file), 'Unexpected package file: ' + file)
+  assert(file.startsWith('dist/') || metadata.includes(file), 'Unexpected package file: ' + file)
   assert(!file.startsWith('dist/test/'), 'Author fixtures must stay out of npm')
   assert(!file.endsWith('/integration-test.cjs'), 'VM test helper must stay out of npm')
   assert(!/(?:^|\/)(?:\.env|\.npmrc|\.idea|node_modules)(?:[/.]|$)/.test(file), 'Sensitive/unintended package path: ' + file)

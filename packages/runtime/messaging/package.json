@@ -1,0 +1,4 @@
+{
+  "main": "../dist/messaging/index.js",
+  "types": "../dist/messaging/index.d.ts"
+}

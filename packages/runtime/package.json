@@ -5,6 +5,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
+    "/messaging/package.json",
     "/dist",
     "!/dist/test/**",
     "!/dist/config/webpackCompileUtils/integration-test.cjs"
