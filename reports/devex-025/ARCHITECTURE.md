@@ -27,6 +27,10 @@ flowchart LR
 | [factoryManifest.js](../../packages/runtime/lib-bild/config/webpackCompileUtils/factoryManifest.js), [Webpack dev](../../packages/runtime/lib-bild/config/webpack.dev.js), [Webpack prod](../../packages/runtime/lib-bild/config/webpack.prod.js) | Both configs bundle the consumer runner. The generator reads static Manifest data without executing consumer code. | Author schemas and functions are executable imports in their own entry bundle. Retain static Manifest extraction. A declared popup HTML and its script still need an actual asset/build entry. |
 | [dev.js](../../packages/runtime/lib-bild/devex-scripts/dev.js), [chromium.js](../../packages/runtime/lib-bild/devex-scripts/chromium.js) | Successful builds snapshot the generated Manifest, background.js and Webpack assets. Reload waits for activation of a fresh worker version at /background.js. | Preserve the public worker filename. A worker compilation or handler import failure must invalidate the whole watch result. Old pending requests cannot migrate to the replacement worker. |
 
+## Feasibility outcome
+
+Strategy C is accepted. On Chromium 141 and Chrome 158, the same frameId identified a new document after navigation. Native document targeting rejected the stale document while frame addressing reached the replacement. Both transports exposed equivalent sender metadata and woke a stopped worker with synchronous listener registration. The selected transport preserves both explicit address forms and terminates stale-document delivery. [Stage 2A feasibility report](https://github.com/Kiril-Hr/extension-2.0/blob/75bdfe62c82964967c23f79ed6800b8accbad860/reports/devex-025/STAGE_2A.md)
+
 ## Upstream comparison
 
 Source review on 2026-11-23. The linked source revisions identify what was inspected. Upstream issue reports are leads for tests, not reproductions on DevEx.
