@@ -6,6 +6,7 @@ const consumer = process.env.DEVEX_CONSUMER_PATH || path.join(root, '.verificati
 process.env.PLAYWRIGHT_BROWSERS_PATH ||= path.join(root,'.verification/browser-binaries')
 const { chromium } = require(process.env.DEVEX_PLAYWRIGHT_PATH || path.join(root, '.verification/tools/node_modules/playwright'))
 const { on } = require('node:events')
+const { setTimeout: delay } = require('node:timers/promises')
 
 async function verifyBackgroundStorage(page, script, diagnostics) {
   const context = page.context()
@@ -39,7 +40,15 @@ async function verifyBackgroundStorage(page, script, diagnostics) {
     // The message reply is already verified. Read its durable storage write
     // through the extension origin, even when the worker has gone dormant.
     await extensionPage.goto(new URL('/manifest.json', workerUrl).href)
-    await extensionPage.waitForFunction(async () => (await chrome.storage.local.get('factoryProbe')).factoryProbe === true)
+    const deadline = performance.now() + 30000
+    while (performance.now() < deadline) {
+      const value = await extensionPage.evaluate(async () => (await chrome.storage.local.get('factoryProbe')).factoryProbe)
+      if (value === true) return
+
+      await delay(100)
+    }
+
+    assert.fail('Background message replied but chrome.storage.local.factoryProbe was not written')
   } finally {
     await extensionPage.close()
   }
