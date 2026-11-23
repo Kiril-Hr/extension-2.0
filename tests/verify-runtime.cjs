@@ -71,3 +71,4 @@ env.DEVEX_PACKAGE_PATH = archive
 env.DEVEX_CONSUMER_PATH = consumer
 run('candidate-factory-chromium', ['tests/factory-browser.cjs'])
 run('candidate-minimal-chromium', ['tests/minimal-example-browser.cjs'])
+run('candidate-dev-reload', ['tests/dev-reload.cjs', minimal])

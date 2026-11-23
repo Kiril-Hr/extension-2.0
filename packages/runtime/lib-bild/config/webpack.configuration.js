@@ -47,8 +47,18 @@ const copyWebpackPlugin = {
 const manifestBackgroundUpdater = (compiler) => {
     // Run for every compilation, including watch rebuilds.
     let dependencies = [];
-    compiler.hooks.beforeCompile.tap('DevExManifest', () => { dependencies = updaterExtensionAdditional().dependencies; });
+    let manifestError
+    compiler.hooks.beforeCompile.tap('DevExManifest', () => {
+      manifestError = undefined
+      try {
+        dependencies = updaterExtensionAdditional().dependencies
+      } catch (error) {
+        if (!compiler.watchMode) throw error
+        manifestError = error
+      }
+    })
     compiler.hooks.afterCompile.tap('DevExManifest', compilation => {
+        if (manifestError) compilation.errors.push(manifestError)
         dependencies.forEach(file => compilation.fileDependencies.add(file));
         const legacy = path.resolve(appRoot, 'extensionConfig.json');
         if (require('fs').existsSync(legacy)) compilation.fileDependencies.add(legacy);

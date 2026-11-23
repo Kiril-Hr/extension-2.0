@@ -15,6 +15,19 @@ Assets in `src/extensionOptions/assets/` and plain JavaScript backgrounds in
 `src/extensionOptions/backgrounds/` are optional. Build output is `dist/`;
 load that folder as an unpacked extension in Chrome.
 
+## Development reload in the source candidate
+
+Install a tarball built from this branch in the consumer. The published 1.1.0 CLI uses the earlier watcher. From the consumer with the candidate installed, run:
+
+```sh
+npx --no-install playwright-core install chromium
+npm run dev -- --url https://example.com/
+```
+
+After the first successful compilation, the CLI opens a disposable Chromium profile. Each successful rebuild loads the unpacked extension again and refreshes the same test tab at its current URL. With no `--url`, navigate the initial blank tab to a matching page. Other tabs stay open. Type `q` and Enter or press Ctrl+C to close the session. Use `--watch-only` for compilation alone or `--headless` for automation.
+
+Set `DEVEX_CHROMIUM_PATH` to select a compatible Chrome/Chromium executable. Managed mode requires CDP `Extensions.loadUnpacked` over a pipe. Webpack reports syntax and Manifest errors in the terminal and keeps watching. TypeScript checking remains a separate consumer command.
+
 Legacy `extensionConfig.json` (needed only when the entrypoint has no factory manifest):
 
 ```json
