@@ -10,18 +10,26 @@ const { chromium } = require(process.env.DEVEX_PLAYWRIGHT_PATH || path.join(root
 const output = path.join(root, 'reports/cleanup-2026-11-16')
 const extension = path.join(root, 'examples/minimal/dist')
 
-async function activatedWorkerUrl(page, script) {
+async function verifyWorkerRegistration(page, script, stopWorker = false) {
   const session = await page.context().newCDPSession(page)
   const updates = on(session, 'ServiceWorker.workerVersionUpdated', { signal: AbortSignal.timeout(30000) })
 
   try {
     // Enabling CDP sends the current versions, followed by registration changes.
     await session.send('ServiceWorker.enable')
+    let stoppedVersion
     for await (const [{ versions }] of updates) {
-      const active = versions.find(({ status, scriptURL }) =>
-        status === 'activated' && scriptURL.startsWith('chrome-extension://') && new URL(scriptURL).pathname === '/' + script
-      )
-      if (active) return active.scriptURL
+      const active = versions.find(({ status, scriptURL }) => status === 'activated' &&
+        scriptURL.startsWith('chrome-extension://') && new URL(scriptURL).pathname === '/' + script)
+      if (!active) continue
+
+      if (!stopWorker || active.runningStatus === 'stopped') {
+        return active.runningStatus
+      }
+      if (stoppedVersion === active.versionId) continue
+
+      stoppedVersion = active.versionId
+      await session.send('ServiceWorker.stopWorker', { versionId: active.versionId })
     }
   } finally {
     await updates.return()
@@ -35,7 +43,7 @@ async function main() {
   assert.deepEqual(manifest.host_permissions, ['https://example.com/*'])
   assert.deepEqual(manifest.permissions, ['webNavigation'])
 
-  const context = await chromium.launchPersistentContext(path.join(root, '.verification/browser-profile/minimal'), {
+  const context = await chromium.launchPersistentContext('', {
     channel: 'chromium',
     headless: true,
     ignoreDefaultArgs: ['--disable-extensions'],
@@ -55,29 +63,41 @@ async function main() {
     await page.waitForSelector('#devex-hello')
     assert.equal(await page.locator('#devex-hello').textContent(), 'Hello from DevEx 2.0')
 
-    const workerUrl = await activatedWorkerUrl(page, manifest.background.service_worker)
-    await page.evaluate(() => {
-      window.__sameDocument = true
-      window.__initialHello = document.getElementById('devex-hello')
-      history.pushState({}, '', '/second')
-    })
-    await page.waitForFunction(() => document.getElementById('devex-hello') && window.__initialHello !== document.getElementById('devex-hello'))
-    assert.equal(await page.locator('#devex-hello').count(), 1)
-    assert.equal(await page.evaluate(() => window.__sameDocument), true)
-    assert.deepEqual(errors, [])
+    const initialWorkerStatus = await verifyWorkerRegistration(page, manifest.background.service_worker)
+    for (const route of ['/second', '/after-worker-stop']) {
+      if (route === '/after-worker-stop') {
+        assert.equal(await verifyWorkerRegistration(page, manifest.background.service_worker, true), 'stopped')
+      }
 
-    // A dormant MV3 worker wakes on the history event above.
-    const isExampleWorker = worker => worker.url() === workerUrl
-    const worker = context.serviceWorkers().find(isExampleWorker) || await context.waitForEvent('serviceworker', isExampleWorker)
-    assert.equal(await worker.evaluate(() => chrome.webNavigation.onHistoryStateUpdated.hasListeners()), true)
+      // pushState on a new path emits neither popstate nor hashchange. Replacing
+      // the original node in this document requires the real background message.
+      await page.evaluate(nextPath => {
+        window.__sameDocument = true
+        window.__initialHello = document.getElementById('devex-hello')
+        history.pushState({}, '', nextPath)
+      }, route)
+      await page.waitForFunction(() => {
+        const node = document.getElementById('devex-hello')
+        return window.__sameDocument && node && node !== window.__initialHello
+      }).catch(error => {
+        throw new Error("Expected in-document reSetup on " + route + " after webNavigation", { cause: error })
+      })
+      assert.equal(await page.locator('#devex-hello').count(), 1)
+      assert.equal(await page.locator('#devex-hello').textContent(), 'Hello from DevEx 2.0')
+      assert.equal(new URL(page.url()).pathname, route)
+    }
+    assert.deepEqual(errors, [])
 
     fs.mkdirSync(output, { recursive: true })
     fs.writeFileSync(path.join(output, 'minimal-browser.json'), JSON.stringify({
       status: 'PASS',
       browser: context.browser().version(),
+      initialWorkerStatus,
+      beforeSecondNavigation: 'activated/stopped',
       note: 'Only the example.com document is served deterministically through Playwright routing; DevEx, DI, Chrome injection and navigation are real.',
-      checks: ['scoped MV3 permissions', 'public npm example injects real module', 'SPA navigation keeps one element and the same document', 'no page errors']
+      checks: ['scoped MV3 permissions', 'installed example injects real module', 'real webNavigation replaces the module node in the same document before and after stopping the worker', 'no page errors']
     }, null, 2))
+    console.log('PASS minimal Chromium', context.browser().version(), initialWorkerStatus + ' -> stopped -> SPA reSetup')
   } finally {
     await context.close()
   }

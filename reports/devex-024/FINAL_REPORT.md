@@ -40,3 +40,20 @@ The implementation commit passed [Historical CI](https://github.com/Kiril-Hr/ext
 Use Node 24 and select `packages/runtime` via `DEVEX_SOURCE_ROOT`. Follow the Chromium installation and disposable-runner setup in [candidate CI](../../.github/workflows/verify-runtime.yml). Run `node tests/verify-runtime.cjs`. To repeat just the browser scenario, pass the generated run's `examples/minimal` directory to `node tests/dev-reload.cjs` following its production build. The Windows test binds `127.0.0.2:80` to exercise the existing DevEx default-port URL semantics. Use the [consumer instructions](../../packages/runtime/README.md) for interactive development.
 
 Windows 11 desktop was not tested separately. Browser policy must permit unpacked extensions and the CDP extension-loading command. The selected page loses in-memory state on reload, and its server must handle its current SPA URL. Browser startup or worker activation failures stop the session with an error. Watch recovers from compilation and static Manifest errors. Browser closure and temporary profile ownership belong to this development session. No extension permission is added. DEVEX-024 remains a draft; no npm publication was performed.
+
+## DEVEX-024.1 · Chromium Stability
+
+The first Historical run on f90426f completed injection and the SPA assertion, then timed out looking for a live Playwright worker. An activated MV3 registration can outlive its running worker, and a passive listener only sees future targets. The failed runner did not record the exact worker state. [Failed Historical job](https://github.com/Kiril-Hr/extension-2.0/actions/runs/45201527084/job/137786002890)
+
+The test now uses a fresh persistent profile and the CDP activation snapshot. It checks a real history transition, stops the activated worker through CDP, observes the stopped registration, and checks a second transition. Both path changes use history.pushState, which emits neither popstate nor hashchange. In each case the existing document must replace its original module node and retain exactly one component. This exercises the background event, the Chrome message and the factory's route handling. The test has no dependency on a live Playwright worker handle and no longer waits for a separate worker target after navigation. Existing timeouts were kept.
+
+### Local Windows results
+
+On Windows 10 x64 with Chromium 141.0.7390.37, npm ci installed the published devxtension@1.1.0 in an isolated copy of the minimal example. The production build exited 0. Five sequential runs of node tests/minimal-example-browser.cjs in that copy exited 0, 0, 0, 0 and 0. Each run observed a running registration initially, then an activated/stopped registration and successful in-document SPA reSetup. The test also checked Manifest V3, scoped permissions, initial injection and absence of page errors.
+
+| Disposable negative control | Result |
+| --- | --- |
+| Replace the generated worker's navigation addListener call with hasListener | Exit 1 at the expected in-document reSetup assertion on /second. The worker could still register and activate. |
+| Suppress the content-side automatic controller.reSetup call in the copied npm dependency, then rebuild | Build exit 0. Browser test exit 1 at the same assertion while the background listener was present. |
+
+The smoke and control logs are in the ignored .verification/devex0241 directory of the DEVEX-024 worktree. This follow-up changes the browser test and this report. The PR checks page tracks Historical CI, Candidate CI and the automatic release dry run for the follow-up commit. [PR #10 checks](https://github.com/Kiril-Hr/extension-2.0/pull/10/checks)
