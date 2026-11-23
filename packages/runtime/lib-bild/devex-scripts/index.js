@@ -1,36 +1,19 @@
-#! /usr/bin/env node
-const spawn = require("cross-spawn");
+#!/usr/bin/env node
+const [task, ...args] = process.argv.slice(2)
 
-const [task] = process.argv.slice(2);
-const devConfig = require.resolve(`../config/webpack.dev.js`);
-const prodConfig = require.resolve(`../config/webpack.prod.js`);
+if (task === 'dev') {
+  require('./dev')(args).catch(error => {
+    console.error(error.message)
+    process.exitCode = 1
+  })
+} else if (task === 'build') {
+  const result = require('cross-spawn').sync(process.execPath, [
+    require.resolve('webpack-cli/bin/cli.js'), '--config', require.resolve('../config/webpack.prod')
+  ], { stdio: 'inherit' })
 
-let result;
-switch (task) {
-    case "dev": {
-        result = spawn.sync(
-            process.execPath,
-            [require.resolve('webpack-cli/bin/cli.js'), "--config", devConfig, "--watch"],
-            { stdio: "inherit" }
-        );
-        break;
-    }
-    case "build": {
-        result = spawn.sync(
-            process.execPath,
-            [require.resolve('webpack-cli/bin/cli.js'), "--config", prodConfig],
-            { stdio: "inherit" }
-        );
-        break;
-    }
-    default:
-        console.error(`Unknown script "${task}". Use dev or build.`);
-        process.exit(1);
+  if (result.error) console.error(result.error)
+  process.exitCode = result.status ?? 1
+} else {
+  console.error(`Unknown script "${task}". Use dev or build.`)
+  process.exitCode = 1
 }
-
-if (result.error || result.signal) {
-    if (result.error) console.error(result.error);
-    process.exit(1);
-}
-
-process.exit(result.status);

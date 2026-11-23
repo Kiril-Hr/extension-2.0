@@ -5,7 +5,7 @@ const cli=path.join(consumer,'node_modules/devxtension/dist/devex-scripts/index.
 const pause=ms=>new Promise(r=>setTimeout(r,ms));async function until(test){const end=Date.now()+60000;while(Date.now()<end){if(test())return;await pause(200)}throw Error('Factory watch timed out')}
 async function main(){
   let output = ''
-  const child = cp.spawn(process.execPath, [cli, 'dev'], {
+  const child = cp.spawn(process.execPath, [cli, 'dev', ...(process.env.DEVEX_SOURCE_ROOT ? ['--watch-only'] : [])], {
     cwd: consumer,
     stdio: ['ignore', 'pipe', 'pipe']
   })
