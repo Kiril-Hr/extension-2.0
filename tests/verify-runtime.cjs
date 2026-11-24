@@ -81,3 +81,5 @@ run('candidate-dev-reload', ['tests/dev-reload.cjs', minimal])
 const messagingChecks = path.join(root, 'reports/devex-025/verification')
 run('candidate-messaging-controls', ['--expose-gc', path.join(messagingChecks, 'installed.cjs'), minimal])
 run('candidate-messaging-mv3', [path.join(messagingChecks, 'browser.cjs'), minimal, '141.0.7390.37'])
+
+run('candidate-background-entry', [path.join(root, 'reports/devex-025/background-entry/verify.cjs'), minimal])
