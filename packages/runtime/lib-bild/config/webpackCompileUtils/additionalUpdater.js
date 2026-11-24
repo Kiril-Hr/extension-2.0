@@ -24,7 +24,7 @@ const runner = path.resolve(appRoot, './src/runner.ts')
 function mergeBackgrounds(modulesURLsUpdaterObj) {
     const backgrounds = []
 
-    const updaterObservedObjName = 'observedURLs'
+    const legacyFiles = []
     const moduleUpdaterFile = fs.readFileSync(moduleUpdaterPath, 'utf-8')
     const compiledMatcher = path.resolve(__dirname, '../../core/commonUtils/checkURL.utils.js')
     const { checkUrl } = require(fs.existsSync(compiledMatcher) ? compiledMatcher : path.resolve(__dirname, '../../../dist/core/commonUtils/checkURL.utils.js'))
@@ -41,13 +41,13 @@ function mergeBackgrounds(modulesURLsUpdaterObj) {
           if (!file.endsWith('.js') || !fs.statSync(path.join(backgroundFolder, file)).isFile()) continue
           const backgroundFile = fs.readFileSync(`${backgroundFolder}/${file}`, 'utf-8')
           backgrounds.push(backgroundFile)
+          legacyFiles.push(fs.realpathSync(path.join(backgroundFolder, file)))
         }
     }
 
     const mergedBackgrounds = UglifyJS.minify(backgrounds.join('\n;\n'))
     if (mergedBackgrounds.error) throw mergedBackgrounds.error
-    fs.mkdirSync(distFolder, { recursive: true })
-    fs.writeFileSync(`${distFolder}/background.js`, mergedBackgrounds.code, 'utf-8')
+    return { code: mergedBackgrounds.code, legacyFiles }
 }
 
 function imagesObject() {
@@ -167,8 +167,7 @@ function updaterExtensionAdditional() {
     }, {})
 
     manifestConfigure(modulesURLsArray)
-    mergeBackgrounds(modulesURLsUpdaterObj)
-    return { dependencies: manifestDependencies }
+    return { ...mergeBackgrounds(modulesURLsUpdaterObj), dependencies: manifestDependencies }
 }
 
 module.exports = updaterExtensionAdditional

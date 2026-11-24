@@ -3,12 +3,12 @@ const TerserPlugin = require('terser-webpack-plugin')
 const JavaScriptObfuscator = require('webpack-obfuscator')
 const Dotenv = require('dotenv-webpack')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
-const { JavaScriptObfuscatorParams, copyWebpackPlugin, manifestBackgroundUpdater, TerserPluginParams, babelParams } = require("./webpack.configuration");
+const { JavaScriptObfuscatorParams, extensionEntries, copyWebpackPlugin, manifestBackgroundUpdater, TerserPluginParams, babelParams } = require("./webpack.configuration");
 
 const appRoot = path.resolve(process.cwd());
 
 const Plugins = [
-    new JavaScriptObfuscator(JavaScriptObfuscatorParams),
+    new JavaScriptObfuscator(JavaScriptObfuscatorParams, ['background.js']),
     new CopyWebpackPlugin(copyWebpackPlugin),
     new Dotenv(),
     manifestBackgroundUpdater
@@ -18,10 +18,10 @@ module.exports = {
     mode: 'production',
     performance: { hints: false, maxEntrypointSize: 512000, maxAssetSize: 512000 },
     devtool: false,
-    entry: path.resolve(appRoot, './src/runner.ts'),
+    entry: extensionEntries,
     output: {
         path: path.resolve(appRoot, './dist'),
-        filename: 'runner.js',
+        filename: '[name].js',
     },
     module: {
         rules: [ babelParams ],

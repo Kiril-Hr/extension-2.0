@@ -1,7 +1,7 @@
 const path = require('path')
 const Dotenv = require('dotenv-webpack')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
-const { copyWebpackPlugin, manifestBackgroundUpdater, babelParams} = require("./webpack.configuration");
+const { extensionEntries, copyWebpackPlugin, manifestBackgroundUpdater, babelParams} = require("./webpack.configuration");
 
 const appRoot = path.resolve(process.cwd());
 
@@ -15,10 +15,11 @@ module.exports = {
     mode: 'development',
     performance: { hints: false, maxEntrypointSize: 512000, maxAssetSize: 512000 },
     devtool: 'inline-source-map',
-    entry: path.resolve(appRoot, './src/runner.ts'),
+    optimization: { emitOnErrors: false },
+    entry: extensionEntries,
     output: {
         path: path.resolve(appRoot, './dist'),
-        filename: 'runner.js',
+        filename: '[name].js',
     },
     module: {
         rules: [ babelParams ],

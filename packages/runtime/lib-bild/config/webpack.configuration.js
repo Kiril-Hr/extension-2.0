@@ -1,6 +1,8 @@
 const path = require("path");
 const updaterExtensionAdditional = require("./webpackCompileUtils/additionalUpdater");
 
+const fs = require('fs')
+
 const appRoot = path.resolve(process.cwd());
 const babelPath = path.resolve(appRoot, './node_modules');
 
@@ -44,22 +46,60 @@ const copyWebpackPlugin = {
     ]
 }
 
+const workerEntry = path.resolve(appRoot, 'src/extensionOptions/backgrounds/index.ts')
+
+function extensionEntries() {
+  const runner = path.resolve(appRoot, 'src/runner.ts')
+  return fs.existsSync(workerEntry)
+    ? { runner, background: { import: workerEntry, asyncChunks: false, chunkLoading: false } }
+    : { runner }
+}
+
 const manifestBackgroundUpdater = (compiler) => {
     // Run for every compilation, including watch rebuilds.
-    let dependencies = [];
+    let generated
     let manifestError
     compiler.hooks.beforeCompile.tap('DevExManifest', () => {
       manifestError = undefined
       try {
-        dependencies = updaterExtensionAdditional().dependencies
+        generated = updaterExtensionAdditional()
       } catch (error) {
         if (!compiler.watchMode) throw error
         manifestError = error
       }
     })
+    compiler.hooks.thisCompilation.tap('DevExBackground', compilation => {
+      const { Compilation, sources } = compiler.webpack
+      compilation.hooks.afterChunks.tap('DevExBackground', () => {
+        const chunk = compilation.namedChunks.get('background')
+        if (!chunk || manifestError || !generated.legacyFiles.length) return
+
+        const legacy = new Set(generated.legacyFiles)
+        for (const mod of compilation.chunkGraph.getChunkModulesIterable(chunk)) {
+          const file = mod.nameForCondition?.()
+          if (file && fs.existsSync(file) && legacy.has(fs.realpathSync(file))) {
+            compilation.errors.push(new Error('Background imports an auto-executed legacy fragment: ' + file +
+              '. Remove the import or move the module outside the top-level backgrounds/*.js directory.'))
+          }
+        }
+      })
+
+      compilation.hooks.processAssets.tap({
+        name: 'DevExBackground', stage: Compilation.PROCESS_ASSETS_STAGE_REPORT
+      }, () => {
+        if (manifestError) return
+        const asset = compilation.getAsset('background.js')
+        if (asset) {
+          compilation.updateAsset(asset.name, new sources.ConcatSource(generated.code, '\n;(() => {\n', asset.source, '\n})()\n'))
+        } else {
+          compilation.emitAsset('background.js', new sources.RawSource(generated.code))
+        }
+      })
+    })
     compiler.hooks.afterCompile.tap('DevExManifest', compilation => {
         if (manifestError) compilation.errors.push(manifestError)
-        dependencies.forEach(file => compilation.fileDependencies.add(file));
+        if (!fs.existsSync(workerEntry)) compilation.missingDependencies.add(workerEntry)
+        for (const file of generated?.dependencies || []) compilation.fileDependencies.add(file)
         const legacy = path.resolve(appRoot, 'extensionConfig.json');
         if (require('fs').existsSync(legacy)) compilation.fileDependencies.add(legacy);
         else compilation.missingDependencies.add(legacy);
@@ -89,6 +129,7 @@ const babelParams = {
 }
 
 module.exports = {
+    extensionEntries,
     optimizationObfuscator,
     JavaScriptObfuscatorParams,
     TerserPluginParams,

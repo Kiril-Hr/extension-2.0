@@ -37,8 +37,8 @@ module.exports = async function watch(args) {
     console.log(stats.toString({ preset: 'errors-warnings', colors: false }))
     if (closing || stats.hasErrors() || !controller) return
 
-    // The manifest generator emits these two files outside Webpack's asset list.
-    const files = ['background.js', 'manifest.json', ...stats.compilation.getAssets().map(asset => asset.name)]
+    // The manifest generator writes directly to the output directory.
+    const files = ['manifest.json', ...stats.compilation.getAssets().map(asset => asset.name)]
     await controller.update(config.output.path, files)
   })
 
