@@ -81,13 +81,17 @@ async function trial(row, origin) {
   observations.set(String(id), row.worker)
   const stamp = key => { row.host[key] = Date.now() }
   const marker = trace
-    ? 'stage => { void fetch(' + JSON.stringify(origin + '/trace/' + id) +
-      ', { method: "POST", body: JSON.stringify({ stage, local: Date.now() }) }).catch(() => {}) }'
+    ? 'stage => { const local = Date.now(); (self.probeMarks ||= []).push({ stage, local }); void fetch(' + JSON.stringify(origin + '/trace/' + id) +
+      ', { method: "POST", body: JSON.stringify({ stage, local }) }).catch(() => {}) }'
     : '() => {}'
   const directory = path.join(scratch, fixture)
   fs.writeFileSync(path.join(directory, 'worker.js'),
     'self.mark = ' + marker + '\nmark("evaluate")\nimportScripts("implementation.js")\n')
 
+  const idleSample = cpu()
+  await delay(1000)
+  const ambient = cpu()
+  row.ambientPct = Math.round(100 * (1 - (ambient.idle - idleSample.idle) / (ambient.total - idleSample.total)))
   const preactivate = activated && load && !process.argv.includes('--load-before-activation')
   let stop = await startLoad(load && !preactivate)
   const restore = row.differential ? require('./attachment.cjs')(row, row.exclude) : () => {}
@@ -152,6 +156,12 @@ async function trial(row, origin) {
     }
     assert.equal(row.client.sends, 1)
     if (trace) {
+      // Postmortem only. Visibility never gates dispatch or a successful outcome.
+      const worker = context.serviceWorkers().find(w => w.url().endsWith('/worker.js'))
+      if (worker) row.localMarks = await Promise.race([
+        worker.evaluate(() => self.probeMarks || []).catch(() => null),
+        delay(400).then(() => null)
+      ])
       const { processInfo } = await session.send('SystemInfo.getProcessInfo')
       row.processes = processInfo.reduce((counts, p) => {
         counts[p.type] = (counts[p.type] || 0) + 1
