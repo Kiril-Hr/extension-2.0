@@ -12,6 +12,7 @@ const { chromium } = require(process.env.DEVEX_PLAYWRIGHT_PATH)
 const [consumer, output] = process.argv.slice(2)
 const installed = createRequire(path.resolve(consumer, 'package.json'))
 const webpack = installed('webpack')
+const loadThreads = 4
 const versions = { chromium: '141.0.7390.37', chrome: '158.0.8127.36' }
 const observations = new Map()
 const clients = new Map()
@@ -50,12 +51,12 @@ function cpu() {
   }
 }
 
-async function startLoad(enabled) {
+async function startLoad(enabled, count = loadThreads) {
   const workers = []
   const stop = async () => Promise.all(workers.map(worker => worker.terminate()))
   try {
     if (enabled) {
-      const ready = Array.from({ length: os.availableParallelism() }, () => {
+      const ready = Array.from({ length: count }, () => {
         const worker = new Worker(`
           const { parentPort } = require('node:worker_threads')
           parentPort.postMessage('ready')
@@ -93,8 +94,8 @@ async function trial(row, origin) {
   await delay(1000)
   const ambient = cpu()
   row.ambientPct = Math.round(100 * (1 - (ambient.idle - idleSample.idle) / (ambient.total - idleSample.total)))
-  const preactivate = activated && load && !process.argv.includes('--load-before-activation')
-  let stop = await startLoad(load && !preactivate)
+  const preactivate = (activated || row.stopped) && load && !process.argv.includes('--load-before-activation')
+  let stop = await startLoad(load && !preactivate, row.loadThreads)
   const restore = row.differential ? require('./attachment.cjs')(row, row.exclude) : () => {}
   const initial = cpu()
   const processStart = process.cpuUsage()
@@ -110,11 +111,14 @@ async function trial(row, origin) {
     stamp('launched')
     assert.equal(context.browser().version(), versions[browser])
     const session = await context.browser().newBrowserCDPSession()
+    let service
+    let versionId
     if (trace) {
       const observer = await context.newPage()
-      const service = await context.newCDPSession(observer)
+      service = await context.newCDPSession(observer)
       service.on('ServiceWorker.workerVersionUpdated', ({ versions }) => {
         for (const v of versions.filter(v => v.scriptURL.endsWith('/worker.js'))) {
+          versionId = v.versionId
           row.versions.push({ host: Date.now(), status: v.status, running: v.runningStatus })
         }
       })
@@ -124,14 +128,14 @@ async function trial(row, origin) {
     stamp('loading')
     await session.send('Extensions.loadUnpacked', { path: directory })
     stamp('loaded')
-    if (activated) {
+    if (activated || row.stopped) {
       const end = Date.now() + 45000
       while (!row.versions.some(v => v.status === 'activated' && v.running === 'running')) {
         if (Date.now() >= end) throw Error('activation precondition timed out')
         await delay(20)
       }
     }
-    if (preactivate) {
+    if (preactivate && !row.stopped) {
       stamp('startLoad')
       stop = await startLoad(true)
       stamp('loadReady')
@@ -139,6 +143,18 @@ async function trial(row, origin) {
     const page = await context.newPage()
     await page.goto(origin)
     await page.waitForSelector('html[data-probe]', { state: 'attached' })
+    if (row.stopped) {
+      const before = row.versions.length
+      await service.send('ServiceWorker.stopWorker', { versionId })
+      const end = Date.now() + 30000
+      while (!row.versions.slice(before).some(v => v.status === 'activated' && v.running === 'stopped')) {
+        if (Date.now() > end) throw Error('worker stop was not observed')
+        await delay(20)
+      }
+      stamp('stopped')
+      if (load) stop = await startLoad(true)
+      assert.equal(row.versions.at(-1).running, 'stopped')
+    }
     await page.evaluate(() => document.dispatchEvent(new Event('cold-start-probe')))
     await page.waitForFunction(() => JSON.parse(document.documentElement.dataset.probe).result)
     const read = () => page.evaluate(() => JSON.parse(document.documentElement.dataset.probe))
@@ -214,7 +230,7 @@ async function main() {
     await build(origin, 'native')
     await build(origin, 'typed')
     console.log(JSON.stringify({ os: os.release(), model: os.cpus()[0].model, logical: os.cpus().length,
-      loadThreads: os.availableParallelism(), ramMiB: os.totalmem() / 1048576, node: process.version }))
+      loadThreads, ramMiB: os.totalmem() / 1048576, node: process.version }))
     if (process.argv.includes('--standalone')) {
       await require('./standalone.cjs').run({ scratch, origin, binary: chromium.executablePath(),
         output, clients, observations, startLoad, cpu })
@@ -222,6 +238,26 @@ async function main() {
     }
     const file = fs.openSync(output, 'wx')
     try {
+      if (process.argv.includes('--stopped-control')) {
+        const variants = cells.filter(cell => !cell.activated)
+        for (let id = 0; id < 40; id++) {
+          const row = { id, ...variants[(id * 5 + Math.floor(id / 8)) % 8], stopped: true, trace: true }
+          await trial(row, origin)
+          fs.writeSync(file, JSON.stringify(row) + '\n')
+          console.log(id, row.browser, row.fixture, row.load, row.client?.result, row.error || '')
+        }
+        return
+      }
+      if (process.argv.includes('--headroom-control')) {
+        for (let id = 0; id < 8; id++) {
+          const row = { id, browser: 'chromium', fixture: id % 4 < 2 ? 'native' : 'typed',
+            activated: false, load: true, loadThreads: 2 + (id + Math.floor(id / 4)) % 2, trace: true }
+          await trial(row, origin)
+          fs.writeSync(file, JSON.stringify(row) + '\n')
+          console.log(id, row.fixture, row.loadThreads, row.client?.result, row.error || '')
+        }
+        return
+      }
       if (process.argv.includes('--driver-control')) {
         for (let n = 0; n < 12; n++) {
           const row = { id: n, browser: 'chromium', fixture: n % 4 < 2 ? 'native' : 'typed',
