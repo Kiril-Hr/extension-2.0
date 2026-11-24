@@ -15,7 +15,30 @@ async function main(){
 
   child.stdout.on('data', appendOutput)
   child.stderr.on('data', appendOutput)
- try{await until(()=>output.includes('compiled successfully'));fs.writeFileSync(runner,original.replace("version:'1.0.0'","version:'1.0.1'"));await until(()=>JSON.parse(fs.readFileSync(manifest,'utf8')).version==='1.0.1');console.log('PASS watch regenerates inline params.manifest without extensionConfig.json')}
+  try {
+    await until(() => output.includes('compiled successfully'))
+    fs.writeFileSync(runner, original.replace("version:'1.0.0'", "version:'1.0.1'"))
+
+    let lastReadError
+    try {
+      await until(() => {
+        try {
+          const current = JSON.parse(fs.readFileSync(manifest, 'utf8'))
+          lastReadError = undefined
+          return current.version === '1.0.1'
+        } catch (error) {
+          // The watcher can truncate the file before writing the new JSON.
+          if (!(error instanceof SyntaxError)) throw error
+          lastReadError = error
+          return false
+        }
+      })
+    } catch (error) {
+      if (lastReadError) throw new Error('Watch manifest did not settle as valid JSON', { cause: lastReadError })
+      throw error
+    }
+    console.log('PASS watch regenerates inline params.manifest without extensionConfig.json')
+  }
  finally{child.kill();await Promise.race([new Promise(r=>child.once('exit',r)),pause(5000)]);fs.writeFileSync(runner,original);fs.writeFileSync(path.join(out,'watch.log'),output)}
  const legacy=path.join(consumer,'extensionConfig.json');assert(!fs.existsSync(legacy));
  try{fs.writeFileSync(legacy,JSON.stringify({name:'Conflict'}));const r=cp.spawnSync(process.execPath,[npm,'run','build'],{cwd:consumer,encoding:'utf8',timeout:120000});fs.writeFileSync(path.join(out,'manifest-conflict.log'),r.stdout+r.stderr);assert.notEqual(r.status,0);assert.match(r.stdout+r.stderr,/Conflict for name/);console.log('PASS CLI fails explicitly on conflicting legacy Manifest')}

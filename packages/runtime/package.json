@@ -4,6 +4,30 @@
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./messaging": {
+      "types": "./dist/messaging/index.d.ts",
+      "default": "./dist/messaging/index.js"
+    },
+    "./dist": "./dist/index.js",
+    "./dist/core": "./dist/core/index.js",
+    "./dist/devex-scripts": "./dist/devex-scripts/index.js",
+    "./dist/*.js": "./dist/*.js",
+    "./dist/*.map": "./dist/*.map",
+    "./dist/*.d.ts": "./dist/*.d.ts",
+    "./dist/*": "./dist/*.js",
+    "./package": "./package.json",
+    "./*": "./*"
+  },
+  "typesVersions": {
+    "*": {
+      "messaging": ["dist/messaging/index.d.ts"]
+    }
+  },
   "files": [
     "/dist",
     "!/dist/test/**",

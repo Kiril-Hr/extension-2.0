@@ -23,7 +23,7 @@ const steps = []
 fs.mkdirSync(output, { recursive: true })
 fs.mkdirSync(consumer, { recursive: true })
 fs.mkdirSync(minimal, { recursive: true })
-fs.cpSync(__dirname, path.join(scratch, 'tests'), { recursive: true, filter: file => file === __dirname || file.endsWith('.cjs') })
+fs.cpSync(__dirname, path.join(scratch, 'tests'), { recursive: true, filter: file => file === __dirname || file.endsWith('.cjs') || path.basename(file) === 'messaging-consumer.ts' })
 
 function run(name, args, cwd = scratch) {
   const result = spawnSync(process.execPath, args, { cwd, env, encoding: 'utf8', timeout: 300000, maxBuffer: 20000000 })
@@ -36,6 +36,10 @@ function run(name, args, cwd = scratch) {
 }
 
 run('candidate-npm-ci', [npm, 'ci', '--no-audit', '--no-fund'], expected)
+run('candidate-messaging-strict', [
+  path.join(expected, 'node_modules/typescript/bin/tsc'), '--strict', '--skipLibCheck',
+  '--target', 'ES2020', '--module', 'commonjs', '--lib', 'ESNext,DOM', '--noEmit', 'src/messaging/index.ts'
+], expected)
 run('candidate-product', ['tests/factory-product.cjs'])
 run('candidate-packaging', ['tests/packaging-cleanup.cjs'])
 
@@ -64,6 +68,7 @@ for (const directory of [consumer, minimal]) {
 
 fs.writeFileSync(path.join(output, 'candidate-provenance.json'), JSON.stringify({ sourceRoot: expected, sha256, integrity }, null, 2))
 console.log('Candidate tarball SHA-256:', sha256)
+run('candidate-messaging', ['tests/messaging-transport.cjs', minimal])
 run('candidate-minimal-types', [npm, 'run', 'typecheck'], minimal)
 run('candidate-minimal-build', [npm, 'run', 'build'], minimal)
 run('candidate-watch', ['tests/factory-watch.cjs'])
@@ -72,3 +77,7 @@ env.DEVEX_CONSUMER_PATH = consumer
 run('candidate-factory-chromium', ['tests/factory-browser.cjs'])
 run('candidate-minimal-chromium', ['tests/minimal-example-browser.cjs'])
 run('candidate-dev-reload', ['tests/dev-reload.cjs', minimal])
+
+const messagingChecks = path.join(root, 'reports/devex-025/verification')
+run('candidate-messaging-controls', ['--expose-gc', path.join(messagingChecks, 'installed.cjs'), minimal])
+run('candidate-messaging-mv3', [path.join(messagingChecks, 'browser.cjs'), minimal, '141.0.7390.37'])
