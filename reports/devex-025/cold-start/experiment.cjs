@@ -248,7 +248,7 @@ async function main() {
     }
   } finally {
     server.close()
-    fs.rmSync(scratch, { recursive: true, force: true })
+    fs.rmSync(scratch, { recursive: true, force: true, maxRetries: 10, retryDelay: 200 })
   }
 }
 
