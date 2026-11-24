@@ -29,6 +29,7 @@ const until = async (test, label) => {
 }
 
 async function build() {
+  delete require.cache[installed.resolve('devxtension/dist/config/webpack.prod')]
   const compiler = webpack(config('prod'))
   try {
     return await new Promise((resolve, reject) => compiler.run((err, stats) => err ? reject(err) : resolve(stats)))
@@ -79,6 +80,7 @@ async function production(origin, expectedLegacy) {
         await page.goto(origin)
         await page.waitForFunction(() => document.documentElement.dataset.answer && document.documentElement.dataset.legacy)
         const { answer, contentRealm, legacy } = await page.evaluate(() => ({ ...document.documentElement.dataset }))
+        if (!answer.endsWith('|entry')) console.error(await page.evaluate(() => ({ ...document.documentElement.dataset })))
         const [payload, service, handler, workerRealm] = answer.split('|')
         assert.deepEqual([payload, service, handler, legacy], ['hello', 'service', 'handler', expectedLegacy])
         assert(workerRealm && workerRealm !== contentRealm)

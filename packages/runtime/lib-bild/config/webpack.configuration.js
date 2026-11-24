@@ -48,9 +48,11 @@ const copyWebpackPlugin = {
 
 const workerEntry = path.resolve(appRoot, 'src/extensionOptions/backgrounds/index.ts')
 
+const hasBackgroundEntry = () => fs.existsSync(workerEntry)
+
 function extensionEntries() {
   const runner = path.resolve(appRoot, 'src/runner.ts')
-  return fs.existsSync(workerEntry)
+  return hasBackgroundEntry()
     ? { runner, background: { import: workerEntry, asyncChunks: false, chunkLoading: false } }
     : { runner }
 }
@@ -129,6 +131,7 @@ const babelParams = {
 }
 
 module.exports = {
+    hasBackgroundEntry,
     extensionEntries,
     optimizationObfuscator,
     JavaScriptObfuscatorParams,
