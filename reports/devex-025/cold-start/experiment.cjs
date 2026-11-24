@@ -14,6 +14,7 @@ const installed = createRequire(path.resolve(consumer, 'package.json'))
 const webpack = installed('webpack')
 const versions = { chromium: '141.0.7390.37', chrome: '158.0.8127.36' }
 const observations = new Map()
+const clients = new Map()
 const scratch = fs.mkdtempSync(path.join(os.tmpdir(), 'devex-isolation-'))
 
 async function build(origin, fixture) {
@@ -186,14 +187,17 @@ async function trial(row, origin) {
 
 async function main() {
   const server = http.createServer(async (req, res) => {
-    const events = observations.get(req.url.split('/')[2])
+    const [, channel, id] = req.url.split('/')
+    const events = observations.get(id)
     if (req.method === 'POST' && events) {
       const chunks = []
       for await (const chunk of req) chunks.push(chunk)
-      events.push({ ...JSON.parse(Buffer.concat(chunks)), received: Date.now() })
+      const data = JSON.parse(Buffer.concat(chunks))
+      if (channel === 'client') clients.get(id).client = { ...clients.get(id).client, ...data }
+      else events.push({ ...data, received: Date.now() })
     }
     res.writeHead(200, { 'Content-Type': 'text/html', 'Access-Control-Allow-Origin': '*' })
-    res.end('<!doctype html><title>Probe</title>')
+    res.end(req.url.startsWith('/?trial=') ? require('./standalone.cjs').page : '<!doctype html><title>Probe</title>')
   })
   server.listen(0, '127.0.0.1')
   await once(server, 'listening')
@@ -211,6 +215,11 @@ async function main() {
     await build(origin, 'typed')
     console.log(JSON.stringify({ os: os.release(), model: os.cpus()[0].model, logical: os.cpus().length,
       loadThreads: os.availableParallelism(), ramMiB: os.totalmem() / 1048576, node: process.version }))
+    if (process.argv.includes('--standalone')) {
+      await require('./standalone.cjs').run({ scratch, origin, binary: chromium.executablePath(),
+        output, clients, observations, startLoad, cpu })
+      return
+    }
     const file = fs.openSync(output, 'wx')
     try {
       if (process.argv.includes('--driver-control')) {
